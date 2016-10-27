@@ -32,7 +32,7 @@
 std::vector<std::string> MainWindow::GRANTS_MANFIELDS = {"Member Name", "Funding Type", "Status", "Peer Reviewed?", "Role", "Title", "Start Date"};
 std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "Type", "Role", "Title"};
 std::vector<std::string> MainWindow::PUBS_MANFIELDS = {"Member Name", "Type", "Status Date", "Role", "Title"};
-std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program"};
+std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program", "Division"};
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow),
@@ -188,7 +188,7 @@ void MainWindow::refresh(int tabIndex) {
 int MainWindow::checkFile(int index, QString filePath) {
     CSVReader reader;
     std::vector<std::string> header;
-    std::string searchstring;
+    std::string searchstring, searchstring1;
 
     int sortHeaderIndex = 2;
 
@@ -207,7 +207,8 @@ int MainWindow::checkFile(int index, QString filePath) {
 
             // check for right file type by searching for unique header
             searchstring = "Program";
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
+            searchstring1 = "Division";
+            if (std::find(header.begin(), header.end(), searchstring) != header.end() or std::find(header.begin(), header.end(), searchstring1) != header.end()) {
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = teachdb->getHeaderIndex("Start Date");
                 teachData = reader.getData();
@@ -247,6 +248,8 @@ int MainWindow::checkFile(int index, QString filePath) {
         } else {
             return EXIT_SUCCESS;
         }
+
+
         ui->teachPrintButton->setEnabled(true);
         ui->teachExportButton->setEnabled(true);
         break;
