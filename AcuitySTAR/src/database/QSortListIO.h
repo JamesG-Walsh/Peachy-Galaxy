@@ -10,8 +10,9 @@ public:
 
     void saveList(QList<QStringList> sortFields);
     QList<QStringList> readList();
-    void savePath(QString path);
-    QString readPath();
+    void saveLastSort(int index);
+    int readLastSort();
+
 private:
     std::string filename;
 };
