@@ -114,7 +114,7 @@ private:
     Ui::MainWindow* ui;
     QPrinter* printer;
 
-    QList<QStringList> allTeachOrders, allPubOrders, allPresOrders, allFundOrders;
+    QList<QStringList> allTeachOrders, allPubOrders, allPresOrders, allFundOrders, pubfile;
     QString teachPath, pubPath, presPath, fundPath;
     TreeModel *fundTree, *presTree, *pubTree, *teachTree;
     RecordsManager *funddb, *presdb, *pubdb, *teachdb;

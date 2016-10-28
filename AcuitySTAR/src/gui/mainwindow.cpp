@@ -87,6 +87,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     dateChanged = {false, false, false, false};
 
+    QSortListIO pubsave("pubfile.dat");
+    QString readPubPath = pubsave.readPath();
+    load_pub(readPubPath);
+
 }
 
 MainWindow::~MainWindow() {
@@ -1032,6 +1036,11 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         pubPath = path;
         makeTree(PUBLICATIONS);
         ui->pub_file_label->setText(pubPath);
+
+        QString filepath = "../Project Information/Sample Data/Publications_expanded.csv";
+        QSortListIO pubsave("pubfile.dat");
+        pubsave.savePath(filepath);
+
 
         return true;
     } else {
