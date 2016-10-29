@@ -10,13 +10,13 @@ TestCSVReader::TestCSVReader(){
 
 
 bool TestCSVReader::CSV_READER_TEST_01(){
-    CSVReader reader("/Users/Yuchen/Documents/_2016FW/cs3307/Lecture notes/0_PROJECT HANDOUT CONTENTS/2_Phase I SYSTEM HANDOUT/AcuitySTAR/Project Information/Sample Data/Grants_expanded.csv");
+    CSVReader reader("../Project Information/Sample Data/Grants_expanded.csv");
     vector<string> header = reader.getHeaders();
     if(header.size() != 0) return true;
     return false;
 }
 bool TestCSVReader::CSV_READER_TEST_02(){
-    CSVReader reader("/Users/Yuchen/Documents/_2016FW/cs3307/Lecture notes/0_PROJECT HANDOUT CONTENTS/2_Phase I SYSTEM HANDOUT/AcuitySTAR/Project Information/Sample Data/GrantsClinicalFunding_sample.csv");
+    CSVReader reader("../Project Information/Sample Data/GrantsClinicalFunding_sample.csv");
     vector<string> header = reader.getHeaders();
     if(header.size() != 0) return true;
     return false;
@@ -28,13 +28,13 @@ bool TestCSVReader::CSV_READER_TEST_03(){
     return false;
 }
 bool TestCSVReader::CSV_READER_TEST_04(){
-    CSVReader reader("/Users/Yuchen/Documents/_2016FW/cs3307/Lecture notes/0_PROJECT HANDOUT CONTENTS/2_Phase I SYSTEM HANDOUT/AcuitySTAR/Project Information/Sample Data/Presentations_sample.csv");
+    CSVReader reader("../Project Information/Sample Data/Presentations_sample.csv");
     vector<string> header = reader.getHeaders();
     if(header.size() != 0) return true;
     return false;
 }
 bool TestCSVReader::CSV_READER_TEST_05(){
-    CSVReader reader("/Users/Yuchen/Documents/_2016FW/cs3307/Lecture notes/0_PROJECT HANDOUT CONTENTS/2_Phase I SYSTEM HANDOUT/AcuitySTAR/Project Information/Sample Data/Program_Teaching_expanded.csv");
+    CSVReader reader("../Project Information/Sample Data/Program_Teaching_expanded.csv");
     vector<string> header = reader.getHeaders();
     if(header.size() != 0) return true;
     return false;
@@ -47,14 +47,14 @@ bool TestCSVReader::CSV_READER_TEST_06(){
 }
 
 bool TestCSVReader::CSV_READER_TEST_07(){
-    CSVReader reader("/Users/Yuchen/Documents/_2016FW/cs3307/Lecture notes/0_PROJECT HANDOUT CONTENTS/2_Phase I SYSTEM HANDOUT/AcuitySTAR/Project Information/Sample Data/Presentations_sample.csv");
+    CSVReader reader("../Project Information/Sample Data/Presentations_sample.csv");
     vector< vector<string> > all_data = reader.getData();
     if(all_data.size() != 0) return true;
     return false;
 }
 
 bool TestCSVReader::CSV_READER_TEST_08(){
-    CSVReader reader("/Users/Yuchen/Documents/_2016FW/cs3307/Lecture notes/0_PROJECT HANDOUT CONTENTS/2_Phase I SYSTEM HANDOUT/AcuitySTAR/Project Information/Sample Data/Program_Teaching_expanded.csv");
+    CSVReader reader("../Project Information/Sample Data/Program_Teaching_expanded.csv");
     vector< vector<string> > all_data = reader.getData();
     if(all_data.size() != 0) return true;
     return false;

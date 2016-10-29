@@ -655,6 +655,8 @@ void MainWindow::setupPieChart(PieChartWidget* pieChart, QListWidget *pieListWid
     pieChart->setData(pieChartList, colorList); //passes vector list to piechartwidget
 }
 
+
+
 void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std::string, double>> barChartList) {
     // create empty bar chart objects:
     QCPBars *yLabels = new QCPBars(barChart->yAxis, barChart->xAxis);
@@ -731,6 +733,14 @@ void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std
     yLabels->setData(ticks, count);
 }
 
+
+void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> lineChartList){
+
+    lineChart->addGraph();
+
+
+
+}
 
 void MainWindow::on_teach_new_sort_clicked() {
     if (teachdb != NULL) {
@@ -934,6 +944,8 @@ void MainWindow::on_fund_delete_sort_clicked() {
 
 void MainWindow::on_teach_bar_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_teach_pie_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
+void MainWindow::on_teach_line_button_toggled(){ui->teach_graph_stackedWidget->setCurrentIndex(0);}
+
 void MainWindow::on_pub_bar_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pub_pie_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(0);}
 void MainWindow::on_pres_bar_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(1);}
@@ -958,6 +970,7 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         ui->teach_filter_to->setEnabled(true);
         ui->teach_pie_button->setEnabled(true);
         ui->teach_bar_button->setEnabled(true);
+        ui->teach_line_button->setEnabled(true);
         ui->teach_to_label->setEnabled(true);
         ui->teach_sort_label->setEnabled(true);
         ui->teach_filter->setEnabled(true);
@@ -1210,6 +1223,10 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             ui->teachBarChart->clearPlottables();
             setupBarChart(ui->teachBarChart, chartList);
             ui->teachBarChart->replot();
+
+            //setupLineChart(ui->teachLineChart,chartList);
+
+
 
             setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
 

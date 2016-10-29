@@ -14,50 +14,50 @@ void CSVReader::loadCSV(std::string file_name) {
         std::cout << "Couldn't open file \"" << file_name << "\"." << std::endl;
         return;
     }
-
+	
     if (myfile.is_open()) {
-        std::stringstream sstr;
-        sstr << myfile.rdbuf();
-        std::string f = sstr.str();
-        myfile.close();
+		std::stringstream sstr;
+		sstr << myfile.rdbuf();
+		std::string f = sstr.str();
+		myfile.close();
 
         size_t len = f.length();
-
-        bool setHeaders = false;
-
+		
+		bool setHeaders = false;
+		
         size_t pos = 0;
         while( pos < len ) { // While the file's not empty
-            std::vector<std::string> line;
+			std::vector<std::string> line;
             while( f.at( pos ) != '\n' && pos < len ) { // For each character in the line
-                std::string element = "";
+				std::string element = "";
                 while( f.at( pos ) != ',' && pos < len && f.at( pos ) != '\n' && f.at( pos ) != '\r' ) { // For each element
-                    if( f.at( pos ) == '"' ) { // If we have a quote, continue till the next quote
-                        pos++;
+					if( f.at( pos ) == '"' ) { // If we have a quote, continue till the next quote
+						pos++;
                         while( f[pos] != '"' && pos < len ) {
-                            element += f.at( pos );
-                            pos++;
-                        }
+							element += f.at( pos );
+							pos++;
+						}
                         pos++; // Last quote
                     } else {
-                        element += f.at( pos );
+						element += f.at( pos );
                         pos++;
-                    }
-                }
+					}
+				}
                 line.push_back( element );
 
                 if ( f.at( pos ) == '\n') {
                     break;
                 }
                 pos++;
-            }
-            if( !setHeaders ) {
-                setHeaders = true;
-                headers = line;
-            } else {
-                all_data.push_back( line );
+			}
+			if( !setHeaders ) {
+				setHeaders = true;
+				headers = line;
+			} else {
+				all_data.push_back( line );
             }
             pos++;
-        }
+		}
     }
 }
 
