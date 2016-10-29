@@ -64,10 +64,16 @@ private slots:
     void on_teach_line_button_toggled();
     void on_teach_pie_button_toggled();
     void on_teach_bar_button_toggled();
+
+    void on_pub_line_button_toggled();
     void on_pub_pie_button_toggled();
     void on_pub_bar_button_toggled();
+
+    void on_pres_line_button_toggled();
     void on_pres_pie_button_toggled();
     void on_pres_bar_button_toggled();
+
+    void on_fund_line_button_toggled();
     void on_fund_pie_button_toggled();
     void on_fund_bar_button_toggled();
 
