@@ -55,7 +55,7 @@ TreeItem::~TreeItem() {
 }
 
 /*
- * Adds a child to the ndoe.
+ * Adds a child to the node.
  */
 void TreeItem::appendChild(TreeItem *item) {
     m_childItems.append(item);

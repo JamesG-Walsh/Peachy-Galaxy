@@ -23,6 +23,7 @@ namespace Ui {
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
+    friend class Test;
 
 public:
     explicit MainWindow(QWidget *parent = 0);

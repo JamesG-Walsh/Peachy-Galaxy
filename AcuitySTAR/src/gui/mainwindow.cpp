@@ -655,8 +655,6 @@ void MainWindow::setupPieChart(PieChartWidget* pieChart, QListWidget *pieListWid
     pieChart->setData(pieChartList, colorList); //passes vector list to piechartwidget
 }
 
-
-
 void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std::string, double>> barChartList) {
     // create empty bar chart objects:
     QCPBars *yLabels = new QCPBars(barChart->yAxis, barChart->xAxis);
@@ -734,13 +732,28 @@ void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std
 }
 
 
-void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> lineChartList){
+void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> barChartList) {
+    QVector<double> x(101), y(101); // initialize with entries 0..100
+    for (int i=0; i<101; ++i)
+    {
+      x[i] = i/50.0 - 1; // x goes from -1 to 1
+      y[i] = x[i]*x[i]; // let's plot a quadratic function
+    }
 
     lineChart->addGraph();
-
-
+    lineChart->graph(0)->setData(x, y);
+    // 为坐标轴添加标签
+    lineChart->xAxis->setLabel("x");
+    lineChart->yAxis->setLabel("y");
+    // 设置坐标轴的范围，以看到所有数据
+    lineChart->xAxis->setRange(-1, 1);
+    lineChart->yAxis->setRange(0, 1);
+    // 重画图像
+    lineChart->replot();
 
 }
+
+
 
 void MainWindow::on_teach_new_sort_clicked() {
     if (teachdb != NULL) {
@@ -942,10 +955,9 @@ void MainWindow::on_fund_delete_sort_clicked() {
     }
 }
 
+void MainWindow::on_teach_line_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_teach_bar_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_teach_pie_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
-void MainWindow::on_teach_line_button_toggled(){ui->teach_graph_stackedWidget->setCurrentIndex(0);}
-
 void MainWindow::on_pub_bar_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pub_pie_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(0);}
 void MainWindow::on_pres_bar_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(1);}
@@ -1217,6 +1229,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
         std::vector<std::pair <std::string, double>> chartList;
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
+
         }
 
         if (!chartList.empty()) {
@@ -1224,11 +1237,14 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             setupBarChart(ui->teachBarChart, chartList);
             ui->teachBarChart->replot();
 
-            //setupLineChart(ui->teachLineChart,chartList);
-
-
-
             setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
+
+            ui->teachLineChart->clearPlottables();
+            setupLineChart(ui->teachLineChart,chartList);
+            ui->teachLineChart->replot();
+
+
+           // setupBarChart(ui->teachLineChart,chartList);
 
             if (parentsList.size()>1) {
                 ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
