@@ -760,7 +760,6 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
     }
 
     lineChart->xAxis->setLabel("Year");
-    lineChart->yAxis->setLabel("Number of courses taught");
     lineChart->xAxis->setRange(2015, 2017);
     lineChart->xAxis->setAutoTickStep(false);
     lineChart->xAxis->setSubTickCount(0);
@@ -1273,6 +1272,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
 
             ui->teachLineChart->clearPlottables();
             setupLineChart(ui->teachLineChart,chartList);
+            ui->teachLineChart->yAxis->setLabel("Number of courses taught");
             ui->teachLineChart->replot();
 
 
@@ -1330,6 +1330,7 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
 
             ui->pubLineChart->clearPlottables();
             setupLineChart(ui->pubLineChart,chartList);
+            ui->pubLineChart->yAxis->setLabel("Number of publications");
             ui->pubLineChart->replot();
 
             if (parentsList.size()>1) {
@@ -1384,6 +1385,7 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
 
             ui->presLineChart->clearPlottables();
             setupLineChart(ui->presLineChart,chartList);
+            ui->presLineChart->yAxis->setLabel("Number of presentations");
             ui->presLineChart->replot();
 
 
@@ -1437,6 +1439,7 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
 
                 ui->fundLineChart->clearPlottables();
                 setupLineChart(ui->fundLineChart,chartList);
+                ui->fundLineChart->yAxis->setLabel("Amount of funding in CAD");
                 ui->fundLineChart->replot();
 
                 if (parentsList.size()>1) {
