@@ -9,6 +9,7 @@
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QString>
+#include <QSharedPointer>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -732,24 +733,46 @@ void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std
 }
 
 
-void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> barChartList) {
-    QVector<double> x(101), y(101); // initialize with entries 0..100
-    for (int i=0; i<101; ++i)
+void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> lineChartList) {
+
+    // Setup the legend
+    lineChart->legend->setVisible(true);
+    QFont legendFont = font();  // start out with MainWindow's font..
+    legendFont.setPointSize(9); // and make a bit smaller for legend
+    lineChart->legend->setFont(legendFont);
+    lineChart->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignBottom|Qt::AlignRight);
+
+    QVector<double> x(2), y(2); // initialize with entries 0..100
+
+    x[0] = 2015;
+    x[1] = 2016;
+    QColor colours[3] = {Qt::red, Qt::green, Qt::blue};
+    double maxCount = 0;
+    for(int i = 0; i < (int) lineChartList.size(); i++)
     {
-      x[i] = i/50.0 - 1; // x goes from -1 to 1
-      y[i] = x[i]*x[i]; // let's plot a quadratic function
+        y[0] = lineChartList[i].second;
+        y[1] = lineChartList[i].second;
+        lineChart->addGraph();
+        lineChart->graph(i)->setData(x, y);
+        lineChart->graph(i)->setPen(colours[i]);
+        if (maxCount < lineChartList[i].second)
+            maxCount = lineChartList[i].second;
+        lineChart->graph(i)->setName(QString::fromStdString(lineChartList[i].first));
     }
 
-    lineChart->addGraph();
-    lineChart->graph(0)->setData(x, y);
-    // 为坐标轴添加标签
-    lineChart->xAxis->setLabel("x");
-    lineChart->yAxis->setLabel("y");
-    // 设置坐标轴的范围，以看到所有数据
-    lineChart->xAxis->setRange(-1, 1);
-    lineChart->yAxis->setRange(0, 1);
-    // 重画图像
-    lineChart->replot();
+    lineChart->xAxis->setLabel("Year");
+    lineChart->yAxis->setLabel("Number of courses taught");
+    lineChart->xAxis->setRange(2015, 2017);
+    lineChart->xAxis->setAutoTickStep(false);
+    lineChart->xAxis->setSubTickCount(0);
+    lineChart->xAxis->setTickStep(1);
+    lineChart->yAxis->setRange(0, maxCount+(maxCount*.05));
+
+    //for(int i = 0; i < (int) lineChartList.size(); i++)
+    //{
+    //    qDebug() <<  QString::fromStdString(lineChartList[i].first);
+    //    qDebug() << QString::number(lineChartList[i].second);
+    //}
 
 }
 
