@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 
     if (testing)
     {
-       // Test *test_obj = new Test();
-        //QTest::qExec(test_obj);
+        Test *test_obj = new Test();
+        QTest::qExec(test_obj);
     }
 
     MainWindow w;

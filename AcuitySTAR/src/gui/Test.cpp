@@ -3,6 +3,7 @@
 #include "database/TestCSVReader.h"
 #include "database/CSVReader.h"
 #include "gui/Test.h"
+#include "gui/mainwindow.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -112,3 +113,25 @@ void Test::test14(){
     vector< vector<string> > all_data = reader.getData();
     QVERIFY2(all_data.size() !=0, "Test8 Failed");
 }
+
+//test on_teach_line_button_toggled
+void Test::test15(){
+    w.on_teach_line_button_toggled();
+    QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
+}
+
+void Test::test16(){
+    w.on_pres_line_button_toggled();
+    QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
+}
+
+void Test::test17(){
+    w.on_pub_line_button_toggled();
+    QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
+}
+
+void Test::test18(){
+    w.on_fund_line_button_toggled();
+    QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
+}
+
