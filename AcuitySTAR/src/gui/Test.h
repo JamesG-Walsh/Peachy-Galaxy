@@ -43,10 +43,10 @@ private slots:
     void test13();
     void test14();
     //test new graph
-    void test15();
-    void test16();
-    void test17();
-    void test18();
+    void test_on_teach_line_button_toggled();
+    void test_on_pres_line_button_toggled();
+    void test_on_pub_line_button_toggled();
+    void test_on_fund_line_button_toggled();
 
 };
 

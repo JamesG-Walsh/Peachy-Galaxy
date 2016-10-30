@@ -115,22 +115,22 @@ void Test::test14(){
 }
 
 //test on_teach_line_button_toggled
-void Test::test15(){
+void Test::test_on_teach_line_button_toggled(){
     w.on_teach_line_button_toggled();
     QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
 }
 
-void Test::test16(){
+void Test::test_on_pres_line_button_toggled(){
     w.on_pres_line_button_toggled();
     QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
 }
 
-void Test::test17(){
+void Test::test_on_pub_line_button_toggled(){
     w.on_pub_line_button_toggled();
     QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
 }
 
-void Test::test18(){
+void Test::test_on_fund_line_button_toggled(){
     w.on_fund_line_button_toggled();
     QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
 }
