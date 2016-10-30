@@ -746,7 +746,6 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
 
     x[0] = 2015;
     x[1] = 2016;
-    QColor colours[3] = {Qt::red, Qt::green, Qt::blue};
     double maxCount = 0;
     for(int i = 0; i < (int) lineChartList.size(); i++)
     {
@@ -754,7 +753,7 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
         y[1] = lineChartList[i].second;
         lineChart->addGraph();
         lineChart->graph(i)->setData(x, y);
-        lineChart->graph(i)->setPen(colours[i]);
+        lineChart->graph(i)->setPen((QColor(qrand() % 256, qrand() % 256, qrand() % 256)));
         if (maxCount < lineChartList[i].second)
             maxCount = lineChartList[i].second;
         lineChart->graph(i)->setName(QString::fromStdString(lineChartList[i].first));
