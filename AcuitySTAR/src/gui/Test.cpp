@@ -135,3 +135,14 @@ void Test::test_on_fund_line_button_toggled(){
     QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
 }
 
+void Test::test_setupLineChart() {
+    int size = 5;
+    std::vector<std::pair <std::string, double>> chartList;
+    for (int i = 0; i < size; i++) {
+        chartList.emplace_back("test", static_cast<double>(0.0));
+
+    }
+    w.setupLineChart(w.ui->teachLineChart,chartList);
+    QCOMPARE(w.ui->teachLineChart->plottableCount(),(int) chartList.size());
+}
+

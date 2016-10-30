@@ -47,6 +47,7 @@ private slots:
     void test_on_pres_line_button_toggled();
     void test_on_pub_line_button_toggled();
     void test_on_fund_line_button_toggled();
+    void test_setupLineChart();
 
 };
 
