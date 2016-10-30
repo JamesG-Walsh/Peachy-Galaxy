@@ -981,10 +981,16 @@ void MainWindow::on_fund_delete_sort_clicked() {
 void MainWindow::on_teach_line_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_teach_bar_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_teach_pie_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
+
+void MainWindow::on_pub_line_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_pub_bar_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pub_pie_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(0);}
+
+void MainWindow::on_pres_line_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_pres_bar_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pres_pie_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(0);}
+
+void MainWindow::on_fund_line_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_fund_bar_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_fund_pie_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(0);}
 
@@ -1057,6 +1063,8 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         ui->pub_filter_to->setEnabled(true);
         ui->pub_pie_button->setEnabled(true);
         ui->pub_bar_button->setEnabled(true);
+        ui->pub_line_button->setEnabled(true);
+
         ui->pub_to_label->setEnabled(true);
         ui->pub_sort_label->setEnabled(true);
         ui->pub_filter->setEnabled(true);
@@ -1108,6 +1116,7 @@ bool MainWindow::load_pres(QString path, bool multi_file) {
         ui->pres_filter_to->setEnabled(true);
         ui->pres_pie_button->setEnabled(true);
         ui->pres_bar_button->setEnabled(true);
+        ui->pres_line_button->setEnabled(true);
         ui->pres_to_label->setEnabled(true);
         ui->pres_sort_label->setEnabled(true);
         ui->pres_filter->setEnabled(true);
@@ -1159,6 +1168,7 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
         ui->fund_filter_to->setEnabled(true);
         ui->fund_pie_button->setEnabled(true);
         ui->fund_bar_button->setEnabled(true);
+        ui->fund_line_button->setEnabled(true);
         ui->fund_to_label->setEnabled(true);
         ui->fund_sort_label->setEnabled(true);
         ui->fund_filter->setEnabled(true);
@@ -1319,6 +1329,10 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
 
             setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
 
+            ui->pubLineChart->clearPlottables();
+            setupLineChart(ui->pubLineChart,chartList);
+            ui->pubLineChart->replot();
+
             if (parentsList.size()>1) {
                 ui->pubGraphTitle->setText("Total " + clickedName + " Publications by " +
                                            QString::fromStdString(pubSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
@@ -1369,6 +1383,12 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
 
             setupPieChart(ui->presPieChart, ui->presPieList, chartList);
 
+            ui->presLineChart->clearPlottables();
+            setupLineChart(ui->presLineChart,chartList);
+            ui->presLineChart->replot();
+
+
+
             if (parentsList.size()>1) {
                 ui->presGraphTitle->setText("Total " + clickedName + " Presentations by " +
                                             QString::fromStdString(presSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
@@ -1415,6 +1435,10 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
                 ui->fundBarChart->replot();
 
                 setupPieChart(ui->fundPieChart, ui->fundPieList, chartList);
+
+                ui->fundLineChart->clearPlottables();
+                setupLineChart(ui->fundLineChart,chartList);
+                ui->fundLineChart->replot();
 
                 if (parentsList.size()>1) {
                     ui->fundGraphTitle->setText("Total " + clickedName + " Grants & Funding by " +
