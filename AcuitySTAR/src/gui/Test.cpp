@@ -140,7 +140,6 @@ void Test::test_setupLineChart() {
     std::vector<std::pair <std::string, double>> chartList;
     for (int i = 0; i < size; i++) {
         chartList.emplace_back("test", static_cast<double>(0.0));
-
     }
     w.setupLineChart(w.ui->teachLineChart,chartList);
     QCOMPARE(w.ui->teachLineChart->plottableCount(),(int) chartList.size());
