@@ -212,23 +212,27 @@ int MainWindow::checkFile(int index, QString filePath)
             // check for right file type by searching for unique header
             searchstring = "Program";
             searchstring1 = "Division";
-            if (std::find(header.begin(), header.end(), searchstring) != header.end() or std::find(header.begin(), header.end(), searchstring1) != header.end()) {
+            if (std::find(header.begin(), header.end(), searchstring) != header.end() || std::find(header.begin(), header.end(), searchstring1) != header.end()) {
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = teachdb->getHeaderIndex("Start Date");
                 teachData = reader.getData();
                 std::vector<std::vector<std::string>*> f_errs;
                 unsigned int j;
-                for (int i = 0; i < (int) teachData.size(); i++) {
-                    for (j = 0; j < TEACH_MANFIELDS.size(); j++) {
+                for (int i = 0; i < (int) teachData.size(); i++)
+                {
+                    for (j = 0; j < TEACH_MANFIELDS.size(); j++)
+                    {
                         int index = teachdb->getHeaderIndex(TEACH_MANFIELDS[j]);
-                        if (teachData[i][index].compare("") == 0) {
+                        if (teachData[i][index].compare("") == 0)
+                        {
                             f_errs.push_back(&teachData[i]);
                             break;
                         }
                     }
 
                     // if all mandatory fields are okay
-                    if (j == TEACH_MANFIELDS.size()) {
+                    if (j == TEACH_MANFIELDS.size())
+                    {
                         // date interpretation
                         int yrIndex = teachdb->getHeaderIndex("Start Date");
                         int year;
@@ -741,12 +745,15 @@ void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std
 }
 
 
-void MainWindow::on_teach_new_sort_clicked() {
-    if (teachdb != NULL) {
+void MainWindow::on_teach_new_sort_clicked()
+{
+    if (teachdb != NULL)
+    {
         CustomSort* sortdialog = new CustomSort();
         sortdialog->setFields(TEACH_MANFIELDS);
         int ret = sortdialog->exec();
-        if (ret) {
+        if (ret)
+        {
             QStringList newSortOrder = sortdialog->getSortFields();
             allTeachOrders << newSortOrder;
             ui->teach_sort->addItem(newSortOrder.at(0));
@@ -957,8 +964,10 @@ void MainWindow::on_teach_load_file_clicked() {
     }
 }
 
-bool MainWindow::load_teach(QString path, bool multi_file) {
-    if (!checkFile(TEACH, path)) {
+bool MainWindow::load_teach(QString path, bool multi_file)
+{
+    if (!checkFile(TEACH, path))
+    {
         // enable gui elements
         ui->teach_sort->setEnabled(true);
         ui->teach_delete_sort->setEnabled(true);
@@ -981,7 +990,8 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         }
 
         // create default sort order if none are loaded
-        if (ui->teach_sort->currentIndex() < 0) {
+        if (ui->teach_sort->currentIndex() < 0)
+        {
             createDefaultSortOrder(TEACH);
             ui->teach_sort->addItem(allTeachOrders[0][0]);
         }
@@ -992,7 +1002,8 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         ui->teach_file_label->setText(teachPath);
 
         return true;
-    } else {
+    } else
+    {
         if (!multi_file) {
             QMessageBox::critical(this, "Invalid File", "Not a valid teaching file.");
             on_teach_load_file_clicked();

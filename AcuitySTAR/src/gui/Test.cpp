@@ -113,7 +113,24 @@ void Test::test14(){
     QVERIFY2(all_data.size() !=0, "Test8 Failed");
 }
 
-void Test::testSortByDivision
+void Test::testSortByDivision()
 {
+    bool testPasses = false;
+    QString path = "../Project Information/Sample Data/Teaching_sample.csv";
+    w.load_teach(path, false);
+
+    w.on_teach_new_sort_clicked();
+
+    for (int i=0; i < w.allTeachOrders.size(); i++)
+    {
+        QStringList qsl = w.allTeachOrders.at(i);
+        if (qsl.contains("Division"))
+        {
+            testPasses = true;
+            //maybe could also be done by evaluating the tree model
+        }
+    }
+
+    QVERIFY(testPasses == true);
 
 }

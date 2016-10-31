@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
         QTest::qExec(test_obj);
     }
 
-    MainWindow w;
-    w.show();
+    //MainWindow w;
+    //w.show();
 
     return app.exec();
 }
