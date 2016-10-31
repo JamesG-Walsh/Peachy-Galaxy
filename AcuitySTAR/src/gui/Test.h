@@ -22,6 +22,11 @@ class Test: public QObject
 {
 
     Q_OBJECT
+
+private:
+    MainWindow w;
+
+
 public:
     Test() = default;
 private slots:
@@ -40,6 +45,7 @@ private slots:
     void test12();
     void test13();
     void test14();
+    void testSortByDivision();
 
 };
 

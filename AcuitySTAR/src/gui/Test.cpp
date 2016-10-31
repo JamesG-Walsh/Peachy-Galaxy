@@ -112,3 +112,28 @@ void Test::test14(){
     vector< vector<string> > all_data = reader.getData();
     QVERIFY2(all_data.size() !=0, "Test8 Failed");
 }
+
+void Test::testSortByDivision()
+{
+    bool testPasses = false;
+    //QString path = "../Project Information/Sample Data/Teaching_sample.csv";
+    //w.load_teach(path, false);      //load teaching file
+
+    QStringList newSortOrder = (QStringList() << "Division" << "Program"); //create new sort order (simulates w.on_teach_new_sort_clicked())
+
+    w.allTeachOrders << newSortOrder;
+    w.ui->teach_sort->addItem(newSortOrder.at(0));  //add new sort order to mainwindow attributes
+
+    for (int i=0; i < w.allTeachOrders.size(); i++)  //check if sort orders contain a tier for "Division"
+    {
+        QStringList qsl = w.allTeachOrders.at(i);
+        if (qsl.contains("Division"))
+        {
+            testPasses = true;
+            //maybe could also be done by evaluating the tree model
+        }
+    }
+
+    QVERIFY(testPasses);
+
+}

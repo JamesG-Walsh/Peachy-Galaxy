@@ -12,10 +12,9 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    bool testing = true; //testing flag
-
     QApplication app(argc, argv);
 
+    bool testing = true; //testing flag
     if (testing)
     {
         Test *test_obj = new Test();
