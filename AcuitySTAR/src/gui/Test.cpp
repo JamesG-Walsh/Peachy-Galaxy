@@ -5,6 +5,7 @@
 #include "gui/Test.h"
 #include <vector>
 #include <iostream>
+#include "database/QFileIO.h"
 using namespace std;
 
 //QSortListIO
@@ -112,3 +113,60 @@ void Test::test14(){
     vector< vector<string> > all_data = reader.getData();
     QVERIFY2(all_data.size() !=0, "Test8 Failed");
 }
+
+//Will only work the first time it is run
+void Test::NoSaveTest(){
+    MainWindow w;
+    w.show();
+    w.close();
+    QFileIO teachFile("teachfile.dat");
+    QFileIO pubFile("pubfile.dat");
+    QFileIO presFile("presFile.dat");
+    QFileIO fundFile("fundFile.dat");
+    QString teachPath = teachFile.readPath();
+    QString pubPath = pubFile.readPath();
+    QString presPath = presFile.readPath();
+    QString fundPath = fundFile.readPath();
+    QVERIFY2(teachPath == "" && pubPath == "" && presPath == "" && fundPath == "", "No save test failed");
+}
+
+void Test::SaveTestTeach(){
+    MainWindow w;
+    w.show();
+    w.load_teach("../Project Information/Sample Data/Program_Teaching_expanded.csv");
+    w.close();
+    QFileIO teachFile("teachfile.dat");
+    QString readTeachPath = teachFile.readPath();
+    QVERIFY2(readTeachPath != "", "Save Test for Teaching failed");
+}
+
+void Test::SaveTestPub(){
+    MainWindow w;
+    w.show();
+    w.load_pub("../Project Information/Sample Data/Publications_sample.csv");
+    w.close();
+    QFileIO pubFile("pubfile.dat");
+    QString readPubPath = pubFile.readPath();
+    QVERIFY2(readPubPath != "", "Save Test for Publications failed");
+}
+
+void Test::SaveTestPres(){
+    MainWindow w;
+    w.show();
+    w.load_pres("../Project Information/Sample Data/Presentations_sample.csv");
+    w.close();
+    QFileIO presFile("presfile.dat");
+    QString readPresPath = presFile.readPath();
+    QVERIFY2(readPresPath != "", "Save Test for Presentations failed");
+}
+
+void Test::SaveTestFund(){
+    MainWindow w;
+    w.show();
+    w.load_fund("../Project Information/Sample Data/GrantsClinicalFunding_sample.csv");
+    w.close();
+    QFileIO fundFile("fundfile.dat");
+    QString readFundPath = fundFile.readPath();
+    QVERIFY2(readFundPath != "", "Save Test for Funding failed");
+}
+
