@@ -116,12 +116,15 @@ void Test::test14(){
 void Test::testSortByDivision()
 {
     bool testPasses = false;
-    QString path = "../Project Information/Sample Data/Teaching_sample.csv";
-    w.load_teach(path, false);
+    //QString path = "../Project Information/Sample Data/Teaching_sample.csv";
+    //w.load_teach(path, false);      //load teaching file
 
-    w.on_teach_new_sort_clicked();
+    QStringList newSortOrder = (QStringList() << "Division" << "Program"); //create new sort order (simulates w.on_teach_new_sort_clicked())
 
-    for (int i=0; i < w.allTeachOrders.size(); i++)
+    w.allTeachOrders << newSortOrder;
+    w.ui->teach_sort->addItem(newSortOrder.at(0));  //add new sort order to mainwindow attributes
+
+    for (int i=0; i < w.allTeachOrders.size(); i++)  //check if sort orders contain a tier for "Division"
     {
         QStringList qsl = w.allTeachOrders.at(i);
         if (qsl.contains("Division"))
@@ -131,6 +134,6 @@ void Test::testSortByDivision()
         }
     }
 
-    QVERIFY(testPasses == true);
+    QVERIFY(testPasses);
 
 }
