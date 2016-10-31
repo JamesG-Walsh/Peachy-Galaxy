@@ -5,7 +5,9 @@
 #include <QAbstractButton>
 #include <QComboBox>
 
-namespace Ui {
+namespace Ui
+
+{
 class CustomSort;
 }
 

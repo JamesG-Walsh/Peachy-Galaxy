@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         Test *test_obj = new Test();
         QTest::qExec(test_obj);
     }
-//comment
+
     MainWindow w;
     w.show();
 

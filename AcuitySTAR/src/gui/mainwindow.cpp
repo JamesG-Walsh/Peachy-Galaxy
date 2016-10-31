@@ -109,12 +109,14 @@ void MainWindow::on_actionLoad_file_triggered() {
                                                           "Select one or more files to load",
                                                           QDir::currentPath(),
                                                           tr("CSV (*.csv);; All files (*.*)"));
-    if (filePaths.size() > 0) {
+    if (filePaths.size() > 0)
+    {
         const int NUM_TABS = 4;
         bool all_loaded[NUM_TABS] = {false, false, false, false};
         int sum = std::accumulate(all_loaded, all_loaded + NUM_TABS, 0);
         QStringList::Iterator it = filePaths.begin();
-        while (sum != NUM_TABS && it != filePaths.end()) {
+        while (sum != NUM_TABS && it != filePaths.end())
+        {
             QString path = it[0];
             //note short-circuit eval
             if (!all_loaded[FUNDING] && load_fund(path, true)) {
@@ -149,7 +151,8 @@ QString MainWindow::load_file() {
     }
 }
 
-void MainWindow::refresh(int tabIndex) {
+void MainWindow::refresh(int tabIndex)
+{
     // if we've loaded in a file, update that data
     switch (tabIndex) {
     case FUNDING:
@@ -185,7 +188,8 @@ void MainWindow::refresh(int tabIndex) {
     }
 }
 
-int MainWindow::checkFile(int index, QString filePath) {
+int MainWindow::checkFile(int index, QString filePath)
+{
     CSVReader reader;
     std::vector<std::string> header;
     std::string searchstring, searchstring1;
@@ -436,7 +440,8 @@ int MainWindow::checkFile(int index, QString filePath) {
     return EXIT_SUCCESS;
 }
 
-void MainWindow::createDefaultSortOrder(int tabIndex) {
+void MainWindow::createDefaultSortOrder(int tabIndex)
+{
     QStringList defaultOrder;
     defaultOrder << "Default";
 
@@ -510,7 +515,8 @@ void MainWindow::createDefaultSortOrder(int tabIndex) {
  */
 bool MainWindow::handle_field_errors(std::vector<std::vector<std::string>*>& err,
                                      std::vector<std::string>& headers,
-                                     std::vector<std::string>& mandatory) {
+                                     std::vector<std::string>& mandatory)
+{
     //Since CSVReader alldata contains completely empty records
     //remove them first.
     std::vector<std::vector<std::string>*>::iterator it;
