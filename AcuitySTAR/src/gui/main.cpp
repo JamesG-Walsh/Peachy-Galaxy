@@ -20,10 +20,11 @@ int main(int argc, char *argv[])
         Test *test_obj = new Test();
         QTest::qExec(test_obj);
     }
-
+    else
+    {
     MainWindow w;
-
     w.show();
+    }
 
     return app.exec();
 }
