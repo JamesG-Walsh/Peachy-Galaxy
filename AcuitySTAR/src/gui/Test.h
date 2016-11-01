@@ -42,6 +42,13 @@ private slots:
     void test12();
     void test13();
     void test14();
+
+    void NoSaveTest();
+    void SaveTestTeach();
+    void SaveTestPub();
+    void SaveTestPres();
+    void SaveTestFund();
+
     //test new graph
     void test_on_teach_line_button_toggled();
     void test_on_pres_line_button_toggled();
