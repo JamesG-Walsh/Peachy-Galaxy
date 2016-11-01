@@ -12,7 +12,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    bool testing = true; //testing flag
+    bool testing = false; //testing flag
 
     QApplication app(argc, argv);
 
