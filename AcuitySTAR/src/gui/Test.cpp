@@ -3,6 +3,7 @@
 #include "database/TestCSVReader.h"
 #include "database/CSVReader.h"
 #include "gui/Test.h"
+#include "gui/mainwindow.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -113,6 +114,7 @@ void Test::test14(){
     QVERIFY2(all_data.size() !=0, "Test8 Failed");
 }
 
+
 void Test::testSortByDivision()
 {
     bool testPasses = false;
@@ -137,3 +139,36 @@ void Test::testSortByDivision()
     QVERIFY(testPasses);
 
 }
+
+//test on_teach_line_button_toggled
+void Test::test_on_teach_line_button_toggled(){
+    w.on_teach_line_button_toggled();
+    QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
+}
+
+void Test::test_on_pres_line_button_toggled(){
+    w.on_pres_line_button_toggled();
+    QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
+}
+
+void Test::test_on_pub_line_button_toggled(){
+    w.on_pub_line_button_toggled();
+    QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
+}
+
+void Test::test_on_fund_line_button_toggled(){
+    w.on_fund_line_button_toggled();
+    QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
+}
+
+void Test::test_setupLineChart() {
+    int size = 5;
+    std::vector<std::pair <std::string, double>> chartList;
+    for (int i = 0; i < size; i++) {
+        chartList.emplace_back("test", static_cast<double>(0.0));
+    }
+    w.setupLineChart(w.ui->teachLineChart,chartList);
+    QCOMPARE(w.ui->teachLineChart->plottableCount(),(int) chartList.size());
+}
+
+
