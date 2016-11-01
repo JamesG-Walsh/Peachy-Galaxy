@@ -5,7 +5,9 @@
 #include <QAbstractButton>
 #include <QComboBox>
 
-namespace Ui {
+namespace Ui
+
+{
 class CustomSort;
 }
 
@@ -31,6 +33,7 @@ private slots:
 
     void on_buttonBox_rejected();
     void on_buttonBox_accepted();
+
 
 private:
     Ui::CustomSort *ui;

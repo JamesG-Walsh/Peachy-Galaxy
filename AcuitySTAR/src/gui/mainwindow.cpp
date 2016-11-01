@@ -37,7 +37,7 @@
 std::vector<std::string> MainWindow::GRANTS_MANFIELDS = {"Member Name", "Funding Type", "Status", "Peer Reviewed?", "Role", "Title", "Start Date"};
 std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "Type", "Role", "Title"};
 std::vector<std::string> MainWindow::PUBS_MANFIELDS = {"Member Name", "Type", "Status Date", "Role", "Title"};
-std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program"};
+std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program", "Division"};
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow),
@@ -138,12 +138,14 @@ void MainWindow::on_actionLoad_file_triggered() {
                                                           "Select one or more files to load",
                                                           QDir::currentPath(),
                                                           tr("CSV (*.csv);; All files (*.*)"));
-    if (filePaths.size() > 0) {
+    if (filePaths.size() > 0)
+    {
         const int NUM_TABS = 4;
         bool all_loaded[NUM_TABS] = {false, false, false, false};
         int sum = std::accumulate(all_loaded, all_loaded + NUM_TABS, 0);
         QStringList::Iterator it = filePaths.begin();
-        while (sum != NUM_TABS && it != filePaths.end()) {
+        while (sum != NUM_TABS && it != filePaths.end())
+        {
             QString path = it[0];
             //note short-circuit eval
             if (!all_loaded[FUNDING] && load_fund(path, true)) {
@@ -178,7 +180,8 @@ QString MainWindow::load_file() {
     }
 }
 
-void MainWindow::refresh(int tabIndex) {
+void MainWindow::refresh(int tabIndex)
+{
     // if we've loaded in a file, update that data
     switch (tabIndex) {
     case FUNDING:
@@ -214,10 +217,12 @@ void MainWindow::refresh(int tabIndex) {
     }
 }
 
-int MainWindow::checkFile(int index, QString filePath, bool skip_prompt) {
+
+int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
+{
     CSVReader reader;
     std::vector<std::string> header;
-    std::string searchstring;
+    std::string searchstring, searchstring1;
 
     int sortHeaderIndex = 2;
 
@@ -238,23 +243,28 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt) {
 
             // check for right file type by searching for unique header
             searchstring = "Program";
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
+            searchstring1 = "Division";
+            if (std::find(header.begin(), header.end(), searchstring) != header.end() || std::find(header.begin(), header.end(), searchstring1) != header.end()) {
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = teachdb->getHeaderIndex("Start Date");
                 teachData = reader.getData();
                 std::vector<std::vector<std::string>*> f_errs;
                 unsigned int j;
-                for (int i = 0; i < (int) teachData.size(); i++) {
-                    for (j = 0; j < TEACH_MANFIELDS.size(); j++) {
+                for (int i = 0; i < (int) teachData.size(); i++)
+                {
+                    for (j = 0; j < TEACH_MANFIELDS.size(); j++)
+                    {
                         int index = teachdb->getHeaderIndex(TEACH_MANFIELDS[j]);
-                        if (teachData[i][index].compare("") == 0) {
+                        if (teachData[i][index].compare("") == 0)
+                        {
                             f_errs.push_back(&teachData[i]);
                             break;
                         }
                     }
 
                     // if all mandatory fields are okay
-                    if (j == TEACH_MANFIELDS.size()) {
+                    if (j == TEACH_MANFIELDS.size())
+                    {
                         // date interpretation
                         int yrIndex = teachdb->getHeaderIndex("Start Date");
                         int year;
@@ -278,6 +288,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt) {
         } else {
             return EXIT_SUCCESS;
         }
+
+
         ui->teachPrintButton->setEnabled(true);
         ui->teachExportButton->setEnabled(true);
         break;
@@ -470,7 +482,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt) {
     return EXIT_SUCCESS;
 }
 
-void MainWindow::createDefaultSortOrder(int tabIndex) {
+void MainWindow::createDefaultSortOrder(int tabIndex)
+{
     QStringList defaultOrder;
     defaultOrder << "Default";
 
@@ -547,6 +560,7 @@ bool MainWindow::handle_field_errors(std::vector<std::vector<std::string>*>& err
                                      std::vector<std::string>& mandatory,
                                      QString &type,
                                      bool skip_prompt) {
+
     //Since CSVReader alldata contains completely empty records
     //remove them first.
     if(skip_prompt){
@@ -776,6 +790,7 @@ void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std
 }
 
 
+
 void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> lineChartList) {
 
     // Setup the legend
@@ -821,10 +836,12 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
 
 void MainWindow::on_teach_new_sort_clicked() {
     if (teachdb != NULL) {
+
         CustomSort* sortdialog = new CustomSort();
         sortdialog->setFields(TEACH_MANFIELDS);
         int ret = sortdialog->exec();
-        if (ret) {
+        if (ret)
+        {
             QStringList newSortOrder = sortdialog->getSortFields();
             allTeachOrders << newSortOrder;
             ui->teach_sort->addItem(newSortOrder.at(0));
@@ -1044,8 +1061,11 @@ void MainWindow::on_teach_load_file_clicked() {
     }
 }
 
-bool MainWindow::load_teach(QString path, bool multi_file, bool skip_prompt) {
-    if (!checkFile(TEACH, path, skip_prompt)) {
+
+bool MainWindow::load_teach(QString path, bool multi_file, bool skip_prompt)
+{
+    if (!checkFile(TEACH, path, skip_prompt))
+    {
         // enable gui elements
         ui->teach_sort->setEnabled(true);
         ui->teach_delete_sort->setEnabled(true);
@@ -1069,7 +1089,8 @@ bool MainWindow::load_teach(QString path, bool multi_file, bool skip_prompt) {
         }
 
         // create default sort order if none are loaded
-        if (ui->teach_sort->currentIndex() < 0) {
+        if (ui->teach_sort->currentIndex() < 0)
+        {
             createDefaultSortOrder(TEACH);
             ui->teach_sort->addItem(allTeachOrders[0][0]);
         }
@@ -1080,7 +1101,8 @@ bool MainWindow::load_teach(QString path, bool multi_file, bool skip_prompt) {
         ui->teach_file_label->setText(teachPath);
 
         return true;
-    } else {
+    } else
+    {
         if (!multi_file) {
             QMessageBox::critical(this, "Invalid File", "Not a valid teaching file.");
             on_teach_load_file_clicked();

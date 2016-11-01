@@ -22,8 +22,10 @@
 class Test: public QObject
 {
     Q_OBJECT
+
 private:
     MainWindow w;
+
 public:
     Test() = default;
 private slots:
@@ -43,11 +45,15 @@ private slots:
     void test13();
     void test14();
 
+
     void NoSaveTest();
     void SaveTestTeach();
     void SaveTestPub();
     void SaveTestPres();
     void SaveTestFund();
+
+    void testSortByDivision();
+
 
     //test new graph
     void test_on_teach_line_button_toggled();
@@ -55,6 +61,7 @@ private slots:
     void test_on_pub_line_button_toggled();
     void test_on_fund_line_button_toggled();
     void test_setupLineChart();
+
 
 };
 
