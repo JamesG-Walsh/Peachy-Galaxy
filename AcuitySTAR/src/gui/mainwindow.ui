@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>1200</height>
+    <width>1123</width>
+    <height>621</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -227,7 +227,7 @@ p, li { white-space: pre-wrap; }
        <item row="7" column="1">
         <widget class="QTabWidget" name="categoryTab">
          <property name="toolTip">
-          <string>Export to pdf</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="usesScrollButtons">
           <bool>false</bool>
@@ -304,6 +304,19 @@ p, li { white-space: pre-wrap; }
               <number>3</number>
              </property>
              <layout class="QGridLayout" name="gridLayout_21">
+              <item row="0" column="0">
+               <widget class="QLabel" name="teachGraphTitle">
+                <property name="styleSheet">
+                 <string notr="true">font: bold 12px;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
               <item row="1" column="0">
                <widget class="QStackedWidget" name="teach_graph_stackedWidget">
                 <property name="enabled">
@@ -397,6 +410,8 @@ p, li { white-space: pre-wrap; }
                    </widget>
                   </item>
                  </layout>
+                 <zorder>teachPieChart</zorder>
+                 <zorder>teachPieList</zorder>
                 </widget>
                 <widget class="QWidget" name="teach_bar_page">
                  <layout class="QGridLayout" name="gridLayout_13">
@@ -441,22 +456,21 @@ p, li { white-space: pre-wrap; }
                   </item>
                  </layout>
                 </widget>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="teachGraphTitle">
-                <property name="styleSheet">
-                 <string notr="true">font: bold 12px;</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
+                <widget class="QWidget" name="teach_line_page">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_12">
+                  <item row="0" column="0">
+                   <widget class="QCustomPlot" name="teachLineChart" native="true"/>
+                  </item>
+                 </layout>
+                </widget>
                </widget>
               </item>
              </layout>
+             <zorder>teach_graph_stackedWidget</zorder>
+             <zorder>teachGraphTitle</zorder>
             </widget>
            </item>
            <item row="3" column="10">
@@ -519,7 +533,7 @@ p, li { white-space: pre-wrap; }
               <string>Export</string>
              </property>
              <property name="icon">
-              <iconset resource="../images.qrc">
+              <iconset>
                <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
@@ -639,7 +653,7 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Presentation CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Teaching CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="autoFillBackground">
               <bool>false</bool>
@@ -816,7 +830,37 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
+           <item row="5" column="11">
+            <widget class="QRadioButton" name="teach_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Line Chart</string>
+             </property>
+            </widget>
+           </item>
           </layout>
+          <zorder>teachChartFrame</zorder>
+          <zorder>teachTreeView</zorder>
+          <zorder>line_7</zorder>
+          <zorder>line_8</zorder>
+          <zorder>teachExportButton</zorder>
+          <zorder>teachPrintButton</zorder>
+          <zorder>teach_new_sort</zorder>
+          <zorder>teach_sort_label</zorder>
+          <zorder>teach_load_file</zorder>
+          <zorder>teach_filter_from</zorder>
+          <zorder>teach_filter_label</zorder>
+          <zorder>teach_filter</zorder>
+          <zorder>teach_to_label</zorder>
+          <zorder>teach_sort</zorder>
+          <zorder>teach_delete_sort</zorder>
+          <zorder>teach_filter_to</zorder>
+          <zorder>teach_pie_button</zorder>
+          <zorder>teach_file_label</zorder>
+          <zorder>teach_bar_button</zorder>
+          <zorder>teach_line_button</zorder>
          </widget>
          <widget class="QWidget" name="tabPub">
           <attribute name="title">
@@ -1007,6 +1051,8 @@ p, li { white-space: pre-wrap; }
                    </widget>
                   </item>
                  </layout>
+                 <zorder>pubPieChart</zorder>
+                 <zorder>pubPieList</zorder>
                 </widget>
                 <widget class="QWidget" name="pub_bar_page">
                  <layout class="QGridLayout" name="gridLayout_19">
@@ -1051,6 +1097,13 @@ p, li { white-space: pre-wrap; }
                   </item>
                  </layout>
                 </widget>
+                <widget class="QWidget" name="pub_line_page">
+                 <layout class="QGridLayout" name="gridLayout_14">
+                  <item row="0" column="0">
+                   <widget class="QCustomPlot" name="pubLineChart" native="true"/>
+                  </item>
+                 </layout>
+                </widget>
                </widget>
               </item>
               <item row="0" column="0">
@@ -1091,7 +1144,7 @@ p, li { white-space: pre-wrap; }
               <string>Export</string>
              </property>
              <property name="icon">
-              <iconset resource="../images.qrc">
+              <iconset>
                <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
@@ -1130,7 +1183,7 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Presentation CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Publication CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="autoFillBackground">
               <bool>false</bool>
@@ -1360,6 +1413,16 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
+           <item row="4" column="11">
+            <widget class="QRadioButton" name="pub_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Line Chart</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
          <widget class="QWidget" name="tabPres">
@@ -1472,6 +1535,8 @@ p, li { white-space: pre-wrap; }
                    </widget>
                   </item>
                  </layout>
+                 <zorder>presPieChart</zorder>
+                 <zorder>presPieList</zorder>
                 </widget>
                 <widget class="QWidget" name="pres_bar_page">
                  <layout class="QGridLayout" name="gridLayout_8">
@@ -1512,6 +1577,17 @@ p, li { white-space: pre-wrap; }
                       <number>0</number>
                      </property>
                     </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="pres_line_page">
+                 <layout class="QGridLayout" name="gridLayout_22">
+                  <item row="0" column="0">
+                   <widget class="QCustomPlot" name="presLineChart" native="true">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
                    </widget>
                   </item>
                  </layout>
@@ -1896,11 +1972,21 @@ p, li { white-space: pre-wrap; }
               <string>Export</string>
              </property>
              <property name="icon">
-              <iconset resource="../images.qrc">
+              <iconset>
                <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="11">
+            <widget class="QRadioButton" name="pres_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Line Chart</string>
              </property>
             </widget>
            </item>
@@ -2066,6 +2152,17 @@ p, li { white-space: pre-wrap; }
                   </item>
                  </layout>
                 </widget>
+                <widget class="QWidget" name="fund_line_page">
+                 <layout class="QGridLayout" name="gridLayout_23">
+                  <item row="0" column="0">
+                   <widget class="QCustomPlot" name="fundLineChart" native="true">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
                </widget>
               </item>
               <item row="0" column="0">
@@ -2088,6 +2185,9 @@ p, li { white-space: pre-wrap; }
             <widget class="QRadioButton" name="fund_bar_button">
              <property name="enabled">
               <bool>false</bool>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;View Data as Bar Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
               <string>Bar Chart</string>
@@ -2133,7 +2233,7 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Presentation CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Grants and Clinical Funding CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="autoFillBackground">
               <bool>false</bool>
@@ -2177,6 +2277,9 @@ p, li { white-space: pre-wrap; }
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;View Data as Pie Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="text">
               <string>Pie Chart</string>
              </property>
@@ -2199,6 +2302,9 @@ p, li { white-space: pre-wrap; }
                <height>0</height>
               </size>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a New Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
             </widget>
            </item>
            <item row="2" column="10">
@@ -2217,7 +2323,7 @@ p, li { white-space: pre-wrap; }
            <item row="0" column="14" alignment="Qt::AlignRight">
             <widget class="QToolButton" name="fundPrintButton">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print the Current Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
@@ -2277,6 +2383,9 @@ p, li { white-space: pre-wrap; }
                <width>150</width>
                <height>0</height>
               </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create a New Custom Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
@@ -2393,6 +2502,9 @@ p, li { white-space: pre-wrap; }
              <property name="enabled">
               <bool>false</bool>
              </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete the Currently Selected Custom Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
@@ -2434,7 +2546,7 @@ p, li { white-space: pre-wrap; }
            <item row="0" column="13">
             <widget class="QToolButton" name="fundExportButton">
              <property name="toolTip">
-              <string>Export to pdf</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export to PDF&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
@@ -2443,11 +2555,21 @@ p, li { white-space: pre-wrap; }
               <string>Export</string>
              </property>
              <property name="icon">
-              <iconset resource="../images.qrc">
+              <iconset>
                <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="11">
+            <widget class="QRadioButton" name="fund_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Line Chart</string>
              </property>
             </widget>
            </item>
@@ -2466,7 +2588,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
+     <width>1123</width>
      <height>21</height>
     </rect>
    </property>
@@ -2505,8 +2627,6 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

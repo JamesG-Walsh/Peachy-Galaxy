@@ -8,6 +8,7 @@
 #include "ui_mainwindow.h"
 #include "gui/CustomSort.h"
 #include "gui/ErrorEditDialog.h"
+#include "gui/mainwindow.h"
 
 #include "database/CSVReader.h"
 #include "database/QSortListIO.h"
@@ -20,8 +21,9 @@
 
 class Test: public QObject
 {
-
     Q_OBJECT
+private:
+    MainWindow w;
 public:
     Test() = default;
 private slots:
@@ -40,11 +42,19 @@ private slots:
     void test12();
     void test13();
     void test14();
+
     void NoSaveTest();
     void SaveTestTeach();
     void SaveTestPub();
     void SaveTestPres();
     void SaveTestFund();
+
+    //test new graph
+    void test_on_teach_line_button_toggled();
+    void test_on_pres_line_button_toggled();
+    void test_on_pub_line_button_toggled();
+    void test_on_fund_line_button_toggled();
+    void test_setupLineChart();
 
 };
 
