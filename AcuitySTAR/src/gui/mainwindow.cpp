@@ -9,6 +9,8 @@
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QString>
+#include <QFile>
+#include <database/QSortListIO.h>
 #include <QSharedPointer>
 
 #include "mainwindow.h"
@@ -18,6 +20,7 @@
 
 #include "database/CSVReader.h"
 #include "database/QSortListIO.h"
+#include "database/QFileIO.h"
 #include "database/RecordsManager.h"
 #include "datamodel/TreeModel.h"
 #include "datamodel/GrantFundingTreeModel.h"
@@ -29,6 +32,7 @@
 #define PRESORDER_SAVE  "pressortorder.dat"
 #define PUBORDER_SAVE   "pubsortorder.dat"
 #define TEACHORDER_SAVE "teachsortorder.dat"
+
 
 std::vector<std::string> MainWindow::GRANTS_MANFIELDS = {"Member Name", "Funding Type", "Status", "Peer Reviewed?", "Role", "Title", "Start Date"};
 std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "Type", "Role", "Title"};
@@ -88,6 +92,30 @@ MainWindow::MainWindow(QWidget *parent) :
 
     dateChanged = {false, false, false, false};
 
+    //Look for any saved sessions
+    QFileIO pubSave("pubfile.dat");
+    QString readPubPath = pubSave.readPath();
+    QFileIO teachSave("teachfile.dat");
+    QString readTeachPath = teachSave.readPath();
+    QFileIO presSave("presfile.dat");
+    QString readPresPath = presSave.readPath();
+    QFileIO fundSave("fundfile.dat");
+    QString readFundPath = fundSave.readPath();
+    QSortListIO saveSort("teachLastSort.dat");
+
+    //Loads found saved sessions
+    if(!readPubPath.isEmpty()){
+        load_pub(readPubPath, true, true);
+    }
+    if(!readTeachPath.isEmpty()){
+        load_teach(readTeachPath, true, true);
+    }
+    if(!readPresPath.isEmpty()){
+        load_pres(readPresPath, true, true);
+    }
+    if(!readFundPath.isEmpty()){
+        load_fund(readFundPath, true, true);
+    }
 }
 
 MainWindow::~MainWindow() {
@@ -189,7 +217,8 @@ void MainWindow::refresh(int tabIndex)
     }
 }
 
-int MainWindow::checkFile(int index, QString filePath)
+
+int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
 {
     CSVReader reader;
     std::vector<std::string> header;
@@ -205,7 +234,9 @@ int MainWindow::checkFile(int index, QString filePath)
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
-
+            //Save session
+            QFileIO teachSave("teachfile.dat");
+            teachSave.savePath(filePath);
             // create a new manager for the data
             delete teachdb;
             teachdb = new RecordsManager(&header);
@@ -245,7 +276,7 @@ int MainWindow::checkFile(int index, QString filePath)
                 }
 
                 if (f_errs.size() > 0) {
-                    if(handle_field_errors(f_errs, header, TEACH_MANFIELDS)) {
+                    if(handle_field_errors(f_errs, header, TEACH_MANFIELDS, filePath, skip_prompt)) {
                         for (unsigned int i = 0; i < f_errs.size(); i++) {
                             teachdb->addRecord(reader.parseDateString((*(f_errs[i]))[sortHeaderIndex]), f_errs[i]);
                         }
@@ -269,7 +300,9 @@ int MainWindow::checkFile(int index, QString filePath)
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
-
+            //Save session
+            QFileIO pubsave("pubfile.dat");
+            pubsave.savePath(filePath);
             // create a new manager for the data
             delete pubdb;
             pubdb = new RecordsManager(&header);
@@ -304,7 +337,7 @@ int MainWindow::checkFile(int index, QString filePath)
                 }
 
                 if (f_errs.size() > 0) {
-                    if(handle_field_errors(f_errs, header, PUBS_MANFIELDS)) {
+                    if(handle_field_errors(f_errs, header, PUBS_MANFIELDS, filePath, skip_prompt)) {
                         for (unsigned int i = 0; i < f_errs.size(); i++) {
                             pubdb->addRecord(reader.parseDateString((*(f_errs[i]))[sortHeaderIndex]), f_errs[i]);
                         }
@@ -326,7 +359,9 @@ int MainWindow::checkFile(int index, QString filePath)
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
-
+            //Save session
+            QFileIO presSave("presfile.dat");
+            presSave.savePath(filePath);
             // create a new manager for the data
             delete presdb;
             presdb = new RecordsManager(&header);
@@ -362,7 +397,7 @@ int MainWindow::checkFile(int index, QString filePath)
                 }
 
                 if (f_errs.size() > 0) {
-                    if(handle_field_errors(f_errs, header, PRES_MANFIELDS)) {
+                    if(handle_field_errors(f_errs, header, PRES_MANFIELDS, filePath, skip_prompt)) {
                         for (unsigned int i = 0; i < f_errs.size(); i++) {
                             presdb->addRecord(reader.parseDateString((*(f_errs[i]))[sortHeaderIndex]), f_errs[i]);
                         }
@@ -384,7 +419,9 @@ int MainWindow::checkFile(int index, QString filePath)
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
-
+            //Save session
+            QFileIO fundSave("fundfile.dat");
+            fundSave.savePath(filePath);
             // create a new manager for the data
             delete funddb;
             funddb = new RecordsManager(&header);
@@ -426,7 +463,7 @@ int MainWindow::checkFile(int index, QString filePath)
                     }
                 }
                 if (f_errs.size() > 0) {
-                    if(handle_field_errors(f_errs, header, GRANTS_MANFIELDS)) {
+                    if(handle_field_errors(f_errs, header, GRANTS_MANFIELDS, filePath, skip_prompt)) {
                         for (unsigned int i = 0; i < f_errs.size(); i++) {
                             funddb->addRecord(reader.parseDateString((*(f_errs[i]))[sortHeaderIndex]), f_errs[i]);
                         }
@@ -520,52 +557,59 @@ void MainWindow::createDefaultSortOrder(int tabIndex)
  */
 bool MainWindow::handle_field_errors(std::vector<std::vector<std::string>*>& err,
                                      std::vector<std::string>& headers,
-                                     std::vector<std::string>& mandatory)
-{
+                                     std::vector<std::string>& mandatory,
+                                     QString &type,
+                                     bool skip_prompt) {
+
     //Since CSVReader alldata contains completely empty records
     //remove them first.
-    std::vector<std::vector<std::string>*>::iterator it;
-    for (it = err.begin(); it != err.end(); it++) {
-        bool allEmpty = true;
-        for (int col = 0; col < (int) (*it)->size(); col++) {
-            if ((*it)->at(col).compare("") != 0) {
-                allEmpty = false;
+    if(skip_prompt){
+        return false;
+    }
+    else{
+        std::vector<std::vector<std::string>*>::iterator it;
+        for (it = err.begin(); it != err.end(); it++) {
+            bool allEmpty = true;
+            for (int col = 0; col < (int) (*it)->size(); col++) {
+                if ((*it)->at(col).compare("") != 0) {
+                    allEmpty = false;
+                }
+            }
+            if (allEmpty) {
+                it = err.erase(it);
+                it--;
             }
         }
-        if (allEmpty) {
-            it = err.erase(it);
-            it--;
+        //Return false; there are no errors to correct
+        if (err.size() == 0) {
+            return false;
         }
-    }
-    //Return false; there are no errors to correct
-    if (err.size() == 0) {
-        return false;
-    }
-    QMessageBox prompt;
-    QString mainText = "File contains ";
-    mainText.append(QString::number(err.size()));
-    mainText.append(" records with missing mandatory fields.");
-    prompt.setText(mainText);
-    prompt.setInformativeText("Do you want to edit these entries or discard?");
-    prompt.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    prompt.setDefaultButton(QMessageBox::Yes);
-    prompt.setButtonText(QMessageBox::Yes, "Edit");
-    prompt.setButtonText(QMessageBox::No, "Discard");
-    prompt.setWindowIcon(QIcon(":/icon32.ico"));
-    int ret = prompt.exec();
+        QMessageBox prompt;
+        QString mainText = "File contains ";
+        mainText.append(QString::number(err.size()));
+        mainText.append(" records with missing mandatory fields.");
+        prompt.setText(mainText);
+        prompt.setInformativeText("Do you want to edit these entries or discard?");
+        prompt.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        prompt.setDefaultButton(QMessageBox::Yes);
+        prompt.setButtonText(QMessageBox::Yes, "Edit");
+        prompt.setButtonText(QMessageBox::No, "Discard");
+        prompt.setWindowIcon(QIcon(":/icon32.ico"));
+        int ret = prompt.exec();
+        switch (ret) {
+        case QMessageBox::Yes: {
+            ErrorEditDialog diag(this, err, headers, mandatory, type);
 
-    switch (ret) {
-    case QMessageBox::Yes: {
-        ErrorEditDialog diag(this, err, headers, mandatory);
-        if(diag.exec()) {
-            return true;
+            if(diag.exec()) {
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
 
-    case QMessageBox::No:
-    default:
-        return false;
+        case QMessageBox::No:
+        default:
+            return false;
+        }
     }
 }
 
@@ -874,6 +918,7 @@ void MainWindow::on_fund_new_sort_clicked() {
 
 void MainWindow::on_teach_sort_currentIndexChanged(int index) {
     if(index != -1) {
+
         QStringList sortOrder = allTeachOrders[index];
         teachSortOrder.clear();
         for (int i = 1; i < sortOrder.size(); i++) {
@@ -881,6 +926,7 @@ void MainWindow::on_teach_sort_currentIndexChanged(int index) {
         }
         ui->teach_filter->setText(QString::fromStdString(teachSortOrder[0]));
         refresh(TEACH);
+
     }
 }
 
@@ -1011,13 +1057,14 @@ void MainWindow::on_fund_pie_button_toggled() { ui->fund_graph_stackedWidget->se
 void MainWindow::on_teach_load_file_clicked() {
     QString path = load_file();
     if (!path.isEmpty()) {
-        load_teach(path);
+        load_teach(path, true);
     }
 }
 
-bool MainWindow::load_teach(QString path, bool multi_file)
+
+bool MainWindow::load_teach(QString path, bool multi_file, bool skip_prompt)
 {
-    if (!checkFile(TEACH, path))
+    if (!checkFile(TEACH, path, skip_prompt))
     {
         // enable gui elements
         ui->teach_sort->setEnabled(true);
@@ -1071,8 +1118,8 @@ void MainWindow::on_pub_load_file_clicked() {
     }
 }
 
-bool MainWindow::load_pub(QString path, bool multi_file) {
-    if (!checkFile(PUBLICATIONS, path)) {
+bool MainWindow::load_pub(QString path, bool multi_file, bool skip_prompt) {
+    if (!checkFile(PUBLICATIONS, path, skip_prompt)) {
         // enable gui elements
         ui->pub_sort->setEnabled(true);
         ui->pub_delete_sort->setEnabled(true);
@@ -1107,6 +1154,9 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         makeTree(PUBLICATIONS);
         ui->pub_file_label->setText(pubPath);
 
+
+
+
         return true;
     } else {
         if (!multi_file) {
@@ -1124,8 +1174,8 @@ void MainWindow::on_pres_load_file_clicked() {
     }
 }
 
-bool MainWindow::load_pres(QString path, bool multi_file) {
-    if (!checkFile(PRESENTATIONS, path)) {
+bool MainWindow::load_pres(QString path, bool multi_file, bool skip_prompt) {
+    if (!checkFile(PRESENTATIONS, path, skip_prompt)) {
         // enable gui elements
         ui->pres_sort->setEnabled(true);
         ui->pres_delete_sort->setEnabled(true);
@@ -1176,8 +1226,8 @@ void MainWindow::on_fund_load_file_clicked() {
     }
 }
 
-bool MainWindow::load_fund(QString path, bool multi_file) {
-    if (!checkFile(FUNDING, path)) {
+bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt) {
+    if (!checkFile(FUNDING, path, skip_prompt)) {
         // enable gui elements
         ui->fund_sort->setEnabled(true);
         ui->fund_delete_sort->setEnabled(true);

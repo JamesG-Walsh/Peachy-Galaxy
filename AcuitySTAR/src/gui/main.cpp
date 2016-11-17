@@ -12,7 +12,6 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-
     QApplication app(argc, argv);
 
     bool testing = true; //testing flag
@@ -21,9 +20,11 @@ int main(int argc, char *argv[])
         Test *test_obj = new Test();
         QTest::qExec(test_obj);
     }
-
+    else
+    {
     MainWindow w;
     w.show();
+    }
 
     return app.exec();
 }

@@ -34,7 +34,6 @@ private slots:
     void on_buttonBox_rejected();
     void on_buttonBox_accepted();
 
-    void on_field_0_activated(const QString &arg1);
 
 private:
     Ui::CustomSort *ui;
