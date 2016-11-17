@@ -988,14 +988,17 @@ void MainWindow::on_teach_line_button_toggled() { ui->teach_graph_stackedWidget-
 void MainWindow::on_teach_bar_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_teach_pie_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
 
+void MainWindow::on_pub_histogram_button_toggled(){ ui->pub_graph_stackedWidget->setCurrentIndex(3);}
 void MainWindow::on_pub_line_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_pub_bar_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pub_pie_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(0);}
 
+void MainWindow::on_pres_histogram_button_toggled(){ ui->pres_graph_stackedWidget->setCurrentIndex(3);}
 void MainWindow::on_pres_line_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_pres_bar_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pres_pie_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(0);}
 
+void MainWindow::on_fund_histogram_button_toggled(){ ui->fund_graph_stackedWidget->setCurrentIndex(3);}
 void MainWindow::on_fund_line_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_fund_bar_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_fund_pie_button_toggled() { ui->fund_graph_stackedWidget->setCurrentIndex(0);}
@@ -1188,6 +1191,7 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
         ui->fund_bar_button->setEnabled(true);
         ui->fund_line_button->setEnabled(true);
         ui->fund_histogram_page->setEnabled(true);
+        ui->fund_histogra_button->setEnabled(true);
 
         ui->fund_to_label->setEnabled(true);
         ui->fund_sort_label->setEnabled(true);
