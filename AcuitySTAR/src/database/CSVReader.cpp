@@ -10,12 +10,15 @@
 
 void CSVReader::loadCSV(std::string file_name) {
     std::ifstream myfile(file_name.c_str());
-    if (myfile.fail()) {
+
+    if (myfile.fail())
+    {
         std::cout << "Couldn't open file \"" << file_name << "\"." << std::endl;
         return;
     }
 
-    if (myfile.is_open()) {
+    if (myfile.is_open())
+    {
         std::stringstream sstr;
         sstr << myfile.rdbuf();
         std::string f = sstr.str();
