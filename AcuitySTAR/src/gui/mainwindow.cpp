@@ -775,8 +775,8 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
 
 }
 
-void MainWindow::setupEntireChart(QCustomPlot *entireChart, std::vector<std::string> entireChartList){
-    entireChart->legend->setVisible(true);
+void MainWindow::setupHistogramChart(QCustomPlot *histogramChart, std::vector<std::pair <std::string, double>> histogramChartList){
+    histogramChart->legend->setVisible(true);
 
 
 }
@@ -983,7 +983,7 @@ void MainWindow::on_fund_delete_sort_clicked() {
     }
 }
 
-void MainWindow::on_teach_entire_button_toggled(){ ui->teach_graph_stackedWidget->setCurrentIndex(3);}
+void MainWindow::on_teach_histogram_button_toggled(){ ui->teach_graph_stackedWidget->setCurrentIndex(3);}
 void MainWindow::on_teach_line_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_teach_bar_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_teach_pie_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
@@ -1079,6 +1079,7 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         ui->pub_pie_button->setEnabled(true);
         ui->pub_bar_button->setEnabled(true);
         ui->pub_line_button->setEnabled(true);
+        ui->pub_histogram_button->setEnabled(true);
 
         ui->pub_to_label->setEnabled(true);
         ui->pub_sort_label->setEnabled(true);
@@ -1132,6 +1133,8 @@ bool MainWindow::load_pres(QString path, bool multi_file) {
         ui->pres_pie_button->setEnabled(true);
         ui->pres_bar_button->setEnabled(true);
         ui->pres_line_button->setEnabled(true);
+        ui->pres_histogram_button->setEnabled(true);
+
         ui->pres_to_label->setEnabled(true);
         ui->pres_sort_label->setEnabled(true);
         ui->pres_filter->setEnabled(true);
@@ -1184,6 +1187,8 @@ bool MainWindow::load_fund(QString path, bool multi_file) {
         ui->fund_pie_button->setEnabled(true);
         ui->fund_bar_button->setEnabled(true);
         ui->fund_line_button->setEnabled(true);
+        ui->fund_histogram_page->setEnabled(true);
+
         ui->fund_to_label->setEnabled(true);
         ui->fund_sort_label->setEnabled(true);
         ui->fund_filter->setEnabled(true);
@@ -1297,6 +1302,9 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             ui->teachLineChart->replot();
 
             ui->teachHistogramChart->clearPlottables();
+            setupHistogramChart(ui->teachHistogramChart,chartList);
+            ui->teachHistogramChart->replot();
+
 
 
 
@@ -1359,6 +1367,11 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
             ui->pubLineChart->yAxis->setLabel("Number of publications");
             ui->pubLineChart->replot();
 
+
+            ui->pubHistogramChart->clearPlottables();
+            setupHistogramChart(ui->pubHistogramChart,chartList);
+            ui->pubHistogramChart->replot();
+
             if (parentsList.size()>1) {
                 ui->pubGraphTitle->setText("Total " + clickedName + " Publications by " +
                                            QString::fromStdString(pubSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
@@ -1414,6 +1427,10 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
             ui->presLineChart->yAxis->setLabel("Number of presentations");
             ui->presLineChart->replot();
 
+            ui->presHistogramChart->clearPlottables();
+            setupHistogramChart(ui->presHistogramChart,chartList);
+            ui->presHistogramChart->replot();
+
 
 
             if (parentsList.size()>1) {
@@ -1467,6 +1484,10 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
                 setupLineChart(ui->fundLineChart,chartList);
                 ui->fundLineChart->yAxis->setLabel("Amount of funding in CAD");
                 ui->fundLineChart->replot();
+
+                ui->fundHistogramChart->clearPlottables();
+                setupHistogramChart(ui->fundHistogramChart,chartList);
+                ui->fundHistogramChart->replot();
 
                 if (parentsList.size()>1) {
                     ui->fundGraphTitle->setText("Total " + clickedName + " Grants & Funding by " +

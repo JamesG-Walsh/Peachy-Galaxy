@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="usesScrollButtons">
           <bool>false</bool>
@@ -1459,9 +1459,12 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="4" column="13">
-            <widget class="QRadioButton" name="radioButton">
+            <widget class="QRadioButton" name="pub_histogram_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
-              <string>RadioButton</string>
+              <string>Histogram</string>
              </property>
             </widget>
            </item>
@@ -1499,7 +1502,7 @@ p, li { white-space: pre-wrap; }
                  <number>0</number>
                 </property>
                 <property name="currentIndex">
-                 <number>0</number>
+                 <number>3</number>
                 </property>
                 <widget class="QWidget" name="pres_pie_page">
                  <layout class="QGridLayout" name="gridLayout_11">
@@ -1634,6 +1637,21 @@ p, li { white-space: pre-wrap; }
                   </item>
                  </layout>
                 </widget>
+                <widget class="QWidget" name="pres_histogram_page">
+                 <widget class="QCustomPlot" name="presHistogramChart" native="true">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>0</y>
+                    <width>470</width>
+                    <height>110</height>
+                   </rect>
+                  </property>
+                 </widget>
+                </widget>
                </widget>
               </item>
               <item row="0" column="0">
@@ -1652,8 +1670,209 @@ p, li { white-space: pre-wrap; }
              </layout>
             </widget>
            </item>
-           <item row="4" column="5">
-            <widget class="QLineEdit" name="pres_filter_to">
+           <item row="0" column="1" colspan="12">
+            <widget class="QLabel" name="pres_file_label">
+             <property name="text">
+              <string>No file chosen.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="pres_load_file">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Presentation CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Load file...</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="14" alignment="Qt::AlignRight">
+            <widget class="QToolButton" name="presPrintButton">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Print</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normalon>:/printer.png</normalon>
+              </iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="15">
+            <widget class="Line" name="line_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="pres_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="15">
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="9">
+            <spacer name="horizontalSpacer_25">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="7">
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="pres_sort_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Select Sort Order:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="9">
+            <widget class="QRadioButton" name="pres_bar_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Bar Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="7">
+            <widget class="QRadioButton" name="pres_pie_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Pie Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="pres_filter_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Filter by:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="11">
+            <spacer name="horizontalSpacer_16">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="8">
+            <spacer name="horizontalSpacer_30">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="4">
+            <widget class="QLabel" name="pres_to_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>to</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="12">
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="3">
+            <widget class="QLineEdit" name="pres_filter_from">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1664,13 +1883,32 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>Z</string>
+              <string>*</string>
              </property>
              <property name="maxLength">
               <number>1</number>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="7">
+            <widget class="QTreeView" name="presTreeView">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
              </property>
             </widget>
            </item>
@@ -1711,27 +1949,8 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="5" column="0" colspan="7">
-            <widget class="QTreeView" name="presTreeView">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="3">
-            <widget class="QLineEdit" name="pres_filter_from">
+           <item row="4" column="5">
+            <widget class="QLineEdit" name="pres_filter_to">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1742,214 +1961,13 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>*</string>
+              <string>Z</string>
              </property>
              <property name="maxLength">
               <number>1</number>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="12">
-            <spacer name="horizontalSpacer_9">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="4" column="4">
-            <widget class="QLabel" name="pres_to_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>to</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="8">
-            <spacer name="horizontalSpacer_30">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="11">
-            <spacer name="horizontalSpacer_16">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="pres_filter_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Filter by:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="7">
-            <widget class="QRadioButton" name="pres_pie_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Pie Chart</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="9">
-            <widget class="QRadioButton" name="pres_bar_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Bar Chart</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="pres_sort_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Select Sort Order:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="7">
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="9">
-            <spacer name="horizontalSpacer_25">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="3" column="0" colspan="15">
-            <widget class="Line" name="line_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QComboBox" name="pres_sort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="15">
-            <widget class="Line" name="line_4">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="14" alignment="Qt::AlignRight">
-            <widget class="QToolButton" name="presPrintButton">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
-             </property>
-             <property name="text">
-              <string>Print</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normalon>:/printer.png</normalon>
-              </iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="pres_load_file">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Presentation CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
-             </property>
-             <property name="text">
-              <string>Load file...</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1" colspan="12">
-            <widget class="QLabel" name="pres_file_label">
-             <property name="text">
-              <string>No file chosen.</string>
              </property>
             </widget>
            </item>
@@ -1979,29 +1997,6 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-           <item row="4" column="1" colspan="2">
-            <widget class="QLabel" name="pres_filter">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="pres_delete_sort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
-             </property>
-             <property name="text">
-              <string>Delete</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="13">
             <widget class="QToolButton" name="presExportButton">
              <property name="toolTip">
@@ -2029,6 +2024,39 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="text">
               <string>Line Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="pres_delete_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" colspan="2">
+            <widget class="QLabel" name="pres_filter">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="13">
+            <widget class="QRadioButton" name="pres_histogram_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Histogram</string>
              </property>
             </widget>
            </item>
@@ -2072,7 +2100,7 @@ p, li { white-space: pre-wrap; }
                  <number>0</number>
                 </property>
                 <property name="currentIndex">
-                 <number>2</number>
+                 <number>3</number>
                 </property>
                 <widget class="QWidget" name="fund_pie_page">
                  <layout class="QGridLayout" name="gridLayout_9">
@@ -2204,6 +2232,21 @@ p, li { white-space: pre-wrap; }
                    </widget>
                   </item>
                  </layout>
+                </widget>
+                <widget class="QWidget" name="fund_histogram_page">
+                 <widget class="QCustomPlot" name="fundHistogramChart" native="true">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>470</width>
+                    <height>110</height>
+                   </rect>
+                  </property>
+                 </widget>
                 </widget>
                </widget>
               </item>
@@ -2597,6 +2640,16 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="text">
               <string>Line Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="13">
+            <widget class="QRadioButton" name="fund_histogra_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Histogram</string>
              </property>
             </widget>
            </item>
