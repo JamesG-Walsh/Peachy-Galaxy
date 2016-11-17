@@ -64,6 +64,7 @@ private slots:
     void on_teach_line_button_toggled();
     void on_teach_pie_button_toggled();
     void on_teach_bar_button_toggled();
+    void on_teach_entire_button_toggled();
 
     void on_pub_line_button_toggled();
     void on_pub_pie_button_toggled();
@@ -149,9 +150,9 @@ private:
     void setupPieChart(PieChartWidget *pieChart, QListWidget *pieListWidget, std::vector<std::pair<std::string, double> > pieChartList);
     void setupBarChart(QCustomPlot *barChart, std::vector<std::pair<std::string, double> > barChartList);
     void setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> lineChartList);
+    void setupEntireChart(QCustomPlot *entireChart, std::vector<std::string> entireChartList);
 
-
-    bool handle_field_errors(std::vector<std::vector<std::string>*>& errors,
+     bool handle_field_errors(std::vector<std::vector<std::string>*>& errors,
                              std::vector<std::string>& headers,
                              std::vector<std::string>& mandatory);
     bool load_fund(QString path, bool multi_file = false);

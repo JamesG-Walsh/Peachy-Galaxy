@@ -10,6 +10,7 @@
 #include <QPrinter>
 #include <QString>
 #include <QSharedPointer>
+#include <iostream>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -774,6 +775,12 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
 
 }
 
+void MainWindow::setupEntireChart(QCustomPlot *entireChart, std::vector<std::string> entireChartList){
+    entireChart->legend->setVisible(true);
+
+
+}
+
 
 
 void MainWindow::on_teach_new_sort_clicked() {
@@ -976,6 +983,7 @@ void MainWindow::on_fund_delete_sort_clicked() {
     }
 }
 
+void MainWindow::on_teach_entire_button_toggled(){ ui->teach_graph_stackedWidget->setCurrentIndex(3);}
 void MainWindow::on_teach_line_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_teach_bar_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_teach_pie_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
@@ -1010,6 +1018,7 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         ui->teach_pie_button->setEnabled(true);
         ui->teach_bar_button->setEnabled(true);
         ui->teach_line_button->setEnabled(true);
+        ui->teach_histogram_button->setEnabled(true);
         ui->teach_to_label->setEnabled(true);
         ui->teach_sort_label->setEnabled(true);
         ui->teach_filter->setEnabled(true);
@@ -1033,6 +1042,14 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         teachPath = path;
         makeTree(TEACH);
         ui->teach_file_label->setText(teachPath);
+
+
+
+
+
+
+
+
 
         return true;
     } else {
@@ -1252,6 +1269,8 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
         current = current.parent();
     }
 
+
+
     if (parentsList.size()!=teachSortOrder.size()) {
         teachClickedName = clickedName;
         std::vector<std::string> sortOrder(teachSortOrder.begin(), teachSortOrder.begin()+parentsList.size()+1);
@@ -1262,6 +1281,8 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
 
         }
+
+
 
         if (!chartList.empty()) {
             ui->teachBarChart->clearPlottables();
@@ -1275,12 +1296,17 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             ui->teachLineChart->yAxis->setLabel("Number of courses taught");
             ui->teachLineChart->replot();
 
+            ui->teachHistogramChart->clearPlottables();
 
-           // setupBarChart(ui->teachLineChart,chartList);
+
+
 
             if (parentsList.size()>1) {
                 ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
                                              QString::fromStdString(teachSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+               // ui->teachEntireChart->clearPlottables();
+               // setupEntireChart(ui->teachEntireChart,parentsList);
+
             } else {
                 ui->teachGraphTitle->setText("Total Teaching by " + QString::fromStdString(parentsList[0]));
             }
@@ -1429,7 +1455,7 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
             std::vector<std::string> sortOrder(fundSortOrder.begin(), fundSortOrder.begin()+parentsList.size()+1);
             std::vector<std::pair <std::string, double>> chartList =
                     funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
-
+            qDebug() << chartList;
             if (!chartList.empty()) {
                 ui->fundBarChart->clearPlottables();
                 setupBarChart(ui->fundBarChart, chartList);
@@ -1638,5 +1664,9 @@ void MainWindow::on_pres_filter_to_textChanged() { refresh(PRESENTATIONS);}
 void MainWindow::on_fund_filter_from_textChanged() { refresh(FUNDING);}
 void MainWindow::on_fund_filter_to_textChanged() { refresh(FUNDING);}
 
+inline QDebug operator<<(QDebug out, const std::string &str){
 
+    out << QString::fromStdString(str);
+    return out;
+}
 
