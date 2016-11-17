@@ -11,6 +11,7 @@ class PieChartWidget : public QWidget
 public:
     explicit PieChartWidget(QWidget *parent = 0);
     void setData(std::vector<std::pair<std::string, double>> recordList, QVector<QColor> colors);
+
 protected:
     void paintEvent(QPaintEvent *);
 private:

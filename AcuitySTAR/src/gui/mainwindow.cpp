@@ -12,6 +12,8 @@
 #include <QFile>
 #include <database/QSortListIO.h>
 #include <QSharedPointer>
+#include <string.h>
+using namespace std;
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -38,6 +40,10 @@ std::vector<std::string> MainWindow::GRANTS_MANFIELDS = {"Member Name", "Funding
 std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "Type", "Role", "Title"};
 std::vector<std::string> MainWindow::PUBS_MANFIELDS = {"Member Name", "Type", "Status Date", "Role", "Title"};
 std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program", "Division"};
+bool MainWindow::CUSTOM_SORTING = false;
+std::vector<std::string> MainWindow::clickedNames;
+std::vector<std::tuple <std::string, std::string, double>> MainWindow::chartLists;
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow),
@@ -713,6 +719,7 @@ void MainWindow::setupPieChart(PieChartWidget* pieChart, QListWidget *pieListWid
     pieChart->setData(pieChartList, colorList); //passes vector list to piechartwidget
 }
 
+
 void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std::string, double>> barChartList) {
     // create empty bar chart objects:
     QCPBars *yLabels = new QCPBars(barChart->yAxis, barChart->xAxis);
@@ -836,7 +843,6 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
 
 void MainWindow::on_teach_new_sort_clicked() {
     if (teachdb != NULL) {
-
         CustomSort* sortdialog = new CustomSort();
         sortdialog->setFields(TEACH_MANFIELDS);
         int ret = sortdialog->exec();
@@ -1328,11 +1334,16 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
         std::vector<std::pair <std::string, int>> list =
                 teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
         std::vector<std::pair <std::string, double>> chartList;
+
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
 
         }
-
+     /*   if(CUSTOM_SORTING){
+            std::vector<std::tuple<std::string, std::string, double>> chartIndex;
+            chartIndex.assign(clickedName, chartList.);
+            chartLists.push_back(chartIndex);
+        }*/
         if (!chartList.empty()) {
             ui->teachBarChart->clearPlottables();
             setupBarChart(ui->teachBarChart, chartList);
@@ -1346,7 +1357,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             ui->teachLineChart->replot();
 
 
-           // setupBarChart(ui->teachLineChart,chartList);
+            // setupBarChart(ui->teachLineChart,chartList);
 
             if (parentsList.size()>1) {
                 ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
@@ -1710,3 +1721,9 @@ void MainWindow::on_fund_filter_to_textChanged() { refresh(FUNDING);}
 
 
 
+
+void MainWindow::on_checkBox_toggled(bool checked)
+{
+    if(checked)
+        CUSTOM_SORTING = true;
+}

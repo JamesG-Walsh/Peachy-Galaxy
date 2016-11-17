@@ -110,8 +110,16 @@ private slots:
 
     void on_pubExportButton_clicked();
 
+    void on_checkBox_toggled(bool checked);
+
 private:
     static std::vector<std::string> GRANTS_MANFIELDS, PRES_MANFIELDS, PUBS_MANFIELDS, TEACH_MANFIELDS;
+    static bool CUSTOM_SORTING;
+    static std::vector<std::string> clickedNames;
+    static std::vector<std::tuple <std::string, std::string, double>> chartLists;
+
+
+
 
     enum TABS {
         TEACH, PUBLICATIONS, PRESENTATIONS, FUNDING
