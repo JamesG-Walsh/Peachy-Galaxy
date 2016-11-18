@@ -226,6 +226,9 @@ p, li { white-space: pre-wrap; }
        </item>
        <item row="7" column="1">
         <widget class="QTabWidget" name="categoryTab">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
@@ -246,53 +249,7 @@ p, li { white-space: pre-wrap; }
            <string>Teaching</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_7">
-           <item row="3" column="8">
-            <spacer name="horizontalSpacer_21">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="6" column="0" colspan="7">
-            <widget class="QTreeView" name="teachTreeView">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" colspan="15">
-            <widget class="Line" name="line_7">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="15">
-            <widget class="Line" name="line_8">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="7" colspan="8">
+           <item row="6" column="10" colspan="8">
             <widget class="QFrame" name="teachChartFrame">
              <property name="frameShape">
               <enum>QFrame::Box</enum>
@@ -473,34 +430,8 @@ p, li { white-space: pre-wrap; }
              <zorder>teachGraphTitle</zorder>
             </widget>
            </item>
-           <item row="3" column="10">
-            <spacer name="horizontalSpacer_19">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="3" column="9">
-            <spacer name="horizontalSpacer_26">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="3" column="11">
-            <spacer name="horizontalSpacer_11">
+            <spacer name="horizontalSpacer_21">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -512,64 +443,237 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-           <item row="0" column="13">
-            <widget class="QToolButton" name="teachExportButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>Export to pdf</string>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
+           <item row="5" column="14">
+            <widget class="QRadioButton" name="teach_line_button">
+             <property name="enabled">
+              <bool>false</bool>
              </property>
              <property name="text">
-              <string>Export</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
+              <string>Line Chart</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="14">
-            <widget class="QToolButton" name="teachPrintButton">
+           <item row="5" column="12">
+            <widget class="QRadioButton" name="teach_bar_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Bar Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" colspan="15">
+            <widget class="QLabel" name="teach_file_label">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <property name="text">
+              <string>No file chosen.</string>
              </property>
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
+            </widget>
+           </item>
+           <item row="5" column="10">
+            <widget class="QRadioButton" name="teach_pie_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Pie Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="5">
+            <widget class="QLineEdit" name="teach_filter_to">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Z</string>
+             </property>
+             <property name="maxLength">
+              <number>1</number>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QPushButton" name="teach_delete_sort">
+             <property name="enabled">
+              <bool>false</bool>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
              <property name="text">
-              <string>Print</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normalon>:/printer.png</normalon>
-              </iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
+              <string>Delete</string>
              </property>
             </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QComboBox" name="teach_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="10">
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="5" column="4">
+            <widget class="QLabel" name="teach_to_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>to</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" colspan="2">
+            <widget class="QLabel" name="teach_filter">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="teach_filter_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Filter by:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="3">
+            <widget class="QLineEdit" name="teach_filter_from">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>*</string>
+             </property>
+             <property name="maxLength">
+              <number>1</number>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="teach_load_file">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Teaching CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Load file...</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="15">
+            <spacer name="horizontalSpacer_27">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="teach_sort_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Select Sort Order:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="7">
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item row="3" column="3" colspan="3">
             <widget class="QPushButton" name="teach_new_sort">
@@ -608,235 +712,144 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="3" column="6">
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="teach_sort_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Select Sort Order:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="12">
-            <spacer name="horizontalSpacer_27">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="teach_load_file">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
+           <item row="0" column="17">
+            <widget class="QToolButton" name="teachPrintButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Teaching CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
              <property name="text">
-              <string>Load file...</string>
+              <string>Print</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normalon>:/printer.png</normalon>
+              </iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
              </property>
             </widget>
            </item>
-           <item row="5" column="3">
-            <widget class="QLineEdit" name="teach_filter_from">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
+           <item row="0" column="16">
+            <widget class="QToolButton" name="teachExportButton">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="maximumSize">
-              <size>
-               <width>60</width>
-               <height>16777215</height>
-              </size>
+             <property name="toolTip">
+              <string>Export to pdf</string>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
              <property name="text">
-              <string>*</string>
+              <string>Export</string>
              </property>
-             <property name="maxLength">
-              <number>1</number>
+             <property name="icon">
+              <iconset resource="../images.qrc">
+               <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="teach_filter_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Filter by:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1" colspan="2">
-            <widget class="QLabel" name="teach_filter">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="4">
-            <widget class="QLabel" name="teach_to_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>to</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="7">
-            <spacer name="horizontalSpacer_8">
+           <item row="3" column="14">
+            <spacer name="horizontalSpacer_11">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>0</width>
-               <height>0</height>
+               <width>40</width>
+               <height>20</height>
               </size>
              </property>
             </spacer>
            </item>
-           <item row="3" column="1">
-            <widget class="QComboBox" name="teach_sort">
-             <property name="enabled">
-              <bool>false</bool>
+           <item row="3" column="12">
+            <spacer name="horizontalSpacer_26">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
+             <property name="sizeHint" stdset="0">
               <size>
-               <width>120</width>
-               <height>0</height>
+               <width>40</width>
+               <height>20</height>
               </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="13">
+            <spacer name="horizontalSpacer_19">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="0" colspan="18">
+            <widget class="Line" name="line_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="3" column="2">
-            <widget class="QPushButton" name="teach_delete_sort">
-             <property name="enabled">
-              <bool>false</bool>
+           <item row="4" column="0" colspan="18">
+            <widget class="Line" name="line_7">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="8">
+            <widget class="QTreeView" name="teachTreeView">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
+              <string notr="true"/>
              </property>
-             <property name="text">
-              <string>Delete</string>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
              </property>
-            </widget>
-           </item>
-           <item row="5" column="5">
-            <widget class="QLineEdit" name="teach_filter_to">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>60</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Z</string>
-             </property>
-             <property name="maxLength">
-              <number>1</number>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
              </property>
             </widget>
            </item>
-           <item row="5" column="7">
-            <widget class="QRadioButton" name="teach_pie_button">
+           <item row="3" column="6">
+            <widget class="QPushButton" name="teach_edit_sort">
              <property name="enabled">
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Pie Chart</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1" colspan="12">
-            <widget class="QLabel" name="teach_file_label">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>No file chosen.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="9">
-            <widget class="QRadioButton" name="teach_bar_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Bar Chart</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="11">
-            <widget class="QRadioButton" name="teach_line_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Line Chart</string>
+              <string>Edit Sort Order</string>
              </property>
             </widget>
            </item>
@@ -861,92 +874,14 @@ p, li { white-space: pre-wrap; }
           <zorder>teach_file_label</zorder>
           <zorder>teach_bar_button</zorder>
           <zorder>teach_line_button</zorder>
+          <zorder>teach_edit_sort</zorder>
          </widget>
          <widget class="QWidget" name="tabPub">
           <attribute name="title">
            <string>Publications</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_3">
-           <item row="2" column="8">
-            <spacer name="horizontalSpacer_35">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="5" column="0" colspan="7">
-            <widget class="QTreeView" name="pubTreeView">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3" colspan="3">
-            <widget class="QPushButton" name="pub_new_sort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>150</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
-             </property>
-             <property name="text">
-              <string>Create New Sort Order</string>
-             </property>
-             <property name="checkable">
-              <bool>false</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-             <property name="autoDefault">
-              <bool>false</bool>
-             </property>
-             <property name="default">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="pub_filter_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Filter by:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="7" colspan="8">
+           <item row="5" column="8" colspan="8">
             <widget class="QFrame" name="pubChartFrame">
              <property name="frameShape">
               <enum>QFrame::Box</enum>
@@ -1122,8 +1057,226 @@ p, li { white-space: pre-wrap; }
              </layout>
             </widget>
            </item>
+           <item row="5" column="0" colspan="8">
+            <widget class="QTreeView" name="pubTreeView">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3" colspan="3">
+            <widget class="QPushButton" name="pub_new_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Create New Sort Order</string>
+             </property>
+             <property name="checkable">
+              <bool>false</bool>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+             <property name="autoDefault">
+              <bool>false</bool>
+             </property>
+             <property name="default">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="pub_filter_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Filter by:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="12">
+            <widget class="QRadioButton" name="pub_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Line Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" colspan="2">
+            <widget class="QLabel" name="pub_filter">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="pub_delete_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="10">
+            <widget class="QRadioButton" name="pub_bar_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Bar Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="15" alignment="Qt::AlignRight">
+            <widget class="QToolButton" name="pubPrintButton">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Print</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normalon>:/printer.png</normalon>
+              </iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" colspan="13">
+            <widget class="QLabel" name="pub_file_label">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>No file chosen.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="12">
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="pub_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="8">
+            <widget class="QRadioButton" name="pub_pie_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Pie Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="16">
+            <widget class="Line" name="line_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="13">
+            <spacer name="horizontalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="8">
+            <spacer name="horizontalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
            <item row="2" column="10">
-            <spacer name="horizontalSpacer_28">
+            <spacer name="horizontalSpacer_29">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -1135,25 +1288,48 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-           <item row="0" column="13">
-            <widget class="QToolButton" name="pubExportButton">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
+           <item row="2" column="0">
+            <widget class="QLabel" name="pub_sort_label">
+             <property name="enabled">
+              <bool>false</bool>
              </property>
              <property name="text">
-              <string>Export</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
+              <string>Select Sort Order:</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="5">
-            <widget class="QLineEdit" name="pub_filter_to">
+           <item row="2" column="7">
+            <spacer name="horizontalSpacer_22">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="0" colspan="16">
+            <widget class="Line" name="line_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="4">
+            <widget class="QLabel" name="pub_to_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>to</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="3">
+            <widget class="QLineEdit" name="pub_filter_from">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1164,7 +1340,7 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>Z</string>
+              <string>*</string>
              </property>
              <property name="maxLength">
               <number>1</number>
@@ -1196,8 +1372,8 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="4" column="3">
-            <widget class="QLineEdit" name="pub_filter_from">
+           <item row="4" column="5">
+            <widget class="QLineEdit" name="pub_filter_to">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1208,7 +1384,7 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>*</string>
+              <string>Z</string>
              </property>
              <property name="maxLength">
               <number>1</number>
@@ -1218,208 +1394,56 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="4" column="4">
-            <widget class="QLabel" name="pub_to_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>to</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="15">
-            <widget class="Line" name="line_6">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="6">
-            <spacer name="horizontalSpacer_22">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="pub_sort_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Select Sort Order:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="9">
-            <spacer name="horizontalSpacer_29">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="7">
-            <spacer name="horizontalSpacer_7">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="12">
-            <spacer name="horizontalSpacer_13">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="3" column="0" colspan="15">
-            <widget class="Line" name="line_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="7">
-            <widget class="QRadioButton" name="pub_pie_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Pie Chart</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QComboBox" name="pub_sort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="11">
-            <spacer name="horizontalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="0" column="1" colspan="12">
-            <widget class="QLabel" name="pub_file_label">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>No file chosen.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="14" alignment="Qt::AlignRight">
-            <widget class="QToolButton" name="pubPrintButton">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
+           <item row="0" column="14">
+            <widget class="QToolButton" name="pubExportButton">
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
              <property name="text">
-              <string>Print</string>
+              <string>Export</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normalon>:/printer.png</normalon>
-              </iconset>
+              <iconset resource="../images.qrc">
+               <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonTextBesideIcon</enum>
              </property>
             </widget>
            </item>
-           <item row="4" column="9">
-            <widget class="QRadioButton" name="pub_bar_button">
-             <property name="enabled">
-              <bool>false</bool>
+           <item row="2" column="9">
+            <spacer name="horizontalSpacer_35">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
-             <property name="text">
-              <string>Bar Chart</string>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
              </property>
-            </widget>
+            </spacer>
            </item>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="pub_delete_sort">
-             <property name="enabled">
-              <bool>false</bool>
+           <item row="2" column="11">
+            <spacer name="horizontalSpacer_28">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
              </property>
-             <property name="text">
-              <string>Delete</string>
-             </property>
-            </widget>
+            </spacer>
            </item>
-           <item row="4" column="1" colspan="2">
-            <widget class="QLabel" name="pub_filter">
+           <item row="2" column="6">
+            <widget class="QPushButton" name="pub_edit_sort">
              <property name="enabled">
               <bool>false</bool>
              </property>
              <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="11">
-            <widget class="QRadioButton" name="pub_line_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Line Chart</string>
+              <string>Edit Sort Order</string>
              </property>
             </widget>
            </item>
@@ -1430,7 +1454,7 @@ p, li { white-space: pre-wrap; }
            <string>Presentations</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="5" column="7" colspan="8">
+           <item row="5" column="8" colspan="8">
             <widget class="QFrame" name="presChartFrame">
              <property name="frameShape">
               <enum>QFrame::Box</enum>
@@ -1610,8 +1634,288 @@ p, li { white-space: pre-wrap; }
              </layout>
             </widget>
            </item>
-           <item row="4" column="5">
-            <widget class="QLineEdit" name="pres_filter_to">
+           <item row="4" column="12">
+            <widget class="QRadioButton" name="pres_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Line Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="14">
+            <widget class="QToolButton" name="presExportButton">
+             <property name="toolTip">
+              <string>Export to pdf</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Export</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../images.qrc">
+               <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="pres_delete_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" colspan="2">
+            <widget class="QLabel" name="pres_filter">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="7">
+            <spacer name="horizontalSpacer_23">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="11">
+            <spacer name="horizontalSpacer_31">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="1" colspan="13">
+            <widget class="QLabel" name="pres_file_label">
+             <property name="text">
+              <string>No file chosen.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="pres_load_file">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Presentation CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Load file...</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="15" alignment="Qt::AlignRight">
+            <widget class="QToolButton" name="presPrintButton">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Print</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normalon>:/printer.png</normalon>
+              </iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="16">
+            <widget class="Line" name="line_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="pres_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="16">
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="10">
+            <spacer name="horizontalSpacer_25">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="8">
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="pres_sort_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Select Sort Order:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="10">
+            <widget class="QRadioButton" name="pres_bar_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Bar Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="8">
+            <widget class="QRadioButton" name="pres_pie_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Pie Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="pres_filter_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Filter by:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="12">
+            <spacer name="horizontalSpacer_16">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="9">
+            <spacer name="horizontalSpacer_30">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="4">
+            <widget class="QLabel" name="pres_to_label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>to</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="13">
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="3">
+            <widget class="QLineEdit" name="pres_filter_from">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1622,13 +1926,32 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>Z</string>
+              <string>*</string>
              </property>
              <property name="maxLength">
               <number>1</number>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="8">
+            <widget class="QTreeView" name="presTreeView">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
              </property>
             </widget>
            </item>
@@ -1669,27 +1992,8 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="5" column="0" colspan="7">
-            <widget class="QTreeView" name="presTreeView">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="3">
-            <widget class="QLineEdit" name="pres_filter_from">
+           <item row="4" column="5">
+            <widget class="QLineEdit" name="pres_filter_to">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -1700,7 +2004,7 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="text">
-              <string>*</string>
+              <string>Z</string>
              </property>
              <property name="maxLength">
               <number>1</number>
@@ -1710,283 +2014,13 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="2" column="12">
-            <spacer name="horizontalSpacer_9">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="4" column="4">
-            <widget class="QLabel" name="pres_to_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>to</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="8">
-            <spacer name="horizontalSpacer_30">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="11">
-            <spacer name="horizontalSpacer_16">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="pres_filter_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Filter by:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="7">
-            <widget class="QRadioButton" name="pres_pie_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Pie Chart</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="9">
-            <widget class="QRadioButton" name="pres_bar_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Bar Chart</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="pres_sort_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Select Sort Order:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="7">
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="9">
-            <spacer name="horizontalSpacer_25">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="3" column="0" colspan="15">
-            <widget class="Line" name="line_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QComboBox" name="pres_sort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>0</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="15">
-            <widget class="Line" name="line_4">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="14" alignment="Qt::AlignRight">
-            <widget class="QToolButton" name="presPrintButton">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
-             </property>
-             <property name="text">
-              <string>Print</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normalon>:/printer.png</normalon>
-              </iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="pres_load_file">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Presentation CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
-             </property>
-             <property name="text">
-              <string>Load file...</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1" colspan="12">
-            <widget class="QLabel" name="pres_file_label">
-             <property name="text">
-              <string>No file chosen.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="10">
-            <spacer name="horizontalSpacer_31">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="2" column="6">
-            <spacer name="horizontalSpacer_23">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="4" column="1" colspan="2">
-            <widget class="QLabel" name="pres_filter">
+            <widget class="QPushButton" name="pres_edit_sort">
              <property name="enabled">
               <bool>false</bool>
              </property>
              <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="pres_delete_sort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
-             </property>
-             <property name="text">
-              <string>Delete</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="13">
-            <widget class="QToolButton" name="presExportButton">
-             <property name="toolTip">
-              <string>Export to pdf</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
-             </property>
-             <property name="text">
-              <string>Export</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="11">
-            <widget class="QRadioButton" name="pres_line_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Line Chart</string>
+              <string>Edit Sort Order</string>
              </property>
             </widget>
            </item>
@@ -1997,7 +2031,7 @@ p, li { white-space: pre-wrap; }
            <string>Grants and Clinical Funding</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_6">
-           <item row="5" column="7" colspan="8">
+           <item row="5" column="8" colspan="8">
             <widget class="QFrame" name="fundChartFrame">
              <property name="frameShape">
               <enum>QFrame::Box</enum>
@@ -2181,134 +2215,72 @@ p, li { white-space: pre-wrap; }
              </layout>
             </widget>
            </item>
-           <item row="4" column="9">
-            <widget class="QRadioButton" name="fund_bar_button">
+           <item row="4" column="3">
+            <widget class="QLineEdit" name="fund_filter_from">
              <property name="enabled">
               <bool>false</bool>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;View Data as Bar Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
              </property>
              <property name="text">
-              <string>Bar Chart</string>
+              <string>*</string>
+             </property>
+             <property name="maxLength">
+              <number>1</number>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="fund_sort_label">
+           <item row="4" column="0">
+            <widget class="QLabel" name="fund_filter_label">
              <property name="enabled">
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Select Sort Order:</string>
+              <string>Filter by:</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0" colspan="15">
-            <widget class="Line" name="line">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="12">
-            <spacer name="horizontalSpacer_14">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="fund_load_file">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Grants and Clinical Funding CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="autoFillBackground">
+           <item row="4" column="5">
+            <widget class="QLineEdit" name="fund_filter_to">
+             <property name="enabled">
               <bool>false</bool>
              </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
              </property>
              <property name="text">
-              <string>Load file...</string>
+              <string>Z</string>
+             </property>
+             <property name="maxLength">
+              <number>1</number>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
-           <item row="2" column="7">
-            <spacer name="horizontalSpacer_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+           <item row="4" column="4">
+            <widget class="QLabel" name="fund_to_label">
+             <property name="enabled">
+              <bool>false</bool>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
+             <property name="text">
+              <string>to</string>
              </property>
-            </spacer>
+            </widget>
            </item>
            <item row="2" column="9">
-            <spacer name="horizontalSpacer_17">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="4" column="7">
-            <widget class="QRadioButton" name="fund_pie_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;View Data as Pie Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="text">
-              <string>Pie Chart</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QComboBox" name="fund_sort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a New Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="10">
-            <spacer name="horizontalSpacer_33">
+            <spacer name="horizontalSpacer_32">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -2320,50 +2292,92 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-           <item row="0" column="14" alignment="Qt::AlignRight">
-            <widget class="QToolButton" name="fundPrintButton">
+           <item row="2" column="7">
+            <spacer name="horizontalSpacer_24">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="fund_delete_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print the Current Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete the Currently Selected Custom Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
              <property name="text">
-              <string>Print</string>
+              <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="16">
+            <widget class="Line" name="line_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="12">
+            <spacer name="horizontalSpacer_15">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="1" colspan="2">
+            <widget class="QLabel" name="fund_filter">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="14">
+            <widget class="QToolButton" name="fundExportButton">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export to PDF&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(204, 204, 204);</string>
+             </property>
+             <property name="text">
+              <string>Export</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normalon>:/printer.png</normalon>
-              </iconset>
+              <iconset resource="../images.qrc">
+               <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonTextBesideIcon</enum>
              </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="12">
-            <widget class="QLabel" name="fund_file_label">
+           <item row="4" column="12">
+            <widget class="QRadioButton" name="fund_line_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
-              <string>No file chosen.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="7">
-            <widget class="QTreeView" name="fundTreeView">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
+              <string>Line Chart</string>
              </property>
             </widget>
            </item>
@@ -2407,121 +2421,103 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="4" column="5">
-            <widget class="QLineEdit" name="fund_filter_to">
-             <property name="enabled">
-              <bool>false</bool>
+           <item row="5" column="0" colspan="8">
+            <widget class="QTreeView" name="fundTreeView">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="maximumSize">
-              <size>
-               <width>60</width>
-               <height>16777215</height>
-              </size>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
-             <property name="text">
-              <string>Z</string>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
              </property>
-             <property name="maxLength">
-              <number>1</number>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
              </property>
             </widget>
            </item>
-           <item row="4" column="3">
-            <widget class="QLineEdit" name="fund_filter_from">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>60</width>
-               <height>16777215</height>
-              </size>
-             </property>
+           <item row="0" column="1" colspan="13">
+            <widget class="QLabel" name="fund_file_label">
              <property name="text">
-              <string>*</string>
-             </property>
-             <property name="maxLength">
-              <number>1</number>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>No file chosen.</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="fund_filter_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Filter by:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="4">
-            <widget class="QLabel" name="fund_to_label">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>to</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="8">
-            <spacer name="horizontalSpacer_32">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="6">
-            <spacer name="horizontalSpacer_24">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="fund_delete_sort">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
+           <item row="0" column="15" alignment="Qt::AlignRight">
+            <widget class="QToolButton" name="fundPrintButton">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete the Currently Selected Custom Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print the Current Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
              <property name="text">
-              <string>Delete</string>
+              <string>Print</string>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="15">
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+             <property name="icon">
+              <iconset>
+               <normalon>:/printer.png</normalon>
+              </iconset>
+             </property>
+             <property name="toolButtonStyle">
+              <enum>Qt::ToolButtonTextBesideIcon</enum>
              </property>
             </widget>
            </item>
            <item row="2" column="11">
-            <spacer name="horizontalSpacer_15">
+            <spacer name="horizontalSpacer_33">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="fund_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a New Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="8">
+            <widget class="QRadioButton" name="fund_pie_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;View Data as Pie Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Pie Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="10">
+            <spacer name="horizontalSpacer_17">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -2533,43 +2529,91 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-           <item row="4" column="1" colspan="2">
-            <widget class="QLabel" name="fund_filter">
-             <property name="enabled">
-              <bool>false</bool>
+           <item row="2" column="8">
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
-             <property name="text">
-              <string/>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
              </property>
-            </widget>
+            </spacer>
            </item>
-           <item row="0" column="13">
-            <widget class="QToolButton" name="fundExportButton">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="fund_load_file">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export to PDF&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Grants and Clinical Funding CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
              <property name="text">
-              <string>Export</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
+              <string>Load file...</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="11">
-            <widget class="QRadioButton" name="fund_line_button">
+           <item row="2" column="13">
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="0" colspan="16">
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="fund_sort_label">
              <property name="enabled">
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Line Chart</string>
+              <string>Select Sort Order:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="10">
+            <widget class="QRadioButton" name="fund_bar_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;View Data as Bar Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>Bar Chart</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="6">
+            <widget class="QPushButton" name="fund_edit_sort">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Edit Sort Order</string>
              </property>
             </widget>
            </item>
@@ -2589,7 +2633,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1123</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -2627,6 +2671,8 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../images.qrc"/>
+ </resources>
  <connections/>
 </ui>

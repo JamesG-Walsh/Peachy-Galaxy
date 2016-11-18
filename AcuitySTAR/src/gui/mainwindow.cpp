@@ -1070,6 +1070,7 @@ bool MainWindow::load_teach(QString path, bool multi_file, bool skip_prompt)
         ui->teach_sort->setEnabled(true);
         ui->teach_delete_sort->setEnabled(true);
         ui->teach_new_sort->setEnabled(true);
+        ui->teach_edit_sort->setEnabled(true);
         ui->teach_filter_from->setEnabled(true);
         ui->teach_filter_to->setEnabled(true);
         ui->teach_pie_button->setEnabled(true);
@@ -1124,6 +1125,7 @@ bool MainWindow::load_pub(QString path, bool multi_file, bool skip_prompt) {
         ui->pub_sort->setEnabled(true);
         ui->pub_delete_sort->setEnabled(true);
         ui->pub_new_sort->setEnabled(true);
+        ui->pub_edit_sort->setEnabled(true);
         ui->pub_filter_from->setEnabled(true);
         ui->pub_filter_to->setEnabled(true);
         ui->pub_pie_button->setEnabled(true);
@@ -1180,6 +1182,7 @@ bool MainWindow::load_pres(QString path, bool multi_file, bool skip_prompt) {
         ui->pres_sort->setEnabled(true);
         ui->pres_delete_sort->setEnabled(true);
         ui->pres_new_sort->setEnabled(true);
+        ui->pres_edit_sort->setEnabled(true);
         ui->pres_filter_from->setEnabled(true);
         ui->pres_filter_to->setEnabled(true);
         ui->pres_pie_button->setEnabled(true);
@@ -1232,6 +1235,7 @@ bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt) {
         ui->fund_sort->setEnabled(true);
         ui->fund_delete_sort->setEnabled(true);
         ui->fund_new_sort->setEnabled(true);
+        ui->fund_edit_sort->setEnabled(true);
         ui->fund_filter_from->setEnabled(true);
         ui->fund_filter_to->setEnabled(true);
         ui->fund_pie_button->setEnabled(true);
