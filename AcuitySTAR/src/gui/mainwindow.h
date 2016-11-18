@@ -77,6 +77,7 @@ private slots:
     void on_fund_pie_button_toggled();
     void on_fund_bar_button_toggled();
 
+    std::vector<std::pair <std::string, double>> MainWindow::on_teachTreeView_clicked_total(const QModelIndex &index);
     void on_teachTreeView_clicked(const QModelIndex &index);
     void on_pubTreeView_clicked(const QModelIndex &index);
     void on_presTreeView_clicked(const QModelIndex &index);

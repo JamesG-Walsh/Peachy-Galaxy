@@ -735,43 +735,30 @@ void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std
 
 void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> lineChartList) {
 
-    // Setup the legend
-    lineChart->legend->setVisible(true);
-    QFont legendFont = font();  // start out with MainWindow's font..
-    legendFont.setPointSize(9); // and make a bit smaller for legend
-    lineChart->legend->setFont(legendFont);
-    lineChart->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignBottom|Qt::AlignRight);
-
-    QVector<double> x(2), y(2); // initialize with entries 0..100
-
-    x[0] = 2015;
-    x[1] = 2016;
     double maxCount = 0;
+    double minYear = std::stod(lineChartList[0].first);
+    double maxYear = std::stod(lineChartList[((int) lineChartList.size()) -1].first);
+    double numYears = maxYear - minYear + 1;
+    qDebug() << QString::number(numYears);
+    QVector<double> x(numYears, 0), y(numYears, 0);
+    for(int i = 0; i < numYears; i++) x[i] = minYear + i;
     for(int i = 0; i < (int) lineChartList.size(); i++)
     {
-        y[0] = lineChartList[i].second;
-        y[1] = lineChartList[i].second;
-        lineChart->addGraph();
-        lineChart->graph(i)->setData(x, y);
-        lineChart->graph(i)->setPen((QColor(qrand() % 256, qrand() % 256, qrand() % 256)));
-        if (maxCount < lineChartList[i].second)
-            maxCount = lineChartList[i].second;
-        lineChart->graph(i)->setName(QString::fromStdString(lineChartList[i].first));
+        x[std::stoi(lineChartList[i].first) - minYear] = std::stod(lineChartList[i].first);
+        y[std::stoi(lineChartList[i].first) - minYear] = lineChartList[i].second;
+        if (maxCount < lineChartList[i].second) maxCount = lineChartList[i].second;
     }
 
+    lineChart->addGraph();
+    lineChart->graph(0)->setData(x, y);
+    lineChart->graph(0)->setPen((QColor(qrand() % 256, qrand() % 256, qrand() % 256)));
+
     lineChart->xAxis->setLabel("Year");
-    lineChart->xAxis->setRange(2015, 2017);
+    lineChart->xAxis->setRange(minYear, maxYear);
     lineChart->xAxis->setAutoTickStep(false);
     lineChart->xAxis->setSubTickCount(0);
     lineChart->xAxis->setTickStep(1);
-    lineChart->yAxis->setRange(0, maxCount+(maxCount*.05));
-
-    //for(int i = 0; i < (int) lineChartList.size(); i++)
-    //{
-    //    qDebug() <<  QString::fromStdString(lineChartList[i].first);
-    //    qDebug() << QString::number(lineChartList[i].second);
-    //}
-
+    lineChart->yAxis->setRange(0, maxCount);
 }
 
 
@@ -1009,7 +996,7 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         ui->teach_filter_to->setEnabled(true);
         ui->teach_pie_button->setEnabled(true);
         ui->teach_bar_button->setEnabled(true);
-        ui->teach_line_button->setEnabled(true);
+        //ui->teach_line_button->setEnabled(true);
         ui->teach_to_label->setEnabled(true);
         ui->teach_sort_label->setEnabled(true);
         ui->teach_filter->setEnabled(true);
@@ -1234,9 +1221,58 @@ void MainWindow::on_categoryTab_currentChanged() {
     }
 }
 
+std::vector<std::pair <std::string, double>> MainWindow::on_teachTreeView_clicked_total(const QModelIndex &index)
+{
+    std::vector<std::pair <std::string, double>> chartList;
+    QString clickedName = index.data(Qt::DisplayRole).toString();
+
+    for (int i = 0; i < index.model()->rowCount()-1; i++)
+    {
+        std::vector<std::string> parentsList;
+        QString name;
+        QModelIndex current = index;
+        current = current.sibling(i,0);
+        std::string entryName = current.data(Qt::DisplayRole).toString().toStdString();
+        while (true) {
+            name = current.data(Qt::DisplayRole).toString();
+            if(name!="") {
+                auto it = parentsList.begin();
+                it = parentsList.insert(it, name.toStdString());
+            } else {
+                break;
+            }
+            current = current.parent();
+        }
+        if (parentsList.size() != teachSortOrder.size()) {
+            teachClickedName = clickedName;
+            std::vector<std::string> sortOrder(teachSortOrder.begin(), teachSortOrder.begin()+parentsList.size()+1);
+            std::vector<std::pair <std::string, int>> list =
+                    teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            double tot = 0;
+            for (int i = 0; i < (int) list.size(); i++) {
+                tot += static_cast<double>(list[i].second);
+            }
+            chartList.emplace_back(entryName, tot);
+        } else {
+            ui->teach_graph_stackedWidget->hide();
+            ui->teachGraphTitle->clear();
+            teachClickedName.clear();
+        }
+    }
+    return chartList;
+}
+
 void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
+    ui->teach_line_button->setEnabled(false);
     QString clickedName = index.data(Qt::DisplayRole).toString();
     if (clickedName==teachClickedName || index.column()!=0) { return;}
+    std::vector<std::pair <std::string, double>> chartListTotal;
+    bool total = false;
+    if (clickedName == "Total")
+    {
+        total = true;
+        chartListTotal = on_teachTreeView_clicked_total(index);
+    }
 
     std::vector<std::string> parentsList;
     QModelIndex current = index;
@@ -1262,6 +1298,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
 
         }
+        if(total) chartList = chartListTotal;
 
         if (!chartList.empty()) {
             ui->teachBarChart->clearPlottables();
@@ -1271,12 +1308,15 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
 
             ui->teachLineChart->clearPlottables();
-            setupLineChart(ui->teachLineChart,chartList);
+            if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0)
+            {
+                ui->teach_line_button->setEnabled(true);
+                setupLineChart(ui->teachLineChart,chartList);
+            }
             ui->teachLineChart->yAxis->setLabel("Number of courses taught");
             ui->teachLineChart->replot();
 
-
-           // setupBarChart(ui->teachLineChart,chartList);
+            // setupBarChart(ui->teachLineChart,chartList);
 
             if (parentsList.size()>1) {
                 ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
