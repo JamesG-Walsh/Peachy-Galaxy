@@ -10,20 +10,30 @@
 
 using namespace std;
 
+
+
+
 int main(int argc, char *argv[])
 {
     bool testing = false; //testing flag
 
     QApplication app(argc, argv);
 
-    if (testing)
+    /*if (testing)
     {
         Test *test_obj = new Test();
         QTest::qExec(test_obj);
-    }
+    }*/
 
     MainWindow w;
     w.show();
 
+
+
+    // create a new manager for the data
+
+
+
     return app.exec();
 }
+

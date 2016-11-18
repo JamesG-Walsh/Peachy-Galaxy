@@ -24,6 +24,7 @@ typedef std::multimap<std::string, BasicRecord*> StringTree;
 
 class RecordsManager {
 public:
+
     RecordsManager(BasicRecord* _headers);
     ~RecordsManager();
 
