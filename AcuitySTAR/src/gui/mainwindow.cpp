@@ -434,6 +434,9 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = funddb->getHeaderIndex("Start Date");
                 fundData = reader.getData();
+
+                //fix recordmanager here
+
                 std::vector<std::vector<std::string>*> f_errs;
                 unsigned int j;
                 for (int i = 0; i < (int) fundData.size(); i++)
