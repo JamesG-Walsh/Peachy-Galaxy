@@ -533,7 +533,7 @@ p, li { white-space: pre-wrap; }
               <string>Export</string>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="../images.qrc">
                <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
@@ -1144,7 +1144,7 @@ p, li { white-space: pre-wrap; }
               <string>Export</string>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="../images.qrc">
                <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
@@ -1972,7 +1972,7 @@ p, li { white-space: pre-wrap; }
               <string>Export</string>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="../images.qrc">
                <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
@@ -2555,7 +2555,7 @@ p, li { white-space: pre-wrap; }
               <string>Export</string>
              </property>
              <property name="icon">
-              <iconset>
+              <iconset resource="../images.qrc">
                <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
              </property>
              <property name="toolButtonStyle">
@@ -2627,6 +2627,8 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../images.qrc"/>
+ </resources>
  <connections/>
 </ui>

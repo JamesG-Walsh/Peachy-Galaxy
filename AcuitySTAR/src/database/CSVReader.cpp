@@ -8,7 +8,8 @@
 
 // Loads the CSV file at file_name.
 
-void CSVReader::loadCSV(std::string file_name) {
+void CSVReader::loadCSV(std::string file_name)
+{
     std::ifstream myfile(file_name.c_str());
 
     if (myfile.fail())

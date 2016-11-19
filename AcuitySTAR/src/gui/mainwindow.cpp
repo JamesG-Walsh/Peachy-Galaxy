@@ -429,23 +429,28 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
             // check for right file type by searching for unique header
             searchstring = "Funding Type";
 
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
+            if (std::find(header.begin(), header.end(), searchstring) != header.end())
+            {
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = funddb->getHeaderIndex("Start Date");
                 fundData = reader.getData();
                 std::vector<std::vector<std::string>*> f_errs;
                 unsigned int j;
-                for (int i = 0; i < (int) fundData.size(); i++) {
-                    for (j = 0; j < GRANTS_MANFIELDS.size(); j++) {
+                for (int i = 0; i < (int) fundData.size(); i++)
+                {
+                    for (j = 0; j < GRANTS_MANFIELDS.size(); j++)
+                    {
                         int index = funddb->getHeaderIndex(GRANTS_MANFIELDS[j]);
-                        if (fundData[i][index].compare("") == 0) {
+                        if (fundData[i][index].compare("") == 0)
+                        {
                             f_errs.push_back(&fundData[i]);
                             break;
                         }
                     }
 
                     // if all mandatory fields are okay
-                    if (j == GRANTS_MANFIELDS.size()) {
+                    if (j == GRANTS_MANFIELDS.size())
+                    {
                         // date interpretation
                         int yrIndex = funddb->getHeaderIndex("Start Date");
                         int year;
@@ -462,17 +467,24 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                         funddb->addRecord(reader.parseDateString(fundData[i][sortHeaderIndex]), &fundData[i]);
                     }
                 }
-                if (f_errs.size() > 0) {
-                    if(handle_field_errors(f_errs, header, GRANTS_MANFIELDS, filePath, skip_prompt)) {
-                        for (unsigned int i = 0; i < f_errs.size(); i++) {
+                if (f_errs.size() > 0)
+                {
+                    if(handle_field_errors(f_errs, header, GRANTS_MANFIELDS, filePath, skip_prompt))
+                    {
+                        for (unsigned int i = 0; i < f_errs.size(); i++)
+                        {
                             funddb->addRecord(reader.parseDateString((*(f_errs[i]))[sortHeaderIndex]), f_errs[i]);
                         }
                     }
                 }
-            } else {
+            }
+            else
+            {
                 return EXIT_FAILURE;
             }
-        } else {
+        }
+        else
+        {
             return EXIT_SUCCESS;
         }
         ui->fundPrintButton->setEnabled(true);
@@ -616,7 +628,8 @@ bool MainWindow::handle_field_errors(std::vector<std::vector<std::string>*>& err
 /*
  * Builds a TreeModel for the ui's embedded treeview.
  */
-void MainWindow::makeTree(int tabIndex) {
+void MainWindow::makeTree(int tabIndex)
+{
     switch (tabIndex) {
     case TEACH:
         // set up some member variables to point to the current data in use
@@ -1221,7 +1234,8 @@ bool MainWindow::load_pres(QString path, bool multi_file, bool skip_prompt) {
 
 void MainWindow::on_fund_load_file_clicked() {
     QString path = load_file();
-    if (!path.isEmpty()) {
+    if (!path.isEmpty())
+    {
         load_fund(path);
     }
 }
@@ -1251,7 +1265,8 @@ bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt) {
         }
 
         // create default sort order if none are loaded
-        if (ui->fund_sort->currentIndex() < 0) {
+        if (ui->fund_sort->currentIndex() < 0)
+        {
             createDefaultSortOrder(FUNDING);
             ui->fund_sort->addItem(allFundOrders[0][0]);
         }
@@ -1262,8 +1277,10 @@ bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt) {
         ui->fund_file_label->setText(fundPath);
 
         return true;
-    } else {
-        if (!multi_file) {
+    }else
+    {
+        if (!multi_file)
+        {
             QMessageBox::critical(this, "Invalid File", "Not a valid grants and funding file.");
             on_fund_load_file_clicked();
         }

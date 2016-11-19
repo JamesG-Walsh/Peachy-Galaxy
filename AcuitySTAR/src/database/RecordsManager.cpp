@@ -533,7 +533,7 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
  * @return              a formatted string with the analysis, can be used for TreeModel
  */
 std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, const std::vector<std::string> &accs,
-        int currencyMask, std::string countCol, char filterStart, char filterEnd) {
+                                    int currencyMask, std::string countCol, char filterStart, char filterEnd) {
     std::string ret;
     int sum = 0;
     std::vector<BasicRecord*> records = findRecordsInRange(startYear, endYear);
@@ -560,13 +560,17 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
     // create a tree sorted by the first sort field
     StringTree sortedTree;
     std::string topLevelValue;
-    for (size_t x = 0; x < records.size(); x++) {
+    for (size_t x = 0; x < records.size(); x++)
+    {
         topLevelValue = records[x]->at(sortFieldIndices[0]);
 
         // check that the top-level value passes our filter before adding it
-        if (topLevelValue[0] == '*' && filterStart == '*') {
+        if (topLevelValue[0] == '*' && filterStart == '*')
+        {
             sortedTree.emplace(topLevelValue, records[x]);
-        } else if (filterStart <= (topLevelValue[0] & ~0x20) && (topLevelValue[0] & ~0x20) <= filterEnd) {
+        }
+        else if (filterStart <= (topLevelValue[0] & ~0x20) && (topLevelValue[0] & ~0x20) <= filterEnd)
+        {
             sortedTree.emplace(topLevelValue, records[x]);
         }
     }
@@ -593,20 +597,20 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 /**
  * Analyzes the data stored in the manager. Internal use only.
  *
- * @param sortedTree    a previous sorted tree with which to continue analysis
- * @param sortFields    the header indices of the fields to sort by, in order
- * @param sortFields.size()       the number of fields to sort by
- * @param accs          the header indices of the fields to accumulate at
- * @param accs.size()         the number of accumulators
- * @param accsTotals    the current value in the accumulators
- * @param currencyMask  a bit mask determining which accumulators should
- * @param countCol      the header index of the column to count totals for
- * @param currCount     the current value in the totals count
- * @param depth         the current depth in the analysis tree
- * @return              a formatted string with the analysis, can be used for TreeModel
+ * @param sortedTree            a previous sorted tree with which to continue analysis
+ * @param sortFields            the header indices of the fields to sort by, in order
+ * @param sortFields.size()     the number of fields to sort by
+ * @param accs                  the header indices of the fields to accumulate at
+ * @param accs.size()           the number of accumulators
+ * @param accsTotals            the current value in the accumulators
+ * @param currencyMask          a bit mask determining which accumulators should
+ * @param countCol              the header index of the column to count totals for
+ * @param currCount             the current value in the totals count
+ * @param depth                 the current depth in the analysis tree
+ * @return                      a formatted string with the analysis, can be used for TreeModel
  */
 std::string RecordsManager::analyze(StringTree sortedTree, const std::vector<int> &sortFields, const std::vector<int> &accs, std::vector<double> &accsTotals,
-        int currencyMask, int countCol, int* currCount, int depth) {
+                                    int currencyMask, int countCol, int* currCount, int depth) {
     std::pair<StringTree::iterator, StringTree::iterator> uniqueValue;
     std::string value;
     std::string fieldString = "";
@@ -614,7 +618,8 @@ std::string RecordsManager::analyze(StringTree sortedTree, const std::vector<int
     int fieldCount;
     std::vector<double> accsTotal;
 
-    for (StringTree::iterator sortField = sortedTree.begin(); sortField != sortedTree.end(); sortField = uniqueValue.second) {
+    for (StringTree::iterator sortField = sortedTree.begin(); sortField != sortedTree.end(); sortField = uniqueValue.second)
+    {
         // get a unique value for this field (header)
         value = sortField->first;
 
@@ -633,10 +638,16 @@ std::string RecordsManager::analyze(StringTree sortedTree, const std::vector<int
             // only create the tree if we're not at the deepest level
             if ((int) sortFields.size() - 1 > depth) {
                 newSorted.emplace(itr->second->at(sortFields[depth + 1]), itr->second);
-            } else {
+            }
+            else
+            {
                 // we're at the deepest level: find values for our accumulators
-                for (int i = 0; i < (int) accs.size(); i++) {
-                    accsTotal[i] += parseStringToDouble(itr->second->at(accs[i]));
+                for (int i = 0; i < (int) accs.size(); i++)
+                {
+                    if (itr->second->size() > accs[i]) //if the vector is too big, do nothing
+                    {
+                        accsTotal[i] += parseStringToDouble(itr->second->at(accs[i]));
+                    }
                 }
             }
 
