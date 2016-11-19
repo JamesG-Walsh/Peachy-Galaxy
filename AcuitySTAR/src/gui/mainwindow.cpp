@@ -740,7 +740,7 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
     double minYear = std::stod(lineChartList[0].first);
     double maxYear = std::stod(lineChartList[((int) lineChartList.size()) -1].first);
     double numYears = maxYear - minYear + 1;
-    qDebug() << QString::number(numYears);
+    //qDebug() << QString::number(numYears);
     QVector<double> x(numYears, 0), y(numYears, 0);
     for(int i = 0; i < numYears; i++) x[i] = minYear + i;
     for(int i = 0; i < (int) lineChartList.size(); i++)
@@ -781,7 +781,7 @@ void MainWindow::setupHistogramChart(QCustomPlot *histogramChart, std::vector<st
           for (int i = 0; i < histogramSize; i++){
               ticks << (i+1);
               xlabels << QString::fromStdString(histogramChartList[i].first);
-              qDebug() <<  QString::fromStdString(histogramChartList[i].first);
+              //qDebug() <<  QString::fromStdString(histogramChartList[i].first);
               if (histogramChartList[i].second>1000000){
                   scaledCount = histogramChartList[i].second/1000000;
               } else if (histogramChartList[i].second>1000){
@@ -1428,6 +1428,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
 }
 
 void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
+    ui->pub_line_button->setEnabled(false);
     QString clickedName = index.data(Qt::DisplayRole).toString();
     if (clickedName==pubClickedName || index.column()!=0) { return;}
 
@@ -1463,7 +1464,11 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
             setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
 
             ui->pubLineChart->clearPlottables();
-            setupLineChart(ui->pubLineChart,chartList);
+            if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0)
+            {
+                ui->pub_line_button->setEnabled(true);
+                setupLineChart(ui->pubLineChart,chartList);
+            }
             ui->pubLineChart->yAxis->setLabel("Number of publications");
             ui->pubLineChart->replot();
 
@@ -1506,6 +1511,7 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
     }
 
     if (parentsList.size()!=presSortOrder.size()) {
+        ui->pres_line_button->setEnabled(false);
         presClickedName = clickedName;
         std::vector<std::string> sortOrder(presSortOrder.begin(), presSortOrder.begin()+parentsList.size()+1);
         std::vector<std::pair <std::string, int>> list =
@@ -1523,7 +1529,11 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
             setupPieChart(ui->presPieChart, ui->presPieList, chartList);
 
             ui->presLineChart->clearPlottables();
-            setupLineChart(ui->presLineChart,chartList);
+            if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0)
+            {
+                ui->pres_line_button->setEnabled(true);
+                setupLineChart(ui->presLineChart,chartList);
+            }
             ui->presLineChart->yAxis->setLabel("Number of presentations");
             ui->presLineChart->replot();
 
@@ -1549,12 +1559,15 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
 }
 
 void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
+    ui->fund_line_button->setEnabled(false);
     QString clickedName = index.data(Qt::DisplayRole).toString();
+
     if (clickedName==fundClickedName || index.column()!=0) { return;}
 
     std::vector<std::string> parentsList;
     QModelIndex current = index;
     QString name;
+
     while (true) {
         name = current.data(Qt::DisplayRole).toString();
         if(name!="") {
@@ -1567,12 +1580,14 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
     }
 
     if (parentsList.size()!=fundSortOrder.size()) {
+
         if (clickedName != fundClickedName) {
+
             fundClickedName = clickedName;
             std::vector<std::string> sortOrder(fundSortOrder.begin(), fundSortOrder.begin()+parentsList.size()+1);
             std::vector<std::pair <std::string, double>> chartList =
                     funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
-            qDebug() << chartList;
+
             if (!chartList.empty()) {
                 ui->fundBarChart->clearPlottables();
                 setupBarChart(ui->fundBarChart, chartList);
@@ -1581,7 +1596,11 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
                 setupPieChart(ui->fundPieChart, ui->fundPieList, chartList);
 
                 ui->fundLineChart->clearPlottables();
-                setupLineChart(ui->fundLineChart,chartList);
+                if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0)
+                {
+                    ui->fund_line_button->setEnabled(true);
+                    setupLineChart(ui->fundLineChart,chartList);
+                }
                 ui->fundLineChart->yAxis->setLabel("Amount of funding in CAD");
                 ui->fundLineChart->replot();
 
