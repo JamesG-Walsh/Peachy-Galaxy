@@ -11,6 +11,7 @@
 #include <QString>
 #include <QSharedPointer>
 #include <iostream>
+#include <math.h>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -762,15 +763,47 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
     lineChart->yAxis->setRange(0, maxCount);
 }
 
+void MainWindow::setupScatterPlot(QCustomPlot *scatterPlot, std::vector<std::pair <std::string, double>> scatterPlotList) {
+    double minMoney = std::numeric_limits<double>::max();
+    double maxMoney = 0;
+    double minFundings = std::numeric_limits<double>::max();
+    double maxFundings = 0;
+    int listSize = (int) scatterPlotList.size();
+    QVector<double> x(listSize), y(listSize);
+
+    for(int i = 0; i < (int) scatterPlotList.size(); i++)
+    {
+        double first = std::stod(scatterPlotList[i].first);
+        double second = log(scatterPlotList[i].second);
+        x[i] = first;
+        y[i] = second;
+        if (minMoney > second) minMoney = second;
+        if (maxMoney < second) maxMoney = second;
+        if (maxFundings < first) maxFundings =  first;
+        if (minFundings > first) minFundings =  first;
+    }
+    qSort(x);
+    qSort(y);
+
+    scatterPlot->addGraph();
+    scatterPlot->graph(0)->setData(x, y);
+    scatterPlot->graph(0)->setPen((QColor(0, 0, 255)));
+    scatterPlot->graph(0)->setLineStyle(QCPGraph::lsNone);
+     scatterPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
+    scatterPlot->xAxis->setLabel("Number of times funded");
+    scatterPlot->yAxis->setLabel("log of the Amount of funding in CAD");
+    scatterPlot->xAxis->setRange(minFundings-0.5*(x[1]-x[0]), maxFundings+-0.5*(x[1]-x[0]));
+    scatterPlot->xAxis->setAutoTickStep(false);
+    scatterPlot->xAxis->setSubTickCount(0);
+    scatterPlot->xAxis->setTickStep(1);
+    scatterPlot->yAxis->setRange(minMoney-0.5*(y[1]-y[0]), maxMoney+0.5*(y[1]-y[0]));
+    //qDebug() << "min money";
+    //qDebug() << minMoney;
+}
+
+
 void MainWindow::setupHistogramChart(QCustomPlot *histogramChart, std::vector<std::pair <std::string, double>> histogramChartList){
 
-    // Setup the legend
-    /* histogramChart->legend->setVisible(true);
-     QFont legendFont = font();  // start out with MainWindow's font..
-     legendFont.setPointSize(9); // and make a bit smaller for legend
-     histogramChart->legend->setFont(legendFont);
-     histogramChart->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignBottom|Qt::AlignRight);
-*/
     QVector<double> ticks,count;
 
     int histogramSize = (int) histogramChartList.size();
@@ -1305,6 +1338,25 @@ void MainWindow::on_categoryTab_currentChanged() {
     }
 }
 
+
+std::vector<std::pair <std::string, double>> MainWindow::on_fundTreeView_clicked_total_scatter(const QModelIndex &index)
+{
+    std::vector<std::pair <std::string, double>> chartList;
+    QString clickedName = index.data(Qt::DisplayRole).toString();
+
+    for (int i = 0; i < index.model()->rowCount()-1; i++)
+    {
+        std::vector<std::string> parentsList;
+        QString name;
+        QModelIndex current = index;
+        current = current.sibling(i,0);
+        //qDebug() << current.sibling(i,2).data(Qt::DisplayRole).toString().remove(0,1).remove(',').toDouble();
+        chartList.emplace_back(current.sibling(i,1).data(Qt::DisplayRole).toString().toStdString(), current.sibling(i,2).data(Qt::DisplayRole).toString().remove(0,1).remove(',').toDouble());
+    }
+    return chartList;
+
+}
+
 std::vector<std::pair <std::string, double>> MainWindow::on_teachTreeView_clicked_total(const QModelIndex &index)
 {
     std::vector<std::pair <std::string, double>> chartList;
@@ -1316,7 +1368,12 @@ std::vector<std::pair <std::string, double>> MainWindow::on_teachTreeView_clicke
         QString name;
         QModelIndex current = index;
         current = current.sibling(i,0);
+
         std::string entryName = current.data(Qt::DisplayRole).toString().toStdString();
+
+        //qDebug() << current.sibling(i,1).data(Qt::DisplayRole).toString();
+        //qDebug() << current.data(Qt::DisplayRole).toString();
+
         while (true) {
             name = current.data(Qt::DisplayRole).toString();
             if(name!="") {
@@ -1427,10 +1484,34 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
     }
 }
 
+std::vector<std::pair <std::string, double>> MainWindow::on_pubTreeView_clicked_total(const QModelIndex &index)
+{
+    std::vector<std::pair <std::string, double>> chartList;
+    QString clickedName = index.data(Qt::DisplayRole).toString();
+
+    for (int i = 0; i < index.model()->rowCount()-1; i++)
+    {
+        std::vector<std::string> parentsList;
+        QString name;
+        QModelIndex current = index;
+        current = current.sibling(i,0);
+
+        chartList.emplace_back(current.sibling(i,1).data(Qt::DisplayRole).toString().toStdString(), current.sibling(i,2).data(Qt::DisplayRole).toDouble());
+    }
+    return chartList;
+}
+
 void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
     ui->pub_line_button->setEnabled(false);
     QString clickedName = index.data(Qt::DisplayRole).toString();
     if (clickedName==pubClickedName || index.column()!=0) { return;}
+    std::vector<std::pair <std::string, double>> chartListTotal;
+    bool total = false;
+    if (clickedName == "Total")
+    {
+        total = true;
+        chartListTotal = on_pubTreeView_clicked_total(index);
+    }
 
     std::vector<std::string> parentsList;
     QModelIndex current = index;
@@ -1455,7 +1536,7 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
         }
-
+        if(total) chartList = chartListTotal;
         if (!chartList.empty()) {
             ui->pubBarChart->clearPlottables();
             setupBarChart(ui->pubBarChart, chartList);
@@ -1492,9 +1573,57 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
     }
 }
 
+std::vector<std::pair <std::string, double>> MainWindow::on_presTreeView_clicked_total(const QModelIndex &index)
+{
+    std::vector<std::pair <std::string, double>> chartList;
+    QString clickedName = index.data(Qt::DisplayRole).toString();
+
+    for (int i = 0; i < index.model()->rowCount()-1; i++)
+    {
+        std::vector<std::string> parentsList;
+        QString name;
+        QModelIndex current = index;
+        current = current.sibling(i,0);
+        std::string entryName = current.data(Qt::DisplayRole).toString().toStdString();
+        while (true) {
+            name = current.data(Qt::DisplayRole).toString();
+            if(name!="") {
+                auto it = parentsList.begin();
+                it = parentsList.insert(it, name.toStdString());
+            } else {
+                break;
+            }
+            current = current.parent();
+        }
+        if (parentsList.size() != presSortOrder.size()) {
+            presClickedName = clickedName;
+            std::vector<std::string> sortOrder(presSortOrder.begin(), presSortOrder.begin()+parentsList.size()+1);
+            std::vector<std::pair <std::string, int>> list =
+                    presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            double tot = 0;
+            for (int i = 0; i < (int) list.size(); i++) {
+                tot += static_cast<double>(list[i].second);
+            }
+            chartList.emplace_back(entryName, tot);
+        } else {
+            ui->pres_graph_stackedWidget->hide();
+            ui->presGraphTitle->clear();
+            presClickedName.clear();
+        }
+    }
+    return chartList;
+}
+
 void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
     QString clickedName = index.data(Qt::DisplayRole).toString();
     if (clickedName==presClickedName || index.column()!=0) { return;}
+    std::vector<std::pair <std::string, double>> chartListTotal;
+    bool total = false;
+    if (clickedName == "Total")
+    {
+        total = true;
+        chartListTotal = on_presTreeView_clicked_total(index);
+    }
 
     std::vector<std::string> parentsList;
     QModelIndex current = index;
@@ -1520,7 +1649,7 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
         for (int i = 0; i < (int) list.size(); i++) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
         }
-
+        if(total) chartList = chartListTotal;
         if (!chartList.empty()) {
             ui->presBarChart->clearPlottables();
             setupBarChart(ui->presBarChart, chartList);
@@ -1558,11 +1687,64 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
     }
 }
 
+std::vector<std::pair <std::string, double>> MainWindow::on_fundTreeView_clicked_total(const QModelIndex &index)
+{
+    std::vector<std::pair <std::string, double>> chartList;
+    QString clickedName = index.data(Qt::DisplayRole).toString();
+
+    for (int i = 0; i < index.model()->rowCount()-1; i++)
+    {
+        std::vector<std::string> parentsList;
+        QString name;
+        QModelIndex current = index;
+        current = current.sibling(i,0);
+        std::string entryName = current.data(Qt::DisplayRole).toString().toStdString();
+        while (true) {
+            name = current.data(Qt::DisplayRole).toString();
+            if(name!="") {
+                auto it = parentsList.begin();
+                it = parentsList.insert(it, name.toStdString());
+            } else {
+                break;
+            }
+            current = current.parent();
+        }
+        if (parentsList.size() != fundSortOrder.size()) {
+            fundClickedName = clickedName;
+            std::vector<std::string> sortOrder(fundSortOrder.begin(), fundSortOrder.begin()+parentsList.size()+1);
+            std::vector<std::pair <std::string, int>> list =
+                    funddb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            double tot = 0;
+            for (int i = 0; i < (int) list.size(); i++) {
+                tot += static_cast<double>(list[i].second);
+            }
+            chartList.emplace_back(entryName, tot);
+        } else {
+            ui->fund_graph_stackedWidget->hide();
+            ui->fundGraphTitle->clear();
+            fundClickedName.clear();
+        }
+    }
+    return chartList;
+
+}
+
 void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
     ui->fund_line_button->setEnabled(false);
+    ui->fund_histogram_button->setEnabled(false);
     QString clickedName = index.data(Qt::DisplayRole).toString();
 
     if (clickedName==fundClickedName || index.column()!=0) { return;}
+    std::vector<std::pair <std::string, double>> chartListTotal;
+    std::vector<std::pair <std::string, double>> chartListScatter;
+    bool total = false;
+    if (clickedName == "Total")
+    {
+
+        total = true;
+        chartListTotal = on_fundTreeView_clicked_total(index);
+        chartListScatter = on_fundTreeView_clicked_total_scatter(index);
+    }
 
     std::vector<std::string> parentsList;
     QModelIndex current = index;
@@ -1580,13 +1762,13 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
     }
 
     if (parentsList.size()!=fundSortOrder.size()) {
-
-        if (clickedName != fundClickedName) {
+        if (clickedName != fundClickedName || clickedName == "Total") {
 
             fundClickedName = clickedName;
             std::vector<std::string> sortOrder(fundSortOrder.begin(), fundSortOrder.begin()+parentsList.size()+1);
             std::vector<std::pair <std::string, double>> chartList =
                     funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
+            if(total) chartList = chartListTotal;
 
             if (!chartList.empty()) {
                 ui->fundBarChart->clearPlottables();
@@ -1604,9 +1786,13 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
                 ui->fundLineChart->yAxis->setLabel("Amount of funding in CAD");
                 ui->fundLineChart->replot();
 
-                ui->fundHistogramChart->clearPlottables();
-                setupHistogramChart(ui->fundHistogramChart,chartList);
-                ui->fundHistogramChart->replot();
+                if(total)
+                {
+                    ui->fund_histogram_button->setEnabled(true);
+                    ui->fundHistogramChart->clearPlottables();
+                    setupScatterPlot(ui->fundHistogramChart,chartListScatter);
+                    ui->fundHistogramChart->replot();
+                }
 
                 if (parentsList.size()>1) {
                     ui->fundGraphTitle->setText("Total " + clickedName + " Grants & Funding by " +
