@@ -161,6 +161,8 @@ private:
     bool load_pub(QString path, bool multi_file = false, bool skip_prompt = false);
     bool load_teach(QString path, bool multi_file = false, bool skip_prompt = false);
     bool load_pres(QString path, bool multi_file = false, bool skip_prompt = false);
+
+    //static std::vector<std::vector<std::string>> fixDateFormatting(std::vector<std::vector<std::string>>);
 };
 
 #endif // MAINWINDOW_H

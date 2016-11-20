@@ -512,7 +512,8 @@ std::string RecordsManager::removeTrailingZeros(double d) {
  * @param filterEnd     the end of a character range with which to filter the top-level by
  * @return              a formatted string with the analysis, can be used for TreeModel
  */
-std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, std::string countCol, char filterStart, char filterEnd) {
+std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, std::string countCol, char filterStart, char filterEnd)
+{
     return analyze(startYear, endYear, sortFields, list(0), 0, countCol, filterStart, filterEnd);
 }
 
@@ -547,7 +548,8 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
 
     // take the fields to be accumulated, find their header indices, and put them into an array
     std::vector<int> accsIndices;
-    for (n = 0; n < (int) accs.size(); n++) {
+    for (n = 0; n < (int) accs.size(); n++)
+    {
         accsIndices.push_back(getHeaderIndex(accs[n]));
     }
 
@@ -634,7 +636,8 @@ std::string RecordsManager::analyze(StringTree sortedTree, const std::vector<int
 
         StringTree newSorted;
         // create a newly sorted tree using the next field (header) to sort by as its key
-        for (StringTree::iterator itr = uniqueValue.first; itr != uniqueValue.second; itr++) {
+        for (StringTree::iterator itr = uniqueValue.first; itr != uniqueValue.second; itr++)
+        {
             // only create the tree if we're not at the deepest level
             if ((int) sortFields.size() - 1 > depth) {
                 newSorted.emplace(itr->second->at(sortFields[depth + 1]), itr->second);
@@ -658,12 +661,14 @@ std::string RecordsManager::analyze(StringTree sortedTree, const std::vector<int
         }
 
         // analyze at the next level, should we need to go deeper
-        if ((int) sortFields.size() > depth) {
+        if ((int) sortFields.size() > depth)
+        {
             returnString = analyze(newSorted, sortFields, accs, accsTotal, currencyMask, countCol, &fieldCount, depth + 1);
         }
 
         // add spaces to return string depending on how deep we are in the tree
-        for (int i = 0; i < depth; i++) {
+        for (int i = 0; i < depth; i++)
+        {
             fieldString += ' ';
         }
 

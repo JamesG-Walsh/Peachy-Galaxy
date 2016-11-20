@@ -14,6 +14,7 @@ public:
     int parseDateString(std::string dateString);
     std::vector<std::string> getHeaders();
     std::vector<std::vector<std::string>> getData();
+    void fixDateFormatting();
 };
 
 #endif // CSVREADER_H

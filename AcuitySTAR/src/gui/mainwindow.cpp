@@ -1235,6 +1235,7 @@ bool MainWindow::load_pres(QString path, bool multi_file, bool skip_prompt) {
     return false;
 }
 
+
 void MainWindow::on_fund_load_file_clicked() {
     QString path = load_file();
     if (!path.isEmpty())
@@ -1243,8 +1244,10 @@ void MainWindow::on_fund_load_file_clicked() {
     }
 }
 
-bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt) {
-    if (!checkFile(FUNDING, path, skip_prompt)) {
+bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt)
+{
+    if (!checkFile(FUNDING, path, skip_prompt))
+    {
         // enable gui elements
         ui->fund_sort->setEnabled(true);
         ui->fund_delete_sort->setEnabled(true);
@@ -1280,7 +1283,8 @@ bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt) {
         ui->fund_file_label->setText(fundPath);
 
         return true;
-    }else
+    }
+    else
     {
         if (!multi_file)
         {
