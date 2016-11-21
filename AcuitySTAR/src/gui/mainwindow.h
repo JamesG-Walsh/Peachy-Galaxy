@@ -119,7 +119,7 @@ private:
     static std::vector<std::string> clickedNames;
     static std::vector<std::tuple <std::string, std::string, double>> chartLists;
     static std::vector<string> teachNames;
-
+    static bool teachFlag;
 
 
     enum TABS {

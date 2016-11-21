@@ -83,7 +83,7 @@
     <string>Remove</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="textBrowser">
+  <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
      <x>10</x>

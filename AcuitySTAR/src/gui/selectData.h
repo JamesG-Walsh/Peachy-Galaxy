@@ -44,7 +44,7 @@ private:
     vector<string> sortFields;
     int numFields;
     string charInField;
-    QList<QComboBox*> fieldBoxes;
+    QList<string> fieldBoxes;
 };
 
 #endif // selectData_H

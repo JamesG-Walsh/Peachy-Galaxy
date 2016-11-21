@@ -1,6 +1,8 @@
 #include "gui/selectData.h"
 #include "ui_selectData.h"
 #include <QMessageBox>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include <algorithm>
 
 selectData::selectData(QWidget *parent) :
@@ -8,7 +10,7 @@ selectData::selectData(QWidget *parent) :
     ui(new Ui::selectData)
 {
     ui->setupUi(this);
-
+    displayNames();
 }
 
 selectData::~selectData()
@@ -27,12 +29,11 @@ vector<string> selectData::getSortFields() {
 
 void selectData::displayNames(){
     QStringList names;
-    ui->textBrowser->setReadOnly(true);
     for(int i = 0; i < sortFields.size(); i++){
         names.append(QString::fromStdString(sortFields.at(i)));
     }
     for(int i = 0; i < sortFields.size(); i++){
-        ui->textBrowser->append(names.at(i));
+        ui->listWidget->addItem(names.at(i));
     }
 }
 
@@ -41,7 +42,7 @@ void selectData::on_buttonBox_rejected() {
 }
 
 void selectData::on_buttonBox_accepted() {
-    done(0);
+    done(1);
 }
 
 void selectData::on_nameEntry_textChanged()
@@ -59,13 +60,12 @@ void selectData::on_addButton_clicked()
 
 void selectData::on_removeButton_clicked()
 {
+    charInField = ui->listWidget->currentItem()->text().toStdString();
     if(std::find(sortFields.begin(), sortFields.end(), charInField) != sortFields.end()){
         sortFields.erase(std::remove(sortFields.begin(), sortFields.end(), charInField), sortFields.end());
+        ui->listWidget->removeItemWidget(ui->listWidget->currentItem());
     }
-}
-
-void selectData::on_textBrowser_textChanged()
-{
-    ui->textBrowser->clear();
+    ui->listWidget->clear();
     displayNames();
 }
+

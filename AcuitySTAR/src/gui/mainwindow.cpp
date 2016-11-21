@@ -44,6 +44,7 @@ std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Da
 std::vector<std::string> MainWindow::clickedNames;
 std::vector<std::tuple <std::string, std::string, double>> MainWindow::chartLists;
 std::vector<string> MainWindow::teachNames;
+bool MainWindow::teachFlag = false;
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -222,7 +223,14 @@ void MainWindow::refresh(int tabIndex)
             ui->teachGraphTitle->clear();
         }
         break;
+
+    case TEACH_CUSTOM:
+        if(!teachPath.isEmpty()){
+            makeTree(TEACH_CUSTOM);
+            ui->teach_graph_stackedWidget->hide();
+            ui->teachGraphTitle->clear();        }
     }
+
 }
 
 
@@ -248,7 +256,6 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
             // create a new manager for the data
             delete teachdb;
             teachdb = new RecordsManager(&header);
-
             // check for right file type by searching for unique header
             searchstring = "Program";
             searchstring1 = "Division";
@@ -278,13 +285,9 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                         int year;
                         sscanf(teachData[i][yrIndex].c_str(), "%4d", &year);
                         teachData[i][yrIndex] = std::to_string(year);
-                        if(skip_prompt == true && std::find(teachNames.begin(), teachNames.end(), teachData[i][4]) == teachNames.end())
+                        if(std::find(teachNames.begin(), teachNames.end(), teachData[i][4]) == teachNames.end())
                             teachNames.push_back(teachData[i][4]);
-                        if(skip_prompt == false && std::find(teachNames.begin(), teachNames.end(), teachData[i][4]) != teachNames.end())
-                            teachdb2->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
-                        else
-                            teachdb->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
-
+                        teachdb->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
                     }
                 }
 
@@ -948,7 +951,10 @@ void MainWindow::on_teach_sort_currentIndexChanged(int index) {
             teachSortOrder.emplace_back(sortOrder[i].toStdString());
         }
         ui->teach_filter->setText(QString::fromStdString(teachSortOrder[0]));
-        refresh(TEACH);
+        if(teachFlag == true)
+            refresh(TEACH_CUSTOM);
+        else
+            refresh(TEACH);
 
     }
 }
@@ -1348,37 +1354,75 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
     if (parentsList.size()!=teachSortOrder.size()) {
         teachClickedName = clickedName;
         std::vector<std::string> sortOrder(teachSortOrder.begin(), teachSortOrder.begin()+parentsList.size()+1);
-        std::vector<std::pair <std::string, int>> list =
-                teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
-        std::vector<std::pair <std::string, double>> chartList;
+        std::vector<std::pair <std::string, int>> list;
+        if(teachFlag == true){
+            std::vector<std::pair <std::string, int>> list =
+                    teachdb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            std::vector<std::pair <std::string, double>> chartList;
 
-        for (int i = 0; i < (int) list.size(); i++) {
-            chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
+            for (int i = 0; i < (int) list.size(); i++) {
+                chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
 
-        }
-
-        if (!chartList.empty()) {
-            ui->teachBarChart->clearPlottables();
-            setupBarChart(ui->teachBarChart, chartList);
-            ui->teachBarChart->replot();
-
-            setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
-
-            ui->teachLineChart->clearPlottables();
-            setupLineChart(ui->teachLineChart,chartList);
-            ui->teachLineChart->yAxis->setLabel("Number of courses taught");
-            ui->teachLineChart->replot();
-
-
-            // setupBarChart(ui->teachLineChart,chartList);
-
-            if (parentsList.size()>1) {
-                ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
-                                             QString::fromStdString(teachSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-            } else {
-                ui->teachGraphTitle->setText("Total Teaching by " + QString::fromStdString(parentsList[0]));
             }
-            ui->teach_graph_stackedWidget->show();
+
+            if (!chartList.empty()) {
+                ui->teachBarChart->clearPlottables();
+                setupBarChart(ui->teachBarChart, chartList);
+                ui->teachBarChart->replot();
+
+                setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
+
+                ui->teachLineChart->clearPlottables();
+                setupLineChart(ui->teachLineChart,chartList);
+                ui->teachLineChart->yAxis->setLabel("Number of courses taught");
+                ui->teachLineChart->replot();
+
+
+                // setupBarChart(ui->teachLineChart,chartList);
+
+                if (parentsList.size()>1) {
+                    ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
+                                                 QString::fromStdString(teachSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                } else {
+                    ui->teachGraphTitle->setText("Total Teaching by " + QString::fromStdString(parentsList[0]));
+                }
+                ui->teach_graph_stackedWidget->show();
+            }
+        }
+        else{
+            std::vector<std::pair <std::string, int>> list =
+                    teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+
+            std::vector<std::pair <std::string, double>> chartList;
+
+            for (int i = 0; i < (int) list.size(); i++) {
+                chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
+
+            }
+
+            if (!chartList.empty()) {
+                ui->teachBarChart->clearPlottables();
+                setupBarChart(ui->teachBarChart, chartList);
+                ui->teachBarChart->replot();
+
+                setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
+
+                ui->teachLineChart->clearPlottables();
+                setupLineChart(ui->teachLineChart,chartList);
+                ui->teachLineChart->yAxis->setLabel("Number of courses taught");
+                ui->teachLineChart->replot();
+
+
+                // setupBarChart(ui->teachLineChart,chartList);
+
+                if (parentsList.size()>1) {
+                    ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
+                                                 QString::fromStdString(teachSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                } else {
+                    ui->teachGraphTitle->setText("Total Teaching by " + QString::fromStdString(parentsList[0]));
+                }
+                ui->teach_graph_stackedWidget->show();
+            }
         }
     } else {
         ui->teach_graph_stackedWidget->hide();
@@ -1741,9 +1785,49 @@ void MainWindow::on_teachCustomList_clicked()
         int ret = sortdialog->exec();
         if (ret){
             teachNames = sortdialog->getSortFields();
-            if(!checkFile(TEACH, teachPath, false)){
-                makeTree(TEACH_CUSTOM);
+            teachFlag = true;
+            // create a new reader to read in the file
+            CSVReader reader;
+            std::vector<std::string> header;
+            std::string searchstring, searchstring1;
+            int sortHeaderIndex = 2;
+            reader = CSVReader(teachPath.toStdString());
+            header = reader.getHeaders();
+
+            // create a new manager for the data
+            delete teachdb2;
+            teachdb2 = new RecordsManager(&header);
+            // check for right file type by searching for unique header
+            searchstring = "Program";
+            searchstring1 = "Division";
+            sortHeaderIndex = teachdb2->getHeaderIndex("Start Date");
+            teachData = reader.getData();
+            unsigned int j;
+            for (int i = 0; i < (int) teachData.size(); i++)
+            {
+                for (j = 0; j < TEACH_MANFIELDS.size(); j++)
+                {
+                    int index = teachdb2->getHeaderIndex(TEACH_MANFIELDS[j]);
+                    if (teachData[i][index].compare("") == 0)
+                    {
+                        break;
+                    }
+                }
+
+                // if all mandatory fields are okay
+                if (j == TEACH_MANFIELDS.size())
+                {
+                    // date interpretation
+                    int yrIndex = teachdb2->getHeaderIndex("Start Date");
+                    int year;
+                    sscanf(teachData[i][yrIndex].c_str(), "%4d", &year);
+                    teachData[i][yrIndex] = std::to_string(year);
+                    if(std::find(teachNames.begin(), teachNames.end(), teachData[i][4])!=teachNames.end())
+                        teachdb2->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
+                }
             }
+            makeTree(TEACH_CUSTOM);
+
         }
         delete sortdialog;
     }
