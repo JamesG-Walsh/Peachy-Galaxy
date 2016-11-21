@@ -4,6 +4,8 @@
 #include <string>
 #include <QMainWindow>
 #include <vector>
+#include <string.h>
+using namespace std;
 
 
 class RecordsManager;
@@ -110,19 +112,19 @@ private slots:
 
     void on_pubExportButton_clicked();
 
-    void on_checkBox_toggled(bool checked);
+    void on_teachCustomList_clicked();
 
 private:
     static std::vector<std::string> GRANTS_MANFIELDS, PRES_MANFIELDS, PUBS_MANFIELDS, TEACH_MANFIELDS;
-    static bool CUSTOM_SORTING;
     static std::vector<std::string> clickedNames;
     static std::vector<std::tuple <std::string, std::string, double>> chartLists;
-
+    static std::vector<string> teachNames;
 
 
 
     enum TABS {
-        TEACH, PUBLICATIONS, PRESENTATIONS, FUNDING
+        TEACH, PUBLICATIONS, PRESENTATIONS, FUNDING,
+        TEACH_CUSTOM, PUBLICATIONS_CUSTOM, PRESENTATIONS_CUSTOM, FUNDING_CUSTOM
     };
 
     struct field_error;
@@ -133,7 +135,7 @@ private:
     QList<QStringList> allTeachOrders, allPubOrders, allPresOrders, allFundOrders, pubfile;
     QString teachPath, pubPath, presPath, fundPath;
     TreeModel *fundTree, *presTree, *pubTree, *teachTree;
-    RecordsManager *funddb, *presdb, *pubdb, *teachdb;
+    RecordsManager *funddb, *presdb, *pubdb, *teachdb, *teachdb2;
     std::vector<std::vector<std::string>> fundData, presData, pubData, teachData;
 
     std::vector<std::string> teachSortOrder, pubSortOrder, presSortOrder, fundSortOrder;

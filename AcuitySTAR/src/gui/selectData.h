@@ -2,9 +2,10 @@
 #define selectData_H
 
 #include <QDialog>
+#include <string.h>
 #include <QAbstractButton>
 #include <QComboBox>
-
+using namespace std;
 namespace Ui
 
 {
@@ -18,27 +19,31 @@ class selectData : public QDialog
 public:
     explicit selectData(QWidget *parent = 0);
     ~selectData();
-    void setFields(const std::vector<std::string> &headers);
-    QStringList getSortFields();
+    void setFields(vector<string> names);
+    vector<string> getSortFields();
 
 private slots:
-    void setNext(int fieldNum, int currentIndex);
 
-    void on_field_0_currentIndexChanged(int index);
-    void on_field_1_currentIndexChanged(int index);
-    void on_field_2_currentIndexChanged(int index);
-    void on_field_3_currentIndexChanged(int index);
-    void on_field_4_currentIndexChanged(int index);
-    void on_field_5_currentIndexChanged(int index);
+    void displayNames();
+
 
     void on_buttonBox_rejected();
     void on_buttonBox_accepted();
 
 
+    void on_nameEntry_textChanged();
+
+    void on_addButton_clicked();
+
+    void on_removeButton_clicked();
+
+    void on_textBrowser_textChanged();
+
 private:
     Ui::selectData *ui;
-    QStringList sortFields;
+    vector<string> sortFields;
     int numFields;
+    string charInField;
     QList<QComboBox*> fieldBoxes;
 };
 

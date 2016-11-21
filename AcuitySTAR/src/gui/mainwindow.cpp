@@ -19,6 +19,7 @@ using namespace std;
 #include "ui_mainwindow.h"
 #include "CustomSort.h"
 #include "ErrorEditDialog.h"
+#include "selectData.h"
 
 #include "database/CSVReader.h"
 #include "database/QSortListIO.h"
@@ -40,15 +41,15 @@ std::vector<std::string> MainWindow::GRANTS_MANFIELDS = {"Member Name", "Funding
 std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "Type", "Role", "Title"};
 std::vector<std::string> MainWindow::PUBS_MANFIELDS = {"Member Name", "Type", "Status Date", "Role", "Title"};
 std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program", "Division"};
-bool MainWindow::CUSTOM_SORTING = false;
 std::vector<std::string> MainWindow::clickedNames;
 std::vector<std::tuple <std::string, std::string, double>> MainWindow::chartLists;
+std::vector<string> MainWindow::teachNames;
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow),
     fundTree(NULL), presTree(NULL), pubTree(NULL), teachTree(NULL),
-    funddb(NULL), presdb(NULL), pubdb(NULL), teachdb(NULL) {
+    funddb(NULL), presdb(NULL), pubdb(NULL), teachdb(NULL), teachdb2(NULL) {
     // draw GUI elements
     ui->setupUi(this);
 
@@ -136,6 +137,7 @@ MainWindow::~MainWindow() {
     delete presdb;
     delete pubdb;
     delete teachdb;
+    delete teachdb2;
     delete printer;
 }
 
@@ -276,8 +278,13 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                         int year;
                         sscanf(teachData[i][yrIndex].c_str(), "%4d", &year);
                         teachData[i][yrIndex] = std::to_string(year);
+                        if(skip_prompt == true && std::find(teachNames.begin(), teachNames.end(), teachData[i][4]) == teachNames.end())
+                            teachNames.push_back(teachData[i][4]);
+                        if(skip_prompt == false && std::find(teachNames.begin(), teachNames.end(), teachData[i][4]) != teachNames.end())
+                            teachdb2->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
+                        else
+                            teachdb->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
 
-                        teachdb->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
                     }
                 }
 
@@ -640,7 +647,17 @@ void MainWindow::makeTree(int tabIndex) {
         ui->teach_pie_button->toggle();
 
         break;
+    case TEACH_CUSTOM:
+        currentdb = teachdb2;
+        delete teachTree;
+        teachTree = new TeachingTreeModel(currentdb);
+        currentTree = teachTree;
+        currentView = ui->teachTreeView;
+        currentTree->setupModel(yearStart, yearEnd, teachSortOrder, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
 
+        ui->teach_pie_button->toggle();
+
+        break;
     case PUBLICATIONS:
         // set up some member variables to point to the current data in use
         currentdb = pubdb;
@@ -1339,11 +1356,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
 
         }
-     /*   if(CUSTOM_SORTING){
-            std::vector<std::tuple<std::string, std::string, double>> chartIndex;
-            chartIndex.assign(clickedName, chartList.);
-            chartLists.push_back(chartIndex);
-        }*/
+
         if (!chartList.empty()) {
             ui->teachBarChart->clearPlottables();
             setupBarChart(ui->teachBarChart, chartList);
@@ -1720,10 +1733,23 @@ void MainWindow::on_fund_filter_from_textChanged() { refresh(FUNDING);}
 void MainWindow::on_fund_filter_to_textChanged() { refresh(FUNDING);}
 
 
-
-
-void MainWindow::on_checkBox_toggled(bool checked)
+void MainWindow::on_teachCustomList_clicked()
 {
-    if(checked)
-        CUSTOM_SORTING = true;
+    if(teachdb != NULL){
+        selectData* sortdialog = new selectData();
+        sortdialog->setFields(teachNames);
+        int ret = sortdialog->exec();
+        if (ret){
+            teachNames = sortdialog->getSortFields();
+            if(!checkFile(TEACH, teachPath, false)){
+                makeTree(TEACH_CUSTOM);
+            }
+        }
+        delete sortdialog;
+    }
+    else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
 }
+
+
