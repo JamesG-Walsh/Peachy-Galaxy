@@ -21,8 +21,7 @@ namespace Ui {
     class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
     friend class Test;
 
@@ -133,7 +132,7 @@ private:
     Ui::MainWindow* ui;
     QPrinter* printer;
 
-    QList<QStringList> allTeachOrders, allPubOrders, allPresOrders, allFundOrders, pubfile;
+    QList<QStringList> allTeachOrders, allPubOrders, allPresOrders, allFundOrders;
     QString teachPath, pubPath, presPath, fundPath;
     TreeModel *fundTree, *presTree, *pubTree, *teachTree;
     RecordsManager *funddb, *presdb, *pubdb, *teachdb;
@@ -153,7 +152,7 @@ private:
 
     int yearStart, yearEnd;
 
-    int checkFile(int index, QString filePath, bool skip_prompt);
+    int checkFile(int index, QString filePath);
     //std::vector<std::string> getSelectedSortOrder(int tabIndex);
     void createDefaultSortOrder(int tabIndex);
     void makeTree(int tabIndex);
@@ -166,13 +165,11 @@ private:
 
      bool handle_field_errors(std::vector<std::vector<std::string>*>& errors,
                              std::vector<std::string>& headers,
-                             std::vector<std::string>& mandatory,
-                             QString &filePath,
-                             bool skip_prompt);
-    bool load_fund(QString path, bool multi_file = false, bool skip_prompt = false);
-    bool load_pub(QString path, bool multi_file = false, bool skip_prompt = false);
-    bool load_teach(QString path, bool multi_file = false, bool skip_prompt = false);
-    bool load_pres(QString path, bool multi_file = false, bool skip_prompt = false);
+                             std::vector<std::string>& mandatory);
+    bool load_fund(QString path, bool multi_file = false);
+    bool load_pub(QString path, bool multi_file = false);
+    bool load_teach(QString path, bool multi_file = false);
+    bool load_pres(QString path, bool multi_file = false);
 };
 
 #endif // MAINWINDOW_H

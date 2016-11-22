@@ -227,7 +227,7 @@ p, li { white-space: pre-wrap; }
        <item row="7" column="1">
         <widget class="QTabWidget" name="categoryTab">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Export to pdf</string>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <property name="usesScrollButtons">
           <bool>false</bool>
@@ -546,7 +546,7 @@ p, li { white-space: pre-wrap; }
               </size>
              </property>
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Teaching CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Presentation CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="autoFillBackground">
               <bool>false</bool>
@@ -928,15 +928,6 @@ p, li { white-space: pre-wrap; }
                <height>0</height>
               </size>
              </property>
-<<<<<<< HEAD
-=======
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Publication CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
->>>>>>> refs/remotes/origin/master
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
@@ -2089,9 +2080,6 @@ p, li { white-space: pre-wrap; }
              <property name="enabled">
               <bool>false</bool>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;View Data as Bar Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="text">
               <string>Select Sort Order:</string>
              </property>
@@ -2159,15 +2147,6 @@ p, li { white-space: pre-wrap; }
                <height>0</height>
               </size>
              </property>
-<<<<<<< HEAD
-=======
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load Grants and Clinical Funding CSV File&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
->>>>>>> refs/remotes/origin/master
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
@@ -2213,16 +2192,11 @@ p, li { white-space: pre-wrap; }
              <property name="enabled">
               <bool>false</bool>
              </property>
-<<<<<<< HEAD
              <property name="maximumSize">
               <size>
                <width>60</width>
                <height>16777215</height>
               </size>
-=======
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;View Data as Pie Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
->>>>>>> refs/remotes/origin/master
              </property>
              <property name="text">
               <string>*</string>
@@ -2259,9 +2233,6 @@ p, li { white-space: pre-wrap; }
                <height>0</height>
               </size>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a New Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
             </widget>
            </item>
            <item row="2" column="6">
@@ -2293,7 +2264,7 @@ p, li { white-space: pre-wrap; }
            <item row="0" column="14" alignment="Qt::AlignRight">
             <widget class="QToolButton" name="fundPrintButton">
              <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print the Current Chart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
@@ -2351,9 +2322,6 @@ p, li { white-space: pre-wrap; }
             <widget class="QToolButton" name="fundExportButton">
              <property name="toolTip">
               <string>Export to pdf</string>
-             </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create a New Custom Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
@@ -2431,9 +2399,6 @@ p, li { white-space: pre-wrap; }
              <property name="autoFillBackground">
               <bool>false</bool>
              </property>
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete the Currently Selected Custom Sort Order&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(204, 204, 204);</string>
              </property>
@@ -2478,30 +2443,10 @@ p, li { white-space: pre-wrap; }
              </property>
             </spacer>
            </item>
-<<<<<<< HEAD
            <item row="5" column="7" colspan="8">
             <widget class="QFrame" name="fundChartFrame">
              <property name="frameShape">
               <enum>QFrame::Box</enum>
-=======
-           <item row="0" column="13">
-            <widget class="QToolButton" name="fundExportButton">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export to PDF&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(204, 204, 204);</string>
-             </property>
-             <property name="text">
-              <string>Export</string>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:/Pdf.svg</normaloff>:/Pdf.svg</iconset>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextBesideIcon</enum>
->>>>>>> refs/remotes/origin/master
              </property>
              <property name="frameShadow">
               <enum>QFrame::Sunken</enum>

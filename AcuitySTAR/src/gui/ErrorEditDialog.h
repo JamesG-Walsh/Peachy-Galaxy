@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <vector>
 #include <string>
-#include <QString>
 
 class QAbstractButton;
 
@@ -20,8 +19,7 @@ public:
      ErrorEditDialog(QWidget *parent,
                      std::vector<std::vector<std::string>*>& errors,
                      std::vector<std::string>& headers,
-                     std::vector<std::string>& mandatory,
-                     QString &type);
+                     std::vector<std::string>& mandatory);
     ~ErrorEditDialog();
 
 private slots:
@@ -33,7 +31,6 @@ private:
     std::vector<std::string> headerList;
     std::vector<std::string> mandatoryList;
     Ui::ErrorEditDialog *ui;
-    QString type;
 
     void saveData();
 };

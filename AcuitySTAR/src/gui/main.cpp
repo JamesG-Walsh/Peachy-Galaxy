@@ -15,19 +15,18 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+    bool testing = false; //testing flag
+
     QApplication app(argc, argv);
 
-    bool testing = true; //testing flag
-    if (testing)
+    /*if (testing)
     {
         Test *test_obj = new Test();
         QTest::qExec(test_obj);
-    }
-    else
-    {
+    }*/
+
     MainWindow w;
     w.show();
-    }
 
 
 
