@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <property name="usesScrollButtons">
           <bool>false</bool>
@@ -699,7 +699,7 @@ p, li { white-space: pre-wrap; }
                  <number>0</number>
                 </property>
                 <property name="currentIndex">
-                 <number>3</number>
+                 <number>0</number>
                 </property>
                 <widget class="QWidget" name="teach_pie_page">
                  <layout class="QGridLayout" name="gridLayout_10">
@@ -852,16 +852,6 @@ p, li { white-space: pre-wrap; }
              <zorder>teachGraphTitle</zorder>
             </widget>
            </item>
-           <item row="5" column="14">
-            <widget class="QRadioButton" name="teach_histogram_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Histogram</string>
-             </property>
-            </widget>
-           </item>
           </layout>
           <zorder>teachChartFrame</zorder>
           <zorder>teachTreeView</zorder>
@@ -883,7 +873,6 @@ p, li { white-space: pre-wrap; }
           <zorder>teach_bar_button</zorder>
           <zorder>teach_line_button</zorder>
           <zorder>teachExportButton</zorder>
-          <zorder>teach_histogram_button</zorder>
          </widget>
          <widget class="QWidget" name="tabPub">
           <attribute name="title">
@@ -1458,33 +1447,33 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
-           <item row="4" column="13">
-            <widget class="QRadioButton" name="pub_histogram_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Histogram</string>
-             </property>
-            </widget>
-           </item>
           </layout>
+          <zorder>pubChartFrame</zorder>
+          <zorder>pubTreeView</zorder>
+          <zorder>pub_new_sort</zorder>
+          <zorder>pub_filter_label</zorder>
+          <zorder>pubExportButton</zorder>
+          <zorder>pub_filter_to</zorder>
+          <zorder>pub_load_file</zorder>
+          <zorder>pub_filter_from</zorder>
+          <zorder>pub_to_label</zorder>
+          <zorder>line_6</zorder>
+          <zorder>pub_sort_label</zorder>
+          <zorder>line_5</zorder>
+          <zorder>pub_pie_button</zorder>
+          <zorder>pub_sort</zorder>
+          <zorder>pub_file_label</zorder>
+          <zorder>pubPrintButton</zorder>
+          <zorder>pub_bar_button</zorder>
+          <zorder>pub_delete_sort</zorder>
+          <zorder>pub_filter</zorder>
+          <zorder>pub_line_button</zorder>
          </widget>
          <widget class="QWidget" name="tabPres">
           <attribute name="title">
            <string>Presentations</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="4" column="13">
-            <widget class="QRadioButton" name="pres_histogram_button">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Histogram</string>
-             </property>
-            </widget>
-           </item>
            <item row="4" column="1" colspan="2">
             <widget class="QLabel" name="pres_filter">
              <property name="enabled">
@@ -2392,7 +2381,7 @@ p, li { white-space: pre-wrap; }
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Histogram</string>
+              <string>Scatter Plot</string>
              </property>
             </widget>
            </item>
@@ -2669,7 +2658,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1127</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

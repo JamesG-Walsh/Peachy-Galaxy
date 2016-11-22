@@ -741,7 +741,7 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
     double minYear = std::stod(lineChartList[0].first);
     double maxYear = std::stod(lineChartList[((int) lineChartList.size()) -1].first);
     double numYears = maxYear - minYear + 1;
-    //qDebug() << QString::number(numYears);
+
     QVector<double> x(numYears, 0), y(numYears, 0);
     for(int i = 0; i < numYears; i++) x[i] = minYear + i;
     for(int i = 0; i < (int) lineChartList.size(); i++)
@@ -764,10 +764,12 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
 }
 
 void MainWindow::setupScatterPlot(QCustomPlot *scatterPlot, std::vector<std::pair <std::string, double>> scatterPlotList) {
+
     double minMoney = std::numeric_limits<double>::max();
     double maxMoney = 0;
     double minFundings = std::numeric_limits<double>::max();
     double maxFundings = 0;
+
     int listSize = (int) scatterPlotList.size();
     QVector<double> x(listSize), y(listSize);
 
@@ -775,32 +777,34 @@ void MainWindow::setupScatterPlot(QCustomPlot *scatterPlot, std::vector<std::pai
     {
         double first = std::stod(scatterPlotList[i].first);
         double second = log(scatterPlotList[i].second);
+
         x[i] = first;
         y[i] = second;
+
+        // Update axis limits
         if (minMoney > second) minMoney = second;
         if (maxMoney < second) maxMoney = second;
         if (maxFundings < first) maxFundings =  first;
         if (minFundings > first) minFundings =  first;
     }
+
     qSort(x);
     qSort(y);
 
     scatterPlot->addGraph();
     scatterPlot->graph(0)->setData(x, y);
-    scatterPlot->graph(0)->setPen((QColor(0, 0, 255)));
+    scatterPlot->graph(0)->setPen(QPen((QColor(0, 0, 255)),4));
     scatterPlot->graph(0)->setLineStyle(QCPGraph::lsNone);
-     scatterPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
+    scatterPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDot));
+
     scatterPlot->xAxis->setLabel("Number of times funded");
     scatterPlot->yAxis->setLabel("log of the Amount of funding in CAD");
     scatterPlot->xAxis->setRange(minFundings-0.5*(x[1]-x[0]), maxFundings+-0.5*(x[1]-x[0]));
+    scatterPlot->yAxis->setRange(minMoney-0.5*(y[1]-y[0]), maxMoney+0.5*(y[1]-y[0]));
     scatterPlot->xAxis->setAutoTickStep(false);
     scatterPlot->xAxis->setSubTickCount(0);
     scatterPlot->xAxis->setTickStep(1);
-    scatterPlot->yAxis->setRange(minMoney-0.5*(y[1]-y[0]), maxMoney+0.5*(y[1]-y[0]));
-    //qDebug() << "min money";
-    //qDebug() << minMoney;
 }
-
 
 void MainWindow::setupHistogramChart(QCustomPlot *histogramChart, std::vector<std::pair <std::string, double>> histogramChartList){
 
@@ -1068,17 +1072,17 @@ void MainWindow::on_fund_delete_sort_clicked() {
     }
 }
 
-void MainWindow::on_teach_histogram_button_toggled(){ ui->teach_graph_stackedWidget->setCurrentIndex(3);}
+//void MainWindow::on_teach_histogram_button_toggled(){ ui->teach_graph_stackedWidget->setCurrentIndex(3);}
 void MainWindow::on_teach_line_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_teach_bar_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_teach_pie_button_toggled() { ui->teach_graph_stackedWidget->setCurrentIndex(0);}
 
-void MainWindow::on_pub_histogram_button_toggled(){ ui->pub_graph_stackedWidget->setCurrentIndex(3);}
+//void MainWindow::on_pub_histogram_button_toggled(){ ui->pub_graph_stackedWidget->setCurrentIndex(3);}
 void MainWindow::on_pub_line_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_pub_bar_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pub_pie_button_toggled() { ui->pub_graph_stackedWidget->setCurrentIndex(0);}
 
-void MainWindow::on_pres_histogram_button_toggled(){ ui->pres_graph_stackedWidget->setCurrentIndex(3);}
+//void MainWindow::on_pres_histogram_button_toggled(){ ui->pres_graph_stackedWidget->setCurrentIndex(3);}
 void MainWindow::on_pres_line_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(2);}
 void MainWindow::on_pres_bar_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(1);}
 void MainWindow::on_pres_pie_button_toggled() { ui->pres_graph_stackedWidget->setCurrentIndex(0);}
@@ -1106,7 +1110,7 @@ bool MainWindow::load_teach(QString path, bool multi_file) {
         ui->teach_pie_button->setEnabled(true);
         ui->teach_bar_button->setEnabled(true);
         //ui->teach_line_button->setEnabled(true);
-        ui->teach_histogram_button->setEnabled(true);
+        //ui->teach_histogram_button->setEnabled(true);
         ui->teach_to_label->setEnabled(true);
         ui->teach_sort_label->setEnabled(true);
         ui->teach_filter->setEnabled(true);
@@ -1160,7 +1164,7 @@ bool MainWindow::load_pub(QString path, bool multi_file) {
         ui->pub_pie_button->setEnabled(true);
         ui->pub_bar_button->setEnabled(true);
         ui->pub_line_button->setEnabled(true);
-        ui->pub_histogram_button->setEnabled(true);
+        //ui->pub_histogram_button->setEnabled(true);
 
         ui->pub_to_label->setEnabled(true);
         ui->pub_sort_label->setEnabled(true);
@@ -1214,7 +1218,7 @@ bool MainWindow::load_pres(QString path, bool multi_file) {
         ui->pres_pie_button->setEnabled(true);
         ui->pres_bar_button->setEnabled(true);
         ui->pres_line_button->setEnabled(true);
-        ui->pres_histogram_button->setEnabled(true);
+        //ui->pres_histogram_button->setEnabled(true);
 
         ui->pres_to_label->setEnabled(true);
         ui->pres_sort_label->setEnabled(true);
@@ -1462,9 +1466,9 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             ui->teachLineChart->replot();
 
             // setupBarChart(ui->teachLineChart,chartList);
-            ui->teachHistogramChart->clearPlottables();
-            setupHistogramChart(ui->teachHistogramChart,chartList);
-            ui->teachHistogramChart->replot();
+            //ui->teachHistogramChart->clearPlottables();
+            //setupHistogramChart(ui->teachHistogramChart,chartList);
+            //ui->teachHistogramChart->replot();
 
             if (parentsList.size()>1) {
                 ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
@@ -1554,9 +1558,9 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
             ui->pubLineChart->replot();
 
 
-            ui->pubHistogramChart->clearPlottables();
-            setupHistogramChart(ui->pubHistogramChart,chartList);
-            ui->pubHistogramChart->replot();
+            //ui->pubHistogramChart->clearPlottables();
+            //setupHistogramChart(ui->pubHistogramChart,chartList);
+            //ui->pubHistogramChart->replot();
 
             if (parentsList.size()>1) {
                 ui->pubGraphTitle->setText("Total " + clickedName + " Publications by " +
@@ -1666,9 +1670,9 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
             ui->presLineChart->yAxis->setLabel("Number of presentations");
             ui->presLineChart->replot();
 
-            ui->presHistogramChart->clearPlottables();
-            setupHistogramChart(ui->presHistogramChart,chartList);
-            ui->presHistogramChart->replot();
+            //ui->presHistogramChart->clearPlottables();
+            //setupHistogramChart(ui->presHistogramChart,chartList);
+            //ui->presHistogramChart->replot();
 
 
 
