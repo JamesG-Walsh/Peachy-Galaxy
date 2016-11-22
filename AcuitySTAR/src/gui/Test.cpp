@@ -4,6 +4,7 @@
 #include "database/CSVReader.h"
 #include "gui/Test.h"
 #include "gui/mainwindow.h"
+#include "gui/editsort.h"
 #include <vector>
 #include <iostream>
 #include "database/QFileIO.h"
@@ -227,7 +228,5 @@ void Test::test_setupLineChart() {
     }
     w.setupLineChart(w.ui->teachLineChart,chartList);
     QCOMPARE(w.ui->teachLineChart->plottableCount(),(int) chartList.size());
-
 }
-
 

@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+ #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <string>
@@ -44,6 +44,16 @@ private slots:
     void on_pub_new_sort_clicked();
     void on_pres_new_sort_clicked();
     void on_fund_new_sort_clicked();
+
+    void on_teach_edit_sort_clicked();
+    void on_pub_edit_sort_clicked();
+    void on_pres_edit_sort_clicked();
+    void on_fund_edit_sort_clicked();
+
+
+
+
+
 
     void on_actionLoad_file_triggered();
 
