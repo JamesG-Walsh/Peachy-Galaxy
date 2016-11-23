@@ -230,3 +230,22 @@ void Test::test_setupLineChart() {
     QCOMPARE(w.ui->teachLineChart->plottableCount(),(int) chartList.size());
 }
 
+
+
+void Test::test_editsort_setFields(){
+    std::vector<std::string> testString;
+    testString.push_back("a");
+    editui.setFields(testString);
+    QCOMPARE(editui.fieldBoxes.at(0)->currentText(),QString::fromStdString("a"));
+}
+
+void Test::test_editsort_getSortFields(){
+    std::vector<std::string> testString;
+    editui.setFields(testString);
+    QStringList testList;
+    QCOMPARE(editui.getSortFields(),testList);
+}
+
+
+
+

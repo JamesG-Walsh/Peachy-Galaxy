@@ -31,9 +31,6 @@ void EditSort::setFields(const std::vector<std::string> &headers) {
     }
     for (int i = 0; i < (int) headers.size(); i++) {
        ui->field_0->addItem(QString::fromStdString(headers[i]));
-      // qDebug() <<  QString::fromStdString("****header***");
-      // qDebug() <<  QString::fromStdString(headers[i]);
-      // qDebug() <<  QString::fromStdString("****header***");
 
     }
 
