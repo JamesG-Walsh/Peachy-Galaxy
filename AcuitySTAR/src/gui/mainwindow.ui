@@ -42,7 +42,7 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QFrame" name="frame">
       <property name="autoFillBackground">
        <bool>false</bool>
@@ -2017,19 +2017,15 @@ p, li { white-space: pre-wrap; }
                  </layout>
                 </widget>
                 <widget class="QWidget" name="pres_histogram_page">
-                 <widget class="QCustomPlot" name="presHistogramChart" native="true">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="geometry">
-                   <rect>
-                    <x>10</x>
-                    <y>-20</y>
-                    <width>541</width>
-                    <height>321</height>
-                   </rect>
-                  </property>
-                 </widget>
+                 <layout class="QGridLayout" name="gridLayout_24">
+                  <item row="0" column="0">
+                   <widget class="QCustomPlot" name="presHistogramChart" native="true">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </widget>
               </item>
@@ -2610,19 +2606,15 @@ p, li { white-space: pre-wrap; }
                  </layout>
                 </widget>
                 <widget class="QWidget" name="fund_histogram_page">
-                 <widget class="QCustomPlot" name="fundHistogramChart" native="true">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="geometry">
-                   <rect>
-                    <x>10</x>
-                    <y>-20</y>
-                    <width>521</width>
-                    <height>311</height>
-                   </rect>
-                  </property>
-                 </widget>
+                 <layout class="QGridLayout" name="gridLayout_25">
+                  <item row="0" column="0">
+                   <widget class="QCustomPlot" name="fundHistogramChart" native="true">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </widget>
               </item>

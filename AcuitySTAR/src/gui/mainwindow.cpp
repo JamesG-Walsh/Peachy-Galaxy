@@ -795,7 +795,7 @@ void MainWindow::setupScatterPlot(QCustomPlot *scatterPlot, std::vector<std::pai
     scatterPlot->graph(0)->setData(x, y);
     scatterPlot->graph(0)->setPen(QPen((QColor(0, 0, 255)),4));
     scatterPlot->graph(0)->setLineStyle(QCPGraph::lsNone);
-    scatterPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDot));
+    scatterPlot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross));
 
     scatterPlot->xAxis->setLabel("Number of times funded");
     scatterPlot->yAxis->setLabel("log of the Amount of funding in CAD");
