@@ -238,6 +238,7 @@ void MainWindow::refresh(int tabIndex)
             ui->teach_graph_stackedWidget->hide();
             ui->teachGraphTitle->clear();
         }
+        break;
     case FUNDING_CUSTOM:
         if (!fundPath.isEmpty()) {
             makeTree(FUNDING_CUSTOM);
@@ -1056,7 +1057,10 @@ void MainWindow::on_pub_sort_currentIndexChanged(int index) {
             pubSortOrder.emplace_back(sortOrder[i].toStdString());
         }
         ui->pub_filter->setText(QString::fromStdString(pubSortOrder[0]));
-        refresh(PUBLICATIONS);
+        if(pubFlag == true)
+            refresh(PUBLICATIONS_CUSTOM);
+        else
+            refresh(PUBLICATIONS);
     }
 }
 
@@ -1068,7 +1072,10 @@ void MainWindow::on_pres_sort_currentIndexChanged(int index) {
             presSortOrder.emplace_back(sortOrder[i].toStdString());
         }
         ui->pres_filter->setText(QString::fromStdString(presSortOrder[0]));
-        refresh(PRESENTATIONS);
+        if(presFlag == true)
+            refresh(PRESENTATIONS_CUSTOM);
+        else
+            refresh(PRESENTATIONS);
     }
 }
 
@@ -1080,7 +1087,10 @@ void MainWindow::on_fund_sort_currentIndexChanged(int index) {
             fundSortOrder.emplace_back(sortOrder[i].toStdString());
         }
         ui->fund_filter->setText(QString::fromStdString(fundSortOrder[0]));
-        refresh(FUNDING);
+        if(fundFlag == true)
+            refresh(FUNDING_CUSTOM);
+        else
+            refresh(FUNDING);
     }
 }
 
