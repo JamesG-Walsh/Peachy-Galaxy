@@ -114,12 +114,18 @@ private slots:
 
     void on_teachCustomList_clicked();
 
+    void on_pubCustomList_clicked();
+
+    void on_presCustomList_clicked();
+
+    void on_fundCustomList_clicked();
+
 private:
     static std::vector<std::string> GRANTS_MANFIELDS, PRES_MANFIELDS, PUBS_MANFIELDS, TEACH_MANFIELDS;
     static std::vector<std::string> clickedNames;
     static std::vector<std::tuple <std::string, std::string, double>> chartLists;
-    static std::vector<string> teachNames;
-    static bool teachFlag;
+    static std::vector<string> teachNames, pubNames, presNames, fundNames;
+    static bool teachFlag, pubFlag, presFlag, fundFlag;
 
 
     enum TABS {
@@ -135,7 +141,7 @@ private:
     QList<QStringList> allTeachOrders, allPubOrders, allPresOrders, allFundOrders, pubfile;
     QString teachPath, pubPath, presPath, fundPath;
     TreeModel *fundTree, *presTree, *pubTree, *teachTree;
-    RecordsManager *funddb, *presdb, *pubdb, *teachdb, *teachdb2;
+    RecordsManager *funddb, *presdb, *pubdb, *teachdb, *teachdb2, *funddb2, *presdb2, *pubdb2;
     std::vector<std::vector<std::string>> fundData, presData, pubData, teachData;
 
     std::vector<std::string> teachSortOrder, pubSortOrder, presSortOrder, fundSortOrder;

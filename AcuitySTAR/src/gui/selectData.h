@@ -37,8 +37,6 @@ private slots:
 
     void on_removeButton_clicked();
 
-    void on_textBrowser_textChanged();
-
 private:
     Ui::selectData *ui;
     vector<string> sortFields;
