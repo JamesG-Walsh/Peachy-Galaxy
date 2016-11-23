@@ -194,8 +194,6 @@ void Test::testSortByDivision()
     }
 
     QVERIFY(testPasses);
-
-
 }
 
 //test on_teach_line_button_toggled
@@ -229,5 +227,15 @@ void Test::test_setupLineChart() {
     QCOMPARE(w.ui->teachLineChart->plottableCount(),(int) chartList.size());
 
 }
+
+void Test::testFixDateFormatting()
+{
+    CSVReader reader;
+    reader.loadCSV();
+
+    QVERIFY(true);
+}
+
+
 
 
