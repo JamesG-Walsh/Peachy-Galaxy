@@ -1457,7 +1457,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
             setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
 
             ui->teachLineChart->clearPlottables();
-            if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0)
+            if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0 && !total)
             {
                 ui->teach_line_button->setEnabled(true);
                 setupLineChart(ui->teachLineChart,chartList);
@@ -1549,7 +1549,7 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
             setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
 
             ui->pubLineChart->clearPlottables();
-            if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0)
+            if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0  && !total)
             {
                 ui->pub_line_button->setEnabled(true);
                 setupLineChart(ui->pubLineChart,chartList);
@@ -1662,7 +1662,7 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
             setupPieChart(ui->presPieChart, ui->presPieList, chartList);
 
             ui->presLineChart->clearPlottables();
-            if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0)
+            if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0  && !total)
             {
                 ui->pres_line_button->setEnabled(true);
                 setupLineChart(ui->presLineChart,chartList);
@@ -1782,7 +1782,7 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
                 setupPieChart(ui->fundPieChart, ui->fundPieList, chartList);
 
                 ui->fundLineChart->clearPlottables();
-                if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0)
+                if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0  && !total)
                 {
                     ui->fund_line_button->setEnabled(true);
                     setupLineChart(ui->fundLineChart,chartList);
