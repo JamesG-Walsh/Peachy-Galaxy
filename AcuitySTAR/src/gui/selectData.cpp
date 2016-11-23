@@ -54,7 +54,7 @@ void selectData::on_nameEntry_textChanged()
 
 void selectData::on_addButton_clicked()
 {
-    if(charInField.compare("")){
+    if(charInField == ""){
         QMessageBox prompt;
         QString mainText = "Please type a name";
         prompt.setText(mainText);
@@ -64,8 +64,23 @@ void selectData::on_addButton_clicked()
         if(QMessageBox::Yes){
         }
     }
-    else
-        sortFields.push_back(charInField);
+    else{
+        if(std::find(sortFields.begin(), sortFields.end(), charInField) != sortFields.end()){
+            QMessageBox prompt;
+            QString mainText = QString::fromStdString(charInField) + " is already in the list";
+            prompt.setText(mainText);
+            prompt.setStandardButtons(QMessageBox::Yes);
+            prompt.setButtonText(QMessageBox::Yes, "Ok");
+            prompt.exec();
+            if(QMessageBox::Yes){
+            }
+        }
+        else{
+            sortFields.push_back(charInField);
+            ui->listWidget->clear();
+            displayNames();
+        }
+    }
 }
 
 
@@ -79,6 +94,7 @@ void selectData::on_removeButton_clicked()
         }
         ui->listWidget->clear();
         displayNames();
+        charInField = "";
     }
     else{
         QMessageBox prompt;
