@@ -1564,27 +1564,28 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
 
             for (int i = 0; i < (int) list.size(); i++) {
                 chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
-                if (!chartList.empty()) {
-                    ui->pubBarChart->clearPlottables();
-                    setupBarChart(ui->pubBarChart, chartList);
-                    ui->pubBarChart->replot();
-
-                    setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
-
-                    ui->pubLineChart->clearPlottables();
-                    setupLineChart(ui->pubLineChart,chartList);
-                    ui->pubLineChart->yAxis->setLabel("Number of publications");
-                    ui->pubLineChart->replot();
-
-                    if (parentsList.size()>1) {
-                        ui->pubGraphTitle->setText("Total " + clickedName + " Publications by " +
-                                                   QString::fromStdString(pubSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-                    } else {
-                        ui->pubGraphTitle->setText("Total Publications by " + QString::fromStdString(parentsList[0]));
-                    }
-                    ui->pub_graph_stackedWidget->show();
-                }
             }
+            if (!chartList.empty()) {
+                ui->pubBarChart->clearPlottables();
+                setupBarChart(ui->pubBarChart, chartList);
+                ui->pubBarChart->replot();
+
+                setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
+
+                ui->pubLineChart->clearPlottables();
+                setupLineChart(ui->pubLineChart,chartList);
+                ui->pubLineChart->yAxis->setLabel("Number of publications");
+                ui->pubLineChart->replot();
+
+                if (parentsList.size()>1) {
+                    ui->pubGraphTitle->setText("Total " + clickedName + " Publications by " +
+                                               QString::fromStdString(pubSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                } else {
+                    ui->pubGraphTitle->setText("Total Publications by " + QString::fromStdString(parentsList[0]));
+                }
+                ui->pub_graph_stackedWidget->show();
+            }
+
         }
         else{
             std::vector<std::pair <std::string, int>> list =
