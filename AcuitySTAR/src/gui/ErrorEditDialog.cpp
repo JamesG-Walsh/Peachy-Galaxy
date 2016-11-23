@@ -8,10 +8,6 @@
 #include <QColor>
 #include <QAbstractButton>
 #include <QMessageBox>
-#include <QString>
-#include "database/QFileIO.h"
-
-
 
 /*
  * Load data contained in the errors vector into a QWidgetTable
@@ -25,8 +21,7 @@
 ErrorEditDialog::ErrorEditDialog(QWidget *parent,
                                  std::vector<std::vector<std::string>*>& errors,
                                  std::vector<std::string>& headers,
-                                 std::vector<std::string>& mandatory,
-                                 QString &type) :
+                                 std::vector<std::string>& mandatory) :
     QDialog(parent, Qt::WindowTitleHint | Qt::WindowCloseButtonHint),
     errorList(errors),
     headerList(headers),
@@ -84,12 +79,11 @@ void ErrorEditDialog::saveData() {
             std::vector<std::string>::iterator it = errorList[row]->begin()+col;
             if (errorList[row]->at(col).compare("") == 0) {
                 it = errorList[row]->erase(it);
+                errorList[row]->insert(it, ui->tableWidget->item(row, col)->text().toStdString());
             }
-            errorList[row]->insert(it, ui->tableWidget->item(row, col)->text().toStdString());
         }
     }
-
-accept();
+    accept();
 }
 
 void ErrorEditDialog::on_save_clicked()

@@ -25,39 +25,6 @@ void QSortListIO::saveList(QList<QStringList> sortFields)
     file.close();
 }
 
-void QSortListIO::saveLastSort(int index)
-{
-    // open the file for writing
-    QFile file(filename.c_str());
-    file.open(QIODevice::WriteOnly);
-
-    // we will serialize the data into the file
-    QDataStream out(&file);
-
-    // serialize the sort fields
-    out << index;
-
-    // close the file, we're done
-    file.close();
-}
-
-int QSortListIO::readLastSort(){
-    QFile file(filename.c_str());
-    file.open(QIODevice::ReadOnly);
-
-    // read the data serialized from the file
-    QDataStream in(&file);
-
-    // extract sort fields
-    int index;
-    in >> index;
-
-    // close the file, we're done
-    file.close();
-
-    return index;
-}
-
 QList<QStringList> QSortListIO::readList()
 {
     // open the file for reading
@@ -76,4 +43,3 @@ QList<QStringList> QSortListIO::readList()
 
     return sortFields;
 }
-

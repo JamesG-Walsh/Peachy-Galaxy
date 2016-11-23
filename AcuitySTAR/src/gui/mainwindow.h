@@ -21,8 +21,7 @@ namespace Ui {
     class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
     friend class Test;
 
@@ -65,19 +64,30 @@ private slots:
     void on_teach_line_button_toggled();
     void on_teach_pie_button_toggled();
     void on_teach_bar_button_toggled();
+    //void on_teach_histogram_button_toggled();
 
     void on_pub_line_button_toggled();
     void on_pub_pie_button_toggled();
     void on_pub_bar_button_toggled();
+    //void on_pub_histogram_button_toggled();
+
 
     void on_pres_line_button_toggled();
     void on_pres_pie_button_toggled();
     void on_pres_bar_button_toggled();
+    //void on_pres_histogram_button_toggled();
+
 
     void on_fund_line_button_toggled();
     void on_fund_pie_button_toggled();
     void on_fund_bar_button_toggled();
+    void on_fund_histogram_button_toggled();
 
+    std::vector<std::pair <std::string, double>> MainWindow::on_fundTreeView_clicked_total_scatter(const QModelIndex &index);
+    std::vector<std::pair <std::string, double>> MainWindow::on_teachTreeView_clicked_total(const QModelIndex &index);
+    std::vector<std::pair <std::string, double>> MainWindow::on_pubTreeView_clicked_total(const QModelIndex &index);
+    std::vector<std::pair <std::string, double>> MainWindow::on_presTreeView_clicked_total(const QModelIndex &index);
+    std::vector<std::pair <std::string, double>> MainWindow::on_fundTreeView_clicked_total(const QModelIndex &index);
     void on_teachTreeView_clicked(const QModelIndex &index);
     void on_pubTreeView_clicked(const QModelIndex &index);
     void on_presTreeView_clicked(const QModelIndex &index);
@@ -122,7 +132,7 @@ private:
     Ui::MainWindow* ui;
     QPrinter* printer;
 
-    QList<QStringList> allTeachOrders, allPubOrders, allPresOrders, allFundOrders, pubfile;
+    QList<QStringList> allTeachOrders, allPubOrders, allPresOrders, allFundOrders;
     QString teachPath, pubPath, presPath, fundPath;
     TreeModel *fundTree, *presTree, *pubTree, *teachTree;
     RecordsManager *funddb, *presdb, *pubdb, *teachdb;
@@ -142,7 +152,7 @@ private:
 
     int yearStart, yearEnd;
 
-    int checkFile(int index, QString filePath, bool skip_prompt);
+    int checkFile(int index, QString filePath);
     //std::vector<std::string> getSelectedSortOrder(int tabIndex);
     void createDefaultSortOrder(int tabIndex);
     void makeTree(int tabIndex);
@@ -150,17 +160,16 @@ private:
     void setupPieChart(PieChartWidget *pieChart, QListWidget *pieListWidget, std::vector<std::pair<std::string, double> > pieChartList);
     void setupBarChart(QCustomPlot *barChart, std::vector<std::pair<std::string, double> > barChartList);
     void setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> lineChartList);
+    void setupHistogramChart(QCustomPlot *histogramChart, std::vector<std::pair <std::string, double>> histogramChartList);
+    void setupScatterPlot(QCustomPlot *scatterPlot, std::vector<std::pair <std::string, double>> scatterPlotList);
 
-
-    bool handle_field_errors(std::vector<std::vector<std::string>*>& errors,
+     bool handle_field_errors(std::vector<std::vector<std::string>*>& errors,
                              std::vector<std::string>& headers,
-                             std::vector<std::string>& mandatory,
-                             QString &filePath,
-                             bool skip_prompt);
-    bool load_fund(QString path, bool multi_file = false, bool skip_prompt = false);
-    bool load_pub(QString path, bool multi_file = false, bool skip_prompt = false);
-    bool load_teach(QString path, bool multi_file = false, bool skip_prompt = false);
-    bool load_pres(QString path, bool multi_file = false, bool skip_prompt = false);
+                             std::vector<std::string>& mandatory);
+    bool load_fund(QString path, bool multi_file = false);
+    bool load_pub(QString path, bool multi_file = false);
+    bool load_teach(QString path, bool multi_file = false);
+    bool load_pres(QString path, bool multi_file = false);
 };
 
 #endif // MAINWINDOW_H
