@@ -270,8 +270,6 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
     CSVReader reader;
     std::vector<std::string> header;
     std::string searchstring, searchstring1;
-    teachFlag = false;
-    teachNames.clear();
     int sortHeaderIndex = 2;
 
     switch (index) {
@@ -282,6 +280,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
+            teachFlag = false;
+            teachNames.clear();
             //Save session
             QFileIO teachSave("teachfile.dat");
             teachSave.savePath(filePath);
