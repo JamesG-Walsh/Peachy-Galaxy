@@ -34,7 +34,9 @@ HEADERS += \
     gui/qcustomplot.h \
     gui/Test.h \
     database/QFileIO.h \
-    gui/selectData.h
+    gui/selectData.h \
+    gui/editsort.h
+
 
 
 
@@ -57,13 +59,15 @@ SOURCES += \
     gui/qcustomplot.cpp \
     gui/Test.cpp \
     database/QFileIO.cpp \
-    gui/selectData.cpp
+    gui/selectData.cpp \
+    gui/editsort.cpp
 
 FORMS += \
     gui/customsort.ui \
     gui/mainwindow.ui \
     gui/ErrorEditDialog.ui \
-    gui/selectData.ui
+    gui/selectData.ui \
+    gui/editsort.ui
 
 RESOURCES += \
     images.qrc

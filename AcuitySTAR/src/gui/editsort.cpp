@@ -1,20 +1,21 @@
-#include "gui/CustomSort.h"
-#include "ui_customsort.h"
+#include "gui/EditSort.h"
+#include "ui_EditSort.h"
 #include <QMessageBox>
+#include <QDebug>
 
-CustomSort::CustomSort(QWidget *parent) :
+EditSort::EditSort(QWidget *parent) :
     QDialog(parent, Qt::WindowTitleHint | Qt::WindowCloseButtonHint),
-    ui(new Ui::CustomSort)
+    ui(new Ui::EditSort)
 {
     ui->setupUi(this);
 }
 
-CustomSort::~CustomSort()
+EditSort::~EditSort()
 {
     delete ui;
 }
 
-void CustomSort::setFields(const std::vector<std::string> &headers) {
+void EditSort::setFields(const std::vector<std::string> &headers) {
     numFields = (int) headers.size();
     fieldBoxes << ui->field_0;
     fieldBoxes << ui->field_1;
@@ -28,18 +29,18 @@ void CustomSort::setFields(const std::vector<std::string> &headers) {
     for (int i = numFields; i < fieldBoxes.size(); i++) {
         fieldBoxes[i]->setHidden(true);
     }
-
-    // add items to field_1 drop down list
     for (int i = 0; i < (int) headers.size(); i++) {
-        ui->field_0->addItem(QString::fromStdString(headers[i]));
+       ui->field_0->addItem(QString::fromStdString(headers[i]));
+
     }
+
 }
 
-QStringList CustomSort::getSortFields() {   
+QStringList EditSort::getSortFields() {
     return sortFields;
 }
 
-void CustomSort::setNext(int fieldNum, int currentIndex) {
+void EditSort::setNext(int fieldNum, int currentIndex) {
     for (int i=fieldNum+1; i<numFields; i++) {
         fieldBoxes.at(i)->clear();
     }
@@ -50,23 +51,24 @@ void CustomSort::setNext(int fieldNum, int currentIndex) {
     fieldBoxes[fieldNum+1]->removeItem(currentIndex);
 }
 
-void CustomSort::on_field_0_currentIndexChanged(int index) { setNext(0, index);}
-void CustomSort::on_field_1_currentIndexChanged(int index) { setNext(1, index);}
-void CustomSort::on_field_2_currentIndexChanged(int index) { setNext(2, index);}
-void CustomSort::on_field_3_currentIndexChanged(int index) { setNext(3, index);}
-void CustomSort::on_field_4_currentIndexChanged(int index) { setNext(4, index);}
-void CustomSort::on_field_5_currentIndexChanged(int index) { setNext(5, index);}
+void EditSort::on_field_0_currentIndexChanged(int index) { setNext(0, index);}
+void EditSort::on_field_1_currentIndexChanged(int index) { setNext(1, index);}
+void EditSort::on_field_2_currentIndexChanged(int index) { setNext(2, index);}
+void EditSort::on_field_3_currentIndexChanged(int index) { setNext(3, index);}
+void EditSort::on_field_4_currentIndexChanged(int index) { setNext(4, index);}
+void EditSort::on_field_5_currentIndexChanged(int index) { setNext(5, index);}
 
-void CustomSort::on_buttonBox_rejected() {
+void EditSort::on_buttonBox_rejected() {
     done(0);
 }
 
-void CustomSort::on_buttonBox_accepted() {
+void EditSort::on_buttonBox_accepted() {
+
     sortFields.clear();
-    if (ui->sort_name->text()!="") {
+
         if (fieldBoxes.at(0)->currentText()!="") {
             if (!fieldBoxes.at(0)->currentText().contains("Date")) {
-                sortFields << ui->sort_name->displayText();
+               //sortFields << ui->sort_name->displayText();
 
                 for (int i=0; i<numFields; i++) {
                     QString currentText = fieldBoxes.at(i)->currentText();
@@ -81,7 +83,5 @@ void CustomSort::on_buttonBox_accepted() {
         } else {
             QMessageBox::critical(this, "", "Please select at least 1 sort field.");
         }
-    } else {
-        QMessageBox::critical(this, "", "Please enter a name.");
-    }
+
 }

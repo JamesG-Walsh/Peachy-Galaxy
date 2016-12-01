@@ -18,6 +18,7 @@ using namespace std;
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "CustomSort.h"
+#include "editsort.h"
 #include "ErrorEditDialog.h"
 #include "selectData.h"
 
@@ -961,6 +962,10 @@ void MainWindow::on_teach_new_sort_clicked() {
             QStringList newSortOrder = sortdialog->getSortFields();
             allTeachOrders << newSortOrder;
             ui->teach_sort->addItem(newSortOrder.at(0));
+            qDebug() <<  QString::fromStdString("****new sort order***");
+            qDebug() << newSortOrder;
+            qDebug() <<  QString::fromStdString("****new sort order***");
+
 
             // save the sort fields to file
             QSortListIO saveTeachSort(TEACHORDER_SAVE);
@@ -971,6 +976,35 @@ void MainWindow::on_teach_new_sort_clicked() {
         QMessageBox::critical(this, "Missing File", "Please load a file first.");
     }
 }
+
+void MainWindow::on_teach_edit_sort_clicked(){
+    if (teachdb != NULL) {
+
+        EditSort* sortdialog = new EditSort();
+        sortdialog->setFields(teachSortOrder);
+
+        int ret = sortdialog->exec();
+        if (ret)
+        {
+            QStringList editSortOrder;
+            editSortOrder << ui->teach_sort->currentText();
+            editSortOrder << sortdialog->getSortFields();
+
+           int currentIndex =  ui->teach_sort->currentIndex();
+           allTeachOrders.replace(currentIndex,editSortOrder);
+
+            // save the sort fields to file
+           QSortListIO saveTeachSort(TEACHORDER_SAVE);
+           saveTeachSort.saveList(allTeachOrders);
+           refresh(TEACH);
+        }
+        delete sortdialog;
+
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+}
+
 
 void MainWindow::on_pub_new_sort_clicked() {
     if (pubdb != NULL) {
@@ -992,6 +1026,36 @@ void MainWindow::on_pub_new_sort_clicked() {
     }
 }
 
+void MainWindow::on_pub_edit_sort_clicked(){
+    if (pubdb != NULL) {
+        EditSort* sortdialog = new EditSort();
+        sortdialog->setFields(pubSortOrder);
+
+        int ret = sortdialog->exec();
+        if (ret)
+        {
+            QStringList editSortOrder;
+            editSortOrder << ui->pub_sort->currentText();
+            editSortOrder << sortdialog->getSortFields();
+
+           int currentIndex =  ui->pub_sort->currentIndex();
+           allPubOrders.replace(currentIndex,editSortOrder);
+
+            // save the sort fields to file
+           QSortListIO savePubSort(PUBORDER_SAVE);
+           savePubSort.saveList(allPubOrders);
+           refresh(PUBLICATIONS);
+        }
+        delete sortdialog;
+
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+
+}
+
+
+
 void MainWindow::on_pres_new_sort_clicked() {
     if (presdb != NULL) {
         CustomSort* sortdialog = new CustomSort();
@@ -1010,6 +1074,35 @@ void MainWindow::on_pres_new_sort_clicked() {
     } else {
         QMessageBox::critical(this, "Missing File", "Please load a file first.");
     }
+}
+
+void MainWindow::on_pres_edit_sort_clicked(){
+    if (presdb != NULL) {
+
+        EditSort* sortdialog = new EditSort();
+        sortdialog->setFields(presSortOrder);
+
+        int ret = sortdialog->exec();
+        if (ret)
+        {
+            QStringList editSortOrder;
+            editSortOrder << ui->pres_sort->currentText();
+            editSortOrder << sortdialog->getSortFields();
+
+           int currentIndex =  ui->pres_sort->currentIndex();
+           allPresOrders.replace(currentIndex,editSortOrder);
+
+            // save the sort fields to file
+           QSortListIO savePresSort(PRESORDER_SAVE);
+           savePresSort.saveList(allPresOrders);
+           refresh(PRESENTATIONS);
+        }
+        delete sortdialog;
+
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+
 }
 
 void MainWindow::on_fund_new_sort_clicked() {
@@ -1032,6 +1125,36 @@ void MainWindow::on_fund_new_sort_clicked() {
     }
 }
 
+
+void MainWindow::on_fund_edit_sort_clicked(){
+    if (presdb != NULL) {
+
+        EditSort* sortdialog = new EditSort();
+        sortdialog->setFields(fundSortOrder);
+
+        int ret = sortdialog->exec();
+        if (ret)
+        {
+            QStringList editSortOrder;
+            editSortOrder << ui->fund_sort->currentText();
+            editSortOrder << sortdialog->getSortFields();
+
+           int currentIndex =  ui->fund_sort->currentIndex();
+           allFundOrders.replace(currentIndex,editSortOrder);
+
+            // save the sort fields to file
+           QSortListIO savePresSort(FUNDORDER_SAVE);
+           savePresSort.saveList(allFundOrders);
+           refresh(FUNDING);
+        }
+        delete sortdialog;
+
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+}
+
+
 void MainWindow::on_teach_sort_currentIndexChanged(int index) {
     if(index != -1) {
 
@@ -1045,7 +1168,6 @@ void MainWindow::on_teach_sort_currentIndexChanged(int index) {
             refresh(TEACH_CUSTOM);
         else
             refresh(TEACH);
-
     }
 }
 
@@ -1198,6 +1320,7 @@ bool MainWindow::load_teach(QString path, bool multi_file, bool skip_prompt)
         ui->teach_sort->setEnabled(true);
         ui->teach_delete_sort->setEnabled(true);
         ui->teach_new_sort->setEnabled(true);
+        ui->teach_edit_sort->setEnabled(true);
         ui->teach_filter_from->setEnabled(true);
         ui->teach_filter_to->setEnabled(true);
         ui->teach_pie_button->setEnabled(true);
@@ -1253,6 +1376,7 @@ bool MainWindow::load_pub(QString path, bool multi_file, bool skip_prompt) {
         ui->pub_sort->setEnabled(true);
         ui->pub_delete_sort->setEnabled(true);
         ui->pub_new_sort->setEnabled(true);
+        ui->pub_edit_sort->setEnabled(true);
         ui->pub_filter_from->setEnabled(true);
         ui->pub_filter_to->setEnabled(true);
         ui->pub_pie_button->setEnabled(true);
@@ -1310,6 +1434,7 @@ bool MainWindow::load_pres(QString path, bool multi_file, bool skip_prompt) {
         ui->pres_sort->setEnabled(true);
         ui->pres_delete_sort->setEnabled(true);
         ui->pres_new_sort->setEnabled(true);
+        ui->pres_edit_sort->setEnabled(true);
         ui->pres_filter_from->setEnabled(true);
         ui->pres_filter_to->setEnabled(true);
         ui->pres_pie_button->setEnabled(true);
@@ -1364,6 +1489,7 @@ bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt) {
         ui->fund_sort->setEnabled(true);
         ui->fund_delete_sort->setEnabled(true);
         ui->fund_new_sort->setEnabled(true);
+        ui->fund_edit_sort->setEnabled(true);
         ui->fund_filter_from->setEnabled(true);
         ui->fund_filter_to->setEnabled(true);
         ui->fund_pie_button->setEnabled(true);

@@ -1,5 +1,5 @@
-#ifndef CUSTOMSORT_H
-#define CUSTOMSORT_H
+#ifndef EditSort_H
+#define EditSort_H
 
 #include <QDialog>
 #include <QAbstractButton>
@@ -7,16 +7,17 @@
 
 namespace Ui
 {
-class CustomSort;
+class EditSort;
 }
 
-class CustomSort : public QDialog
+class EditSort : public QDialog
 {
     Q_OBJECT
+    friend class Test;
 
 public:
-    explicit CustomSort(QWidget *parent = 0);
-    ~CustomSort();
+    explicit EditSort(QWidget *parent = 0);
+    ~EditSort();
     void setFields(const std::vector<std::string> &headers);
     QStringList getSortFields();
 
@@ -35,10 +36,10 @@ private slots:
 
 
 private:
-    Ui::CustomSort *ui;
+    Ui::EditSort *ui;
     QStringList sortFields;
     int numFields;
     QList<QComboBox*> fieldBoxes;
 };
 
-#endif // CUSTOMSORT_H
+#endif // EditSort_H
