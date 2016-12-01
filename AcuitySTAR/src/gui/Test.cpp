@@ -143,16 +143,25 @@ void Test::test_setupLineChart() {
     int size = 5;
     std::vector<std::pair <std::string, double>> chartList;
     for (int i = 0; i < size; i++) {
-        chartList.emplace_back("test", static_cast<double>(0.0));
+        chartList.emplace_back("1234", static_cast<double>(1234));
 
     }
     w.setupLineChart(w.ui->teachLineChart,chartList);
-    QCOMPARE(w.ui->teachLineChart->plottableCount(),(int) chartList.size());
+    QCOMPARE(w.ui->teachLineChart->plottableCount(),1);
 }
 
 
 void Test::test_checkFile(){
-    QCOMPARE(w.checkFile(0,"/Users/Yuchen/Documents/Peachy-Galaxy/AcuitySTAR/Project Information/Sample Data"),1);
+    QCOMPARE(w.checkFile(0,"../Project Information/Sample Data"),1);
 
+}
+
+//test setupScatterPlot function
+void Test::test_setupScatterPlot() {
+    std::vector<std::pair <std::string, double>> chartList;
+    for (int i = 0; i < 5; i++) chartList.emplace_back("10",100000);
+    w.ui->fundHistogramChart->setEnabled(true);
+    w.setupScatterPlot(w.ui->fundHistogramChart,chartList);
+    QCOMPARE(w.ui->fundHistogramChart->plottableCount(),1);
 }
 

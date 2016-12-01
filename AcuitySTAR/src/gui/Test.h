@@ -48,7 +48,7 @@ private slots:
     void test_on_pub_line_button_toggled();
     void test_on_fund_line_button_toggled();
     void test_setupLineChart();
-
+    void test_setupScatterPlot();
     void test_checkFile();
 
 

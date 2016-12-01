@@ -1441,9 +1441,9 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
         std::vector<std::pair <std::string, int>> list =
                 teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
         std::vector<std::pair <std::string, double>> chartList;
-        for (int i = 0; i < (int) list.size(); i++) {
+        for (int i = 0; i < (int) list.size(); i++)
+        {
             chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
-
         }
         if(total) chartList = chartListTotal;
 

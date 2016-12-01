@@ -19,11 +19,11 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    /*if (testing)
+    if (testing)
     {
         Test *test_obj = new Test();
         QTest::qExec(test_obj);
-    }*/
+    }
 
     MainWindow w;
     w.show();
