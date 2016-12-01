@@ -63,6 +63,7 @@ void CustomSort::on_buttonBox_rejected() {
 
 void CustomSort::on_buttonBox_accepted() {
     sortFields.clear();
+
     if (ui->sort_name->text()!="") {
         if (fieldBoxes.at(0)->currentText()!="") {
             if (!fieldBoxes.at(0)->currentText().contains("Date")) {

@@ -12,11 +12,15 @@
 #include <QFile>
 #include <database/QSortListIO.h>
 #include <QSharedPointer>
+#include <string.h>
+using namespace std;
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "CustomSort.h"
+#include "editsort.h"
 #include "ErrorEditDialog.h"
+#include "selectData.h"
 
 #include "database/CSVReader.h"
 #include "database/QSortListIO.h"
@@ -38,11 +42,21 @@ std::vector<std::string> MainWindow::GRANTS_MANFIELDS = {"Member Name", "Funding
 std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "Type", "Role", "Title"};
 std::vector<std::string> MainWindow::PUBS_MANFIELDS = {"Member Name", "Type", "Status Date", "Role", "Title"};
 std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program", "Division"};
+std::vector<std::string> MainWindow::clickedNames;
+std::vector<std::tuple <std::string, std::string, double>> MainWindow::chartLists;
+std::vector<string> MainWindow::teachNames, MainWindow::pubNames, MainWindow::presNames, MainWindow::fundNames;
+bool MainWindow::teachFlag = false;
+bool MainWindow::pubFlag = false;
+bool MainWindow::presFlag = false;
+bool MainWindow::fundFlag = false;
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow),
     fundTree(NULL), presTree(NULL), pubTree(NULL), teachTree(NULL),
-    funddb(NULL), presdb(NULL), pubdb(NULL), teachdb(NULL) {
+    funddb(NULL), presdb(NULL), pubdb(NULL), teachdb(NULL),
+    teachdb2(NULL), pubdb2(NULL), presdb2(NULL), funddb2(NULL) {
     // draw GUI elements
     ui->setupUi(this);
 
@@ -130,6 +144,10 @@ MainWindow::~MainWindow() {
     delete presdb;
     delete pubdb;
     delete teachdb;
+    delete teachdb2;
+    delete funddb2;
+    delete presdb2;
+    delete pubdb2;
     delete printer;
 }
 
@@ -214,7 +232,38 @@ void MainWindow::refresh(int tabIndex)
             ui->teachGraphTitle->clear();
         }
         break;
+
+    case TEACH_CUSTOM:
+        if(!teachPath.isEmpty()){
+            makeTree(TEACH_CUSTOM);
+            ui->teach_graph_stackedWidget->hide();
+            ui->teachGraphTitle->clear();
+        }
+        break;
+    case FUNDING_CUSTOM:
+        if (!fundPath.isEmpty()) {
+            makeTree(FUNDING_CUSTOM);
+            ui->fund_graph_stackedWidget->hide();
+            ui->fundGraphTitle->clear();
+        }
+        break;
+
+    case PRESENTATIONS_CUSTOM:
+        if (!presPath.isEmpty()) {
+            makeTree(PRESENTATIONS_CUSTOM);
+            ui->pres_graph_stackedWidget->hide();
+            ui->presGraphTitle->clear();
+        }
+        break;
+    case PUBLICATIONS_CUSTOM:
+        if (!pubPath.isEmpty()) {
+            makeTree(PUBLICATIONS_CUSTOM);
+            ui->pub_graph_stackedWidget->hide();
+            ui->pubGraphTitle->clear();
+        }
+        break;
     }
+
 }
 
 
@@ -223,24 +272,24 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
     CSVReader reader;
     std::vector<std::string> header;
     std::string searchstring, searchstring1;
-
     int sortHeaderIndex = 2;
 
     switch (index) {
 
     case TEACH:
         // read if first or if a new file is loaded
-        if (teachPath.isEmpty() || (!teachPath.isEmpty() && filePath.compare(teachPath))) {
+        if (teachPath.isEmpty() || (!teachPath.isEmpty() && filePath.compare(teachPath)) || teachFlag == false) {
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
+            teachFlag = false;
+            teachNames.clear();
             //Save session
             QFileIO teachSave("teachfile.dat");
             teachSave.savePath(filePath);
             // create a new manager for the data
             delete teachdb;
             teachdb = new RecordsManager(&header);
-
             // check for right file type by searching for unique header
             searchstring = "Program";
             searchstring1 = "Division";
@@ -270,7 +319,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                         int year;
                         sscanf(teachData[i][yrIndex].c_str(), "%4d", &year);
                         teachData[i][yrIndex] = std::to_string(year);
-
+                        if(std::find(teachNames.begin(), teachNames.end(), teachData[i][4]) == teachNames.end())
+                            teachNames.push_back(teachData[i][4]);
                         teachdb->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
                     }
                 }
@@ -300,6 +350,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
+            pubFlag = false;
+            pubNames.clear();
             //Save session
             QFileIO pubsave("pubfile.dat");
             pubsave.savePath(filePath);
@@ -331,7 +383,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                         int year;
                         sscanf(pubData[i][yrIndex].c_str(), "%4d", &year);
                         pubData[i][yrIndex] = std::to_string(year);
-
+                        if(std::find(pubNames.begin(), pubNames.end(), pubData[i][4]) == pubNames.end())
+                            pubNames.push_back(pubData[i][4]);
                         pubdb->addRecord(reader.parseDateString(pubData[i][sortHeaderIndex]), &pubData[i]);
                     }
                 }
@@ -359,6 +412,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
+            presNames.clear();
+            presFlag = false;
             //Save session
             QFileIO presSave("presfile.dat");
             presSave.savePath(filePath);
@@ -391,7 +446,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                         int year;
                         sscanf(presData[i][yrIndex].c_str(), "%4d", &year);
                         presData[i][yrIndex] = std::to_string(year);
-
+                        if(std::find(presNames.begin(), presNames.end(), presData[i][4]) == presNames.end())
+                            presNames.push_back(presData[i][4]);
                         presdb->addRecord(reader.parseDateString(presData[i][sortHeaderIndex]), &presData[i]);
                     }
                 }
@@ -419,6 +475,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
             // create a new reader to read in the file
             reader = CSVReader(filePath.toStdString());
             header = reader.getHeaders();
+            fundNames.clear();
+            fundFlag = false;
             //Save session
             QFileIO fundSave("fundfile.dat");
             fundSave.savePath(filePath);
@@ -459,6 +517,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                         } else {
                             fundData[i][prIndex] = "Not Peer Reviewed";
                         }
+                        if(std::find(fundNames.begin(), fundNames.end(), fundData[i][4]) == fundNames.end())
+                            fundNames.push_back(fundData[i][4]);
                         funddb->addRecord(reader.parseDateString(fundData[i][sortHeaderIndex]), &fundData[i]);
                     }
                 }
@@ -634,10 +694,35 @@ void MainWindow::makeTree(int tabIndex) {
         ui->teach_pie_button->toggle();
 
         break;
+    case TEACH_CUSTOM:
+        currentdb = teachdb2;
+        delete teachTree;
+        teachTree = new TeachingTreeModel(currentdb);
+        currentTree = teachTree;
+        currentView = ui->teachTreeView;
+        currentTree->setupModel(yearStart, yearEnd, teachSortOrder, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
 
+        ui->teach_pie_button->toggle();
+
+        break;
     case PUBLICATIONS:
         // set up some member variables to point to the current data in use
         currentdb = pubdb;
+        delete pubTree;
+        pubTree = new PublicationTreeModel(currentdb);
+        currentTree = pubTree;
+
+        // get some UI elements so we can put the tree and graphs into them
+        currentView = ui->pubTreeView;
+
+        // analyze the data into a tree
+        currentTree->setupModel(yearStart, yearEnd, pubSortOrder, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS));
+
+        ui->pub_pie_button->toggle();
+
+        break;
+    case PUBLICATIONS_CUSTOM:
+        currentdb = pubdb2;
         delete pubTree;
         pubTree = new PublicationTreeModel(currentdb);
         currentTree = pubTree;
@@ -668,10 +753,42 @@ void MainWindow::makeTree(int tabIndex) {
         ui->pres_pie_button->toggle();
 
         break;
+    case PRESENTATIONS_CUSTOM:
+        currentdb = presdb2;
+        delete presTree;
+
+        presTree = new PresentationTreeModel(currentdb);
+        currentTree = presTree;
+
+        // get some UI elements so we can put the tree and graphs into them
+        currentView = ui->presTreeView;
+
+        // analyze the data into a tree
+        currentTree->setupModel(yearStart, yearEnd, presSortOrder, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS));
+
+        ui->pres_pie_button->toggle();
+
+        break;
 
     case FUNDING:
         // set up some member variables to point to the current data in use
         currentdb = funddb;
+        delete fundTree;
+        fundTree = new GrantFundingTreeModel(currentdb);
+        currentTree = fundTree;
+
+        // get some UI elements so we can put the tree and graphs into them
+        currentView = ui->fundTreeView;
+
+        // analyze the data into a tree
+        currentTree->setupModel(yearStart, yearEnd, fundSortOrder, getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
+
+        ui->fund_pie_button->toggle();
+
+        break;
+
+    case FUNDING_CUSTOM:
+        currentdb = funddb2;
         delete fundTree;
         fundTree = new GrantFundingTreeModel(currentdb);
         currentTree = fundTree;
@@ -712,6 +829,7 @@ void MainWindow::setupPieChart(PieChartWidget* pieChart, QListWidget *pieListWid
 
     pieChart->setData(pieChartList, colorList); //passes vector list to piechartwidget
 }
+
 
 void MainWindow::setupBarChart(QCustomPlot *barChart, std::vector<std::pair <std::string, double>> barChartList) {
     // create empty bar chart objects:
@@ -836,7 +954,6 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
 
 void MainWindow::on_teach_new_sort_clicked() {
     if (teachdb != NULL) {
-
         CustomSort* sortdialog = new CustomSort();
         sortdialog->setFields(TEACH_MANFIELDS);
         int ret = sortdialog->exec();
@@ -845,6 +962,10 @@ void MainWindow::on_teach_new_sort_clicked() {
             QStringList newSortOrder = sortdialog->getSortFields();
             allTeachOrders << newSortOrder;
             ui->teach_sort->addItem(newSortOrder.at(0));
+            qDebug() <<  QString::fromStdString("****new sort order***");
+            qDebug() << newSortOrder;
+            qDebug() <<  QString::fromStdString("****new sort order***");
+
 
             // save the sort fields to file
             QSortListIO saveTeachSort(TEACHORDER_SAVE);
@@ -855,6 +976,35 @@ void MainWindow::on_teach_new_sort_clicked() {
         QMessageBox::critical(this, "Missing File", "Please load a file first.");
     }
 }
+
+void MainWindow::on_teach_edit_sort_clicked(){
+    if (teachdb != NULL) {
+
+        EditSort* sortdialog = new EditSort();
+        sortdialog->setFields(teachSortOrder);
+
+        int ret = sortdialog->exec();
+        if (ret)
+        {
+            QStringList editSortOrder;
+            editSortOrder << ui->teach_sort->currentText();
+            editSortOrder << sortdialog->getSortFields();
+
+           int currentIndex =  ui->teach_sort->currentIndex();
+           allTeachOrders.replace(currentIndex,editSortOrder);
+
+            // save the sort fields to file
+           QSortListIO saveTeachSort(TEACHORDER_SAVE);
+           saveTeachSort.saveList(allTeachOrders);
+           refresh(TEACH);
+        }
+        delete sortdialog;
+
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+}
+
 
 void MainWindow::on_pub_new_sort_clicked() {
     if (pubdb != NULL) {
@@ -876,6 +1026,36 @@ void MainWindow::on_pub_new_sort_clicked() {
     }
 }
 
+void MainWindow::on_pub_edit_sort_clicked(){
+    if (pubdb != NULL) {
+        EditSort* sortdialog = new EditSort();
+        sortdialog->setFields(pubSortOrder);
+
+        int ret = sortdialog->exec();
+        if (ret)
+        {
+            QStringList editSortOrder;
+            editSortOrder << ui->pub_sort->currentText();
+            editSortOrder << sortdialog->getSortFields();
+
+           int currentIndex =  ui->pub_sort->currentIndex();
+           allPubOrders.replace(currentIndex,editSortOrder);
+
+            // save the sort fields to file
+           QSortListIO savePubSort(PUBORDER_SAVE);
+           savePubSort.saveList(allPubOrders);
+           refresh(PUBLICATIONS);
+        }
+        delete sortdialog;
+
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+
+}
+
+
+
 void MainWindow::on_pres_new_sort_clicked() {
     if (presdb != NULL) {
         CustomSort* sortdialog = new CustomSort();
@@ -894,6 +1074,35 @@ void MainWindow::on_pres_new_sort_clicked() {
     } else {
         QMessageBox::critical(this, "Missing File", "Please load a file first.");
     }
+}
+
+void MainWindow::on_pres_edit_sort_clicked(){
+    if (presdb != NULL) {
+
+        EditSort* sortdialog = new EditSort();
+        sortdialog->setFields(presSortOrder);
+
+        int ret = sortdialog->exec();
+        if (ret)
+        {
+            QStringList editSortOrder;
+            editSortOrder << ui->pres_sort->currentText();
+            editSortOrder << sortdialog->getSortFields();
+
+           int currentIndex =  ui->pres_sort->currentIndex();
+           allPresOrders.replace(currentIndex,editSortOrder);
+
+            // save the sort fields to file
+           QSortListIO savePresSort(PRESORDER_SAVE);
+           savePresSort.saveList(allPresOrders);
+           refresh(PRESENTATIONS);
+        }
+        delete sortdialog;
+
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+
 }
 
 void MainWindow::on_fund_new_sort_clicked() {
@@ -916,6 +1125,36 @@ void MainWindow::on_fund_new_sort_clicked() {
     }
 }
 
+
+void MainWindow::on_fund_edit_sort_clicked(){
+    if (presdb != NULL) {
+
+        EditSort* sortdialog = new EditSort();
+        sortdialog->setFields(fundSortOrder);
+
+        int ret = sortdialog->exec();
+        if (ret)
+        {
+            QStringList editSortOrder;
+            editSortOrder << ui->fund_sort->currentText();
+            editSortOrder << sortdialog->getSortFields();
+
+           int currentIndex =  ui->fund_sort->currentIndex();
+           allFundOrders.replace(currentIndex,editSortOrder);
+
+            // save the sort fields to file
+           QSortListIO savePresSort(FUNDORDER_SAVE);
+           savePresSort.saveList(allFundOrders);
+           refresh(FUNDING);
+        }
+        delete sortdialog;
+
+    } else {
+        QMessageBox::critical(this, "Missing File", "Please load a file first.");
+    }
+}
+
+
 void MainWindow::on_teach_sort_currentIndexChanged(int index) {
     if(index != -1) {
 
@@ -925,8 +1164,10 @@ void MainWindow::on_teach_sort_currentIndexChanged(int index) {
             teachSortOrder.emplace_back(sortOrder[i].toStdString());
         }
         ui->teach_filter->setText(QString::fromStdString(teachSortOrder[0]));
-        refresh(TEACH);
-
+        if(teachFlag == true)
+            refresh(TEACH_CUSTOM);
+        else
+            refresh(TEACH);
     }
 }
 
@@ -938,7 +1179,10 @@ void MainWindow::on_pub_sort_currentIndexChanged(int index) {
             pubSortOrder.emplace_back(sortOrder[i].toStdString());
         }
         ui->pub_filter->setText(QString::fromStdString(pubSortOrder[0]));
-        refresh(PUBLICATIONS);
+        if(pubFlag == true)
+            refresh(PUBLICATIONS_CUSTOM);
+        else
+            refresh(PUBLICATIONS);
     }
 }
 
@@ -950,7 +1194,10 @@ void MainWindow::on_pres_sort_currentIndexChanged(int index) {
             presSortOrder.emplace_back(sortOrder[i].toStdString());
         }
         ui->pres_filter->setText(QString::fromStdString(presSortOrder[0]));
-        refresh(PRESENTATIONS);
+        if(presFlag == true)
+            refresh(PRESENTATIONS_CUSTOM);
+        else
+            refresh(PRESENTATIONS);
     }
 }
 
@@ -962,7 +1209,10 @@ void MainWindow::on_fund_sort_currentIndexChanged(int index) {
             fundSortOrder.emplace_back(sortOrder[i].toStdString());
         }
         ui->fund_filter->setText(QString::fromStdString(fundSortOrder[0]));
-        refresh(FUNDING);
+        if(fundFlag == true)
+            refresh(FUNDING_CUSTOM);
+        else
+            refresh(FUNDING);
     }
 }
 
@@ -1070,6 +1320,7 @@ bool MainWindow::load_teach(QString path, bool multi_file, bool skip_prompt)
         ui->teach_sort->setEnabled(true);
         ui->teach_delete_sort->setEnabled(true);
         ui->teach_new_sort->setEnabled(true);
+        ui->teach_edit_sort->setEnabled(true);
         ui->teach_filter_from->setEnabled(true);
         ui->teach_filter_to->setEnabled(true);
         ui->teach_pie_button->setEnabled(true);
@@ -1079,6 +1330,7 @@ bool MainWindow::load_teach(QString path, bool multi_file, bool skip_prompt)
         ui->teach_sort_label->setEnabled(true);
         ui->teach_filter->setEnabled(true);
         ui->teach_filter_label->setEnabled(true);
+        ui->teachCustomList->setEnabled(true);
 
         // load save order
         QSortListIO teachSaveOrder(TEACHORDER_SAVE);
@@ -1124,16 +1376,18 @@ bool MainWindow::load_pub(QString path, bool multi_file, bool skip_prompt) {
         ui->pub_sort->setEnabled(true);
         ui->pub_delete_sort->setEnabled(true);
         ui->pub_new_sort->setEnabled(true);
+        ui->pub_edit_sort->setEnabled(true);
         ui->pub_filter_from->setEnabled(true);
         ui->pub_filter_to->setEnabled(true);
         ui->pub_pie_button->setEnabled(true);
         ui->pub_bar_button->setEnabled(true);
         ui->pub_line_button->setEnabled(true);
-
         ui->pub_to_label->setEnabled(true);
         ui->pub_sort_label->setEnabled(true);
         ui->pub_filter->setEnabled(true);
         ui->pub_filter_label->setEnabled(true);
+        ui->pubCustomList->setEnabled(true);
+
 
         // load save order
         QSortListIO pubSaveOrder(PUBORDER_SAVE);
@@ -1180,6 +1434,7 @@ bool MainWindow::load_pres(QString path, bool multi_file, bool skip_prompt) {
         ui->pres_sort->setEnabled(true);
         ui->pres_delete_sort->setEnabled(true);
         ui->pres_new_sort->setEnabled(true);
+        ui->pres_edit_sort->setEnabled(true);
         ui->pres_filter_from->setEnabled(true);
         ui->pres_filter_to->setEnabled(true);
         ui->pres_pie_button->setEnabled(true);
@@ -1189,6 +1444,8 @@ bool MainWindow::load_pres(QString path, bool multi_file, bool skip_prompt) {
         ui->pres_sort_label->setEnabled(true);
         ui->pres_filter->setEnabled(true);
         ui->pres_filter_label->setEnabled(true);
+        ui->presCustomList->setEnabled(true);
+
 
         // load save order
         QSortListIO presSaveOrder(PRESORDER_SAVE);
@@ -1232,6 +1489,7 @@ bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt) {
         ui->fund_sort->setEnabled(true);
         ui->fund_delete_sort->setEnabled(true);
         ui->fund_new_sort->setEnabled(true);
+        ui->fund_edit_sort->setEnabled(true);
         ui->fund_filter_from->setEnabled(true);
         ui->fund_filter_to->setEnabled(true);
         ui->fund_pie_button->setEnabled(true);
@@ -1241,6 +1499,8 @@ bool MainWindow::load_fund(QString path, bool multi_file, bool skip_prompt) {
         ui->fund_sort_label->setEnabled(true);
         ui->fund_filter->setEnabled(true);
         ui->fund_filter_label->setEnabled(true);
+        ui->fundCustomList->setEnabled(true);
+
 
         // load save order
         QSortListIO fundSaveOrder(FUNDORDER_SAVE);
@@ -1325,36 +1585,75 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
     if (parentsList.size()!=teachSortOrder.size()) {
         teachClickedName = clickedName;
         std::vector<std::string> sortOrder(teachSortOrder.begin(), teachSortOrder.begin()+parentsList.size()+1);
-        std::vector<std::pair <std::string, int>> list =
-                teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
-        std::vector<std::pair <std::string, double>> chartList;
-        for (int i = 0; i < (int) list.size(); i++) {
-            chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
+        std::vector<std::pair <std::string, int>> list;
+        if(teachFlag == true){
+            std::vector<std::pair <std::string, int>> list =
+                    teachdb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            std::vector<std::pair <std::string, double>> chartList;
 
-        }
+            for (int i = 0; i < (int) list.size(); i++) {
+                chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
 
-        if (!chartList.empty()) {
-            ui->teachBarChart->clearPlottables();
-            setupBarChart(ui->teachBarChart, chartList);
-            ui->teachBarChart->replot();
-
-            setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
-
-            ui->teachLineChart->clearPlottables();
-            setupLineChart(ui->teachLineChart,chartList);
-            ui->teachLineChart->yAxis->setLabel("Number of courses taught");
-            ui->teachLineChart->replot();
-
-
-           // setupBarChart(ui->teachLineChart,chartList);
-
-            if (parentsList.size()>1) {
-                ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
-                                             QString::fromStdString(teachSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-            } else {
-                ui->teachGraphTitle->setText("Total Teaching by " + QString::fromStdString(parentsList[0]));
             }
-            ui->teach_graph_stackedWidget->show();
+
+            if (!chartList.empty()) {
+                ui->teachBarChart->clearPlottables();
+                setupBarChart(ui->teachBarChart, chartList);
+                ui->teachBarChart->replot();
+
+                setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
+
+                ui->teachLineChart->clearPlottables();
+                setupLineChart(ui->teachLineChart,chartList);
+                ui->teachLineChart->yAxis->setLabel("Number of courses taught");
+                ui->teachLineChart->replot();
+
+
+                // setupBarChart(ui->teachLineChart,chartList);
+
+                if (parentsList.size()>1) {
+                    ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
+                                                 QString::fromStdString(teachSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                } else {
+                    ui->teachGraphTitle->setText("Total Teaching by " + QString::fromStdString(parentsList[0]));
+                }
+                ui->teach_graph_stackedWidget->show();
+            }
+        }
+        else{
+            std::vector<std::pair <std::string, int>> list =
+                    teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+
+            std::vector<std::pair <std::string, double>> chartList;
+
+            for (int i = 0; i < (int) list.size(); i++) {
+                chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
+
+            }
+
+            if (!chartList.empty()) {
+                ui->teachBarChart->clearPlottables();
+                setupBarChart(ui->teachBarChart, chartList);
+                ui->teachBarChart->replot();
+
+                setupPieChart(ui->teachPieChart, ui->teachPieList, chartList);
+
+                ui->teachLineChart->clearPlottables();
+                setupLineChart(ui->teachLineChart,chartList);
+                ui->teachLineChart->yAxis->setLabel("Number of courses taught");
+                ui->teachLineChart->replot();
+
+
+                // setupBarChart(ui->teachLineChart,chartList);
+
+                if (parentsList.size()>1) {
+                    ui->teachGraphTitle->setText("Total " + clickedName + " Teaching by " +
+                                                 QString::fromStdString(teachSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                } else {
+                    ui->teachGraphTitle->setText("Total Teaching by " + QString::fromStdString(parentsList[0]));
+                }
+                ui->teach_graph_stackedWidget->show();
+            }
         }
     } else {
         ui->teach_graph_stackedWidget->hide();
@@ -1384,32 +1683,64 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
     if (parentsList.size()!=pubSortOrder.size()) {
         pubClickedName = clickedName;
         std::vector<std::string> sortOrder(pubSortOrder.begin(), pubSortOrder.begin()+parentsList.size()+1);
-        std::vector<std::pair <std::string, int>> list =
-                pubdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS));
-        std::vector<std::pair <std::string, double>> chartList;
-        for (int i = 0; i < (int) list.size(); i++) {
-            chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
-        }
+        if(pubFlag == true){
+            std::vector<std::pair <std::string, int>> list =
+                    pubdb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            std::vector<std::pair <std::string, double>> chartList;
 
-        if (!chartList.empty()) {
-            ui->pubBarChart->clearPlottables();
-            setupBarChart(ui->pubBarChart, chartList);
-            ui->pubBarChart->replot();
-
-            setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
-
-            ui->pubLineChart->clearPlottables();
-            setupLineChart(ui->pubLineChart,chartList);
-            ui->pubLineChart->yAxis->setLabel("Number of publications");
-            ui->pubLineChart->replot();
-
-            if (parentsList.size()>1) {
-                ui->pubGraphTitle->setText("Total " + clickedName + " Publications by " +
-                                           QString::fromStdString(pubSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-            } else {
-                ui->pubGraphTitle->setText("Total Publications by " + QString::fromStdString(parentsList[0]));
+            for (int i = 0; i < (int) list.size(); i++) {
+                chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
             }
-            ui->pub_graph_stackedWidget->show();
+            if (!chartList.empty()) {
+                ui->pubBarChart->clearPlottables();
+                setupBarChart(ui->pubBarChart, chartList);
+                ui->pubBarChart->replot();
+
+                setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
+
+                ui->pubLineChart->clearPlottables();
+                setupLineChart(ui->pubLineChart,chartList);
+                ui->pubLineChart->yAxis->setLabel("Number of publications");
+                ui->pubLineChart->replot();
+
+                if (parentsList.size()>1) {
+                    ui->pubGraphTitle->setText("Total " + clickedName + " Publications by " +
+                                               QString::fromStdString(pubSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                } else {
+                    ui->pubGraphTitle->setText("Total Publications by " + QString::fromStdString(parentsList[0]));
+                }
+                ui->pub_graph_stackedWidget->show();
+            }
+
+        }
+        else{
+            std::vector<std::pair <std::string, int>> list =
+                    pubdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS));
+            std::vector<std::pair <std::string, double>> chartList;
+            for (int i = 0; i < (int) list.size(); i++) {
+                chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
+            }
+
+            if (!chartList.empty()) {
+                ui->pubBarChart->clearPlottables();
+                setupBarChart(ui->pubBarChart, chartList);
+                ui->pubBarChart->replot();
+
+                setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
+
+                ui->pubLineChart->clearPlottables();
+                setupLineChart(ui->pubLineChart,chartList);
+                ui->pubLineChart->yAxis->setLabel("Number of publications");
+                ui->pubLineChart->replot();
+
+                if (parentsList.size()>1) {
+                    ui->pubGraphTitle->setText("Total " + clickedName + " Publications by " +
+                                               QString::fromStdString(pubSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                } else {
+                    ui->pubGraphTitle->setText("Total Publications by " + QString::fromStdString(parentsList[0]));
+                }
+                ui->pub_graph_stackedWidget->show();
+            }
         }
     } else {
         ui->pub_graph_stackedWidget->hide();
@@ -1417,7 +1748,6 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
         pubClickedName.clear();
     }
 }
-
 void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
     QString clickedName = index.data(Qt::DisplayRole).toString();
     if (clickedName==presClickedName || index.column()!=0) { return;}
@@ -1439,34 +1769,67 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
     if (parentsList.size()!=presSortOrder.size()) {
         presClickedName = clickedName;
         std::vector<std::string> sortOrder(presSortOrder.begin(), presSortOrder.begin()+parentsList.size()+1);
-        std::vector<std::pair <std::string, int>> list =
-                presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS));
-        std::vector<std::pair <std::string, double>> chartList;
-        for (int i = 0; i < (int) list.size(); i++) {
-            chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
-        }
-
-        if (!chartList.empty()) {
-            ui->presBarChart->clearPlottables();
-            setupBarChart(ui->presBarChart, chartList);
-            ui->presBarChart->replot();
-
-            setupPieChart(ui->presPieChart, ui->presPieList, chartList);
-
-            ui->presLineChart->clearPlottables();
-            setupLineChart(ui->presLineChart,chartList);
-            ui->presLineChart->yAxis->setLabel("Number of presentations");
-            ui->presLineChart->replot();
-
-
-
-            if (parentsList.size()>1) {
-                ui->presGraphTitle->setText("Total " + clickedName + " Presentations by " +
-                                            QString::fromStdString(presSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-            } else {
-                ui->presGraphTitle->setText("Total Presentations by " + QString::fromStdString(parentsList[0]));
+        if(presFlag == true){
+            std::vector<std::pair <std::string, int>> list =
+                    presdb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS));
+            std::vector<std::pair <std::string, double>> chartList;
+            for (int i = 0; i < (int) list.size(); i++) {
+                chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
             }
-            ui->pres_graph_stackedWidget->show();
+
+            if (!chartList.empty()) {
+                ui->presBarChart->clearPlottables();
+                setupBarChart(ui->presBarChart, chartList);
+                ui->presBarChart->replot();
+
+                setupPieChart(ui->presPieChart, ui->presPieList, chartList);
+
+                ui->presLineChart->clearPlottables();
+                setupLineChart(ui->presLineChart,chartList);
+                ui->presLineChart->yAxis->setLabel("Number of presentations");
+                ui->presLineChart->replot();
+
+
+
+                if (parentsList.size()>1) {
+                    ui->presGraphTitle->setText("Total " + clickedName + " Presentations by " +
+                                                QString::fromStdString(presSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                } else {
+                    ui->presGraphTitle->setText("Total Presentations by " + QString::fromStdString(parentsList[0]));
+                }
+                ui->pres_graph_stackedWidget->show();
+            }
+        }
+        else{
+            std::vector<std::pair <std::string, int>> list =
+                    presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS));
+            std::vector<std::pair <std::string, double>> chartList;
+            for (int i = 0; i < (int) list.size(); i++) {
+                chartList.emplace_back(list[i].first, static_cast<double>(list[i].second));
+            }
+
+            if (!chartList.empty()) {
+                ui->presBarChart->clearPlottables();
+                setupBarChart(ui->presBarChart, chartList);
+                ui->presBarChart->replot();
+
+                setupPieChart(ui->presPieChart, ui->presPieList, chartList);
+
+                ui->presLineChart->clearPlottables();
+                setupLineChart(ui->presLineChart,chartList);
+                ui->presLineChart->yAxis->setLabel("Number of presentations");
+                ui->presLineChart->replot();
+
+
+
+                if (parentsList.size()>1) {
+                    ui->presGraphTitle->setText("Total " + clickedName + " Presentations by " +
+                                                QString::fromStdString(presSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                } else {
+                    ui->presGraphTitle->setText("Total Presentations by " + QString::fromStdString(parentsList[0]));
+                }
+                ui->pres_graph_stackedWidget->show();
+            }
         }
     } else {
         ui->pres_graph_stackedWidget->hide();
@@ -1497,28 +1860,55 @@ void MainWindow::on_fundTreeView_clicked(const QModelIndex &index) {
         if (clickedName != fundClickedName) {
             fundClickedName = clickedName;
             std::vector<std::string> sortOrder(fundSortOrder.begin(), fundSortOrder.begin()+parentsList.size()+1);
-            std::vector<std::pair <std::string, double>> chartList =
-                    funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
+            if(fundFlag == true){
+                std::vector<std::pair <std::string, double>> chartList =
+                        funddb2->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
 
-            if (!chartList.empty()) {
-                ui->fundBarChart->clearPlottables();
-                setupBarChart(ui->fundBarChart, chartList);
-                ui->fundBarChart->replot();
+                if (!chartList.empty()) {
+                    ui->fundBarChart->clearPlottables();
+                    setupBarChart(ui->fundBarChart, chartList);
+                    ui->fundBarChart->replot();
 
-                setupPieChart(ui->fundPieChart, ui->fundPieList, chartList);
+                    setupPieChart(ui->fundPieChart, ui->fundPieList, chartList);
 
-                ui->fundLineChart->clearPlottables();
-                setupLineChart(ui->fundLineChart,chartList);
-                ui->fundLineChart->yAxis->setLabel("Amount of funding in CAD");
-                ui->fundLineChart->replot();
+                    ui->fundLineChart->clearPlottables();
+                    setupLineChart(ui->fundLineChart,chartList);
+                    ui->fundLineChart->yAxis->setLabel("Amount of funding in CAD");
+                    ui->fundLineChart->replot();
 
-                if (parentsList.size()>1) {
-                    ui->fundGraphTitle->setText("Total " + clickedName + " Grants & Funding by " +
-                                                QString::fromStdString(fundSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
-                } else {
-                    ui->fundGraphTitle->setText("Total Grants & Funding by " + QString::fromStdString(parentsList[0]));
+                    if (parentsList.size()>1) {
+                        ui->fundGraphTitle->setText("Total " + clickedName + " Grants & Funding by " +
+                                                    QString::fromStdString(fundSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                    } else {
+                        ui->fundGraphTitle->setText("Total Grants & Funding by " + QString::fromStdString(parentsList[0]));
+                    }
+                    ui->fund_graph_stackedWidget->show();
                 }
-                ui->fund_graph_stackedWidget->show();
+            }
+            else{
+                std::vector<std::pair <std::string, double>> chartList =
+                        funddb->getTotalsTuple(yearStart, yearEnd, sortOrder, parentsList, "Total Amount", getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
+
+                if (!chartList.empty()) {
+                    ui->fundBarChart->clearPlottables();
+                    setupBarChart(ui->fundBarChart, chartList);
+                    ui->fundBarChart->replot();
+
+                    setupPieChart(ui->fundPieChart, ui->fundPieList, chartList);
+
+                    ui->fundLineChart->clearPlottables();
+                    setupLineChart(ui->fundLineChart,chartList);
+                    ui->fundLineChart->yAxis->setLabel("Amount of funding in CAD");
+                    ui->fundLineChart->replot();
+
+                    if (parentsList.size()>1) {
+                        ui->fundGraphTitle->setText("Total " + clickedName + " Grants & Funding by " +
+                                                    QString::fromStdString(fundSortOrder[parentsList.size()]) + " for " + QString::fromStdString(parentsList[0]));
+                    } else {
+                        ui->fundGraphTitle->setText("Total Grants & Funding by " + QString::fromStdString(parentsList[0]));
+                    }
+                    ui->fund_graph_stackedWidget->show();
+                }
             }
         } else {
             ui->fund_graph_stackedWidget->hide();
@@ -1651,6 +2041,9 @@ char MainWindow::getFilterStartChar(int type) {
     case TEACH:
         charInField = ui->teach_filter_from->text().toStdString()[0];
         break;
+    case TEACH_CUSTOM:
+        charInField = ui->teach_filter_from->text().toStdString()[0];
+        break;
     }
 
     // convert the char to uppercase
@@ -1682,6 +2075,18 @@ char MainWindow::getFilterEndChar(int type) {
     case TEACH:
         charInField = ui->teach_filter_to->text().toStdString()[0];
         break;
+    case TEACH_CUSTOM:
+        charInField = ui->teach_filter_to->text().toStdString()[0];
+        break;
+    case FUNDING_CUSTOM:
+        charInField = ui->fund_filter_to->text().toStdString()[0];
+        break;
+    case PRESENTATIONS_CUSTOM:
+        charInField = ui->pres_filter_to->text().toStdString()[0];
+        break;
+    case PUBLICATIONS_CUSTOM:
+        charInField = ui->pub_filter_to->text().toStdString()[0];
+        break;
     }
 
     // convert the char to uppercase
@@ -1699,14 +2104,267 @@ char MainWindow::getFilterEndChar(int type) {
     }
 }
 
-void MainWindow::on_teach_filter_from_textChanged() { refresh(TEACH);}
-void MainWindow::on_teach_filter_to_textChanged() { refresh(TEACH);}
-void MainWindow::on_pub_filter_from_textChanged() { refresh(PUBLICATIONS);}
-void MainWindow::on_pub_filter_to_textChanged() { refresh(PUBLICATIONS);}
-void MainWindow::on_pres_filter_from_textChanged() { refresh(PRESENTATIONS);}
-void MainWindow::on_pres_filter_to_textChanged() { refresh(PRESENTATIONS);}
-void MainWindow::on_fund_filter_from_textChanged() { refresh(FUNDING);}
-void MainWindow::on_fund_filter_to_textChanged() { refresh(FUNDING);}
+void MainWindow::on_teach_filter_from_textChanged() {
+    if(teachFlag == true)
+        refresh(TEACH_CUSTOM);
+    else
+        refresh(TEACH);
+}
+void MainWindow::on_teach_filter_to_textChanged() {
+    if(teachFlag == true)
+        refresh(TEACH_CUSTOM);
+    else
+        refresh(TEACH);
+}
+void MainWindow::on_pub_filter_from_textChanged() {
+    if(pubFlag == true)
+        refresh(PUBLICATIONS_CUSTOM);
+    else
+        refresh(PUBLICATIONS);
+}
+void MainWindow::on_pub_filter_to_textChanged() {
+    if(pubFlag == true)
+        refresh(PUBLICATIONS_CUSTOM);
+    else
+        refresh(PUBLICATIONS);
+}
+void MainWindow::on_pres_filter_from_textChanged() {
+    if(presFlag == true)
+        refresh(PRESENTATIONS_CUSTOM);
+    else
+        refresh(PRESENTATIONS);
+}
+void MainWindow::on_pres_filter_to_textChanged() {
+    if(presFlag == true)
+        refresh(PRESENTATIONS_CUSTOM);
+    else
+        refresh(PRESENTATIONS);
+}
+void MainWindow::on_fund_filter_from_textChanged() {
+    if(fundFlag == true)
+        refresh(FUNDING_CUSTOM);
+    else
+        refresh(FUNDING);
+}
+void MainWindow::on_fund_filter_to_textChanged() {
+    if(fundFlag == true)
+        refresh(FUNDING_CUSTOM);
+    else
+        refresh(FUNDING);
+}
 
 
 
+void MainWindow::on_teachCustomList_clicked()
+{
+    selectData* sortdialog = new selectData();
+    sortdialog->setFields(teachNames);
+    int ret = sortdialog->exec();
+    if (ret){
+        teachNames = sortdialog->getSortFields();
+        teachFlag = true;
+        // create a new reader to read in the file
+        CSVReader reader;
+        std::vector<std::string> header;
+        int sortHeaderIndex = 2;
+        reader = CSVReader(teachPath.toStdString());
+        header = reader.getHeaders();
+
+        // create a new manager for the data
+        delete teachdb2;
+        teachdb2 = new RecordsManager(&header);
+        // check for right file type by searching for unique header
+        sortHeaderIndex = teachdb2->getHeaderIndex("Start Date");
+        teachData = reader.getData();
+        unsigned int j;
+        for (int i = 0; i < (int) teachData.size(); i++)
+        {
+            for (j = 0; j < TEACH_MANFIELDS.size(); j++)
+            {
+                int index = teachdb2->getHeaderIndex(TEACH_MANFIELDS[j]);
+                if (teachData[i][index].compare("") == 0)
+                {
+                    break;
+                }
+            }
+
+            // if all mandatory fields are okay
+            if (j == TEACH_MANFIELDS.size())
+            {
+                // date interpretation
+                int yrIndex = teachdb2->getHeaderIndex("Start Date");
+                int year;
+                sscanf(teachData[i][yrIndex].c_str(), "%4d", &year);
+                teachData[i][yrIndex] = std::to_string(year);
+                if(std::find(teachNames.begin(), teachNames.end(), teachData[i][4])!=teachNames.end())
+                    teachdb2->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
+            }
+        }
+        ui->teach_graph_stackedWidget->hide();
+        ui->teachGraphTitle->clear();
+        teachClickedName.clear();
+        makeTree(TEACH_CUSTOM);
+
+    }
+    delete sortdialog;
+}
+
+void MainWindow::on_pubCustomList_clicked()
+{
+    selectData* sortdialog = new selectData();
+    sortdialog->setFields(pubNames);
+    int ret = sortdialog->exec();
+    if (ret){
+        pubNames = sortdialog->getSortFields();
+        pubFlag = true;
+        // create a new reader to read in the file
+        CSVReader reader;
+        std::vector<std::string> header;
+        int sortHeaderIndex = 2;
+        reader = CSVReader(pubPath.toStdString());
+        header = reader.getHeaders();
+
+        // create a new manager for the data
+        delete pubdb2;
+        pubdb2 = new RecordsManager(&header);
+        // check for right file type by searching for unique header
+        sortHeaderIndex = pubdb2->getHeaderIndex("Status Date");
+        pubData = reader.getData();
+        unsigned int j;
+        for (int i = 0; i < (int) pubData.size(); i++)
+        {
+            for (j = 0; j < PUBS_MANFIELDS.size(); j++)
+            {
+                int index = pubdb2->getHeaderIndex(PUBS_MANFIELDS[j]);
+                if (pubData[i][index].compare("") == 0)
+                {
+                    break;
+                }
+            }
+
+            // if all mandatory fields are okay
+            if (j == PUBS_MANFIELDS.size())
+            {
+                // date interpretation
+                int yrIndex = pubdb2->getHeaderIndex("Status Date");
+                int year;
+                sscanf(pubData[i][yrIndex].c_str(), "%4d", &year);
+                pubData[i][yrIndex] = std::to_string(year);
+                if(std::find(pubNames.begin(), pubNames.end(), pubData[i][4])!=pubNames.end())
+                    pubdb2->addRecord(reader.parseDateString(pubData[i][sortHeaderIndex]), &pubData[i]);
+            }
+        }
+        ui->pub_graph_stackedWidget->hide();
+        ui->pubGraphTitle->clear();
+        pubClickedName.clear();
+        makeTree(PUBLICATIONS_CUSTOM);
+
+    }
+    delete sortdialog;
+}
+void MainWindow::on_presCustomList_clicked(){
+    selectData* sortdialog = new selectData();
+    sortdialog->setFields(presNames);
+    int ret = sortdialog->exec();
+    if (ret){
+        presNames = sortdialog->getSortFields();
+        presFlag = true;
+        // create a new reader to read in the file
+        CSVReader reader;
+        std::vector<std::string> header;
+        int sortHeaderIndex = 2;
+        reader = CSVReader(presPath.toStdString());
+        header = reader.getHeaders();
+
+        // create a new manager for the data
+        delete presdb2;
+        presdb2 = new RecordsManager(&header);
+
+        // load in data into the manager, with the date as the key
+        sortHeaderIndex = presdb2->getHeaderIndex("Date");
+        presData = reader.getData();
+        unsigned int j = 0;
+        for (int i = 0; i < (int) presData.size(); i++) {
+            //check through mandatory fields for empty fields
+            for (j = 0; j < PRES_MANFIELDS.size(); j++) {
+                int index = presdb2->getHeaderIndex(PRES_MANFIELDS[j]);
+                if (presData[i][index].compare("") == 0) {
+                    break;
+                }
+            }
+
+            // if all mandatory fields are okay
+            if (j == PRES_MANFIELDS.size()) {
+                // date interpretation
+                int yrIndex = presdb2->getHeaderIndex("Date");
+                int year;
+                sscanf(presData[i][yrIndex].c_str(), "%4d", &year);
+                presData[i][yrIndex] = std::to_string(year);
+                if(std::find(presNames.begin(), presNames.end(), presData[i][4])!=presNames.end())
+                    presdb2->addRecord(reader.parseDateString(presData[i][sortHeaderIndex]), &presData[i]);
+            }
+        }
+        ui->pres_graph_stackedWidget->hide();
+        ui->presGraphTitle->clear();
+        presClickedName.clear();
+        makeTree(PRESENTATIONS_CUSTOM);
+    }
+    delete sortdialog;
+}
+
+void MainWindow::on_fundCustomList_clicked(){
+    selectData* sortdialog = new selectData();
+    sortdialog->setFields(fundNames);
+    int ret = sortdialog->exec();
+    if (ret){
+        fundNames = sortdialog->getSortFields();
+        fundFlag = true;
+        // create a new reader to read in the file
+        CSVReader reader;
+        std::vector<std::string> header;
+        int sortHeaderIndex = 2;
+        reader = CSVReader(fundPath.toStdString());
+        header = reader.getHeaders();
+
+        // create a new manager for the data
+        delete funddb2;
+        funddb2 = new RecordsManager(&header);
+
+        // load in data into the manager, with the date as the key
+        sortHeaderIndex = funddb2->getHeaderIndex("Start Date");
+        fundData = reader.getData();
+        unsigned int j;
+        for (int i = 0; i < (int) fundData.size(); i++) {
+            for (j = 0; j < GRANTS_MANFIELDS.size(); j++) {
+                int index = funddb2->getHeaderIndex(GRANTS_MANFIELDS[j]);
+                if (fundData[i][index].compare("") == 0) {
+                    break;
+                }
+            }
+
+            // if all mandatory fields are okay
+            if (j == GRANTS_MANFIELDS.size()) {
+                // date interpretation
+                int yrIndex = funddb2->getHeaderIndex("Start Date");
+                int year;
+                sscanf(fundData[i][yrIndex].c_str(), "%4d", &year);
+                fundData[i][yrIndex] = std::to_string(year);
+
+                // boolean interpretation
+                int prIndex = funddb2->getHeaderIndex("Peer Reviewed?");
+                if (fundData[i][prIndex].compare("True") == 0) {
+                    fundData[i][prIndex] = "Peer Reviewed";
+                } else {
+                    fundData[i][prIndex] = "Not Peer Reviewed";
+                }
+                if(std::find(fundNames.begin(), fundNames.end(), fundData[i][4])!=fundNames.end())
+                    funddb2->addRecord(reader.parseDateString(fundData[i][sortHeaderIndex]), &fundData[i]);
+            }
+        }
+        ui->fund_graph_stackedWidget->hide();
+        ui->fundGraphTitle->clear();
+        fundClickedName.clear();
+        makeTree(FUNDING_CUSTOM);
+    }
+    delete sortdialog;
+}

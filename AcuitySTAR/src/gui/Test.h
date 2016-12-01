@@ -9,6 +9,9 @@
 #include "gui/CustomSort.h"
 #include "gui/ErrorEditDialog.h"
 #include "gui/mainwindow.h"
+#include "gui/editsort.h"
+#include "ui_editsort.h"
+
 
 #include "database/CSVReader.h"
 #include "database/QSortListIO.h"
@@ -25,6 +28,7 @@ class Test: public QObject
 
 private:
     MainWindow w;
+    EditSort editui;
 
 public:
     Test() = default;
@@ -61,6 +65,12 @@ private slots:
     void test_on_pub_line_button_toggled();
     void test_on_fund_line_button_toggled();
     void test_setupLineChart();
+
+    //test edit sort order
+
+    void test_editsort_setFields();
+    void test_editsort_getSortFields();
+
 
 
 };

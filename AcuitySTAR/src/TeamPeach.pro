@@ -33,7 +33,10 @@ HEADERS += \
     database/TestCSVReader.h \
     gui/qcustomplot.h \
     gui/Test.h \
-    database/QFileIO.h
+    database/QFileIO.h \
+    gui/selectData.h \
+    gui/editsort.h
+
 
 
 
@@ -55,12 +58,16 @@ SOURCES += \
     database/TestCSVReader.cpp \
     gui/qcustomplot.cpp \
     gui/Test.cpp \
-    database/QFileIO.cpp
+    database/QFileIO.cpp \
+    gui/selectData.cpp \
+    gui/editsort.cpp
 
 FORMS += \
     gui/customsort.ui \
     gui/mainwindow.ui \
-    gui/ErrorEditDialog.ui
+    gui/ErrorEditDialog.ui \
+    gui/selectData.ui \
+    gui/editsort.ui
 
 RESOURCES += \
     images.qrc

@@ -6,6 +6,7 @@
 #include <QComboBox>
 
 namespace Ui
+
 {
 class CustomSort;
 }
