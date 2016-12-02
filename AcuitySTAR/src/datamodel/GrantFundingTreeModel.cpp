@@ -13,9 +13,9 @@ GrantFundingTreeModel::~GrantFundingTreeModel() {
 
 void GrantFundingTreeModel::setupModel(int yearStart, int yearEnd, std::vector<std::string> sortFields, char filterStart, char filterEnd)
 {
-    qDebug() << "entered setupModel";
+    //qDebug() << "entered setupModel";
     rootItem = new TreeItem(dataObj->createHeadersListForGrants(sortFields[0]));
-    qDebug() << "middle setupModel";
+    //qDebug() << "middle setupModel";
     setupModelData(dataObj->createQStringForGrants(yearStart, yearEnd, sortFields, filterStart, filterEnd).split(QString("\n")), rootItem);
-    qDebug() << "leaving setupModel";
+    //qDebug() << "leaving setupModel";
 }

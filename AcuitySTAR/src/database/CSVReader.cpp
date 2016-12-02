@@ -101,7 +101,7 @@ void CSVReader::fixDateFormatting()
         }
     }
 
-    qDebug() << "date index: " << dateIndex;
+    //qDebug() << "date index: " << dateIndex;
 
     std::vector<std::string> currentRow;
     std::string inputString;
@@ -121,21 +121,21 @@ void CSVReader::fixDateFormatting()
             //std::cout << inputString;
 
             QString qDateString = QString::fromStdString(inputString);
-            qDebug() << "\n" << qDateString;
+            //qDebug() << "\n" << qDateString;
             if (qDateString.startsWith("J") || qDateString.startsWith("F") || qDateString.startsWith("M") || qDateString.startsWith("A") || qDateString.startsWith("S") || qDateString.startsWith("O") || qDateString.startsWith("N") || qDateString.startsWith("D"))
             {
-                qDebug() << "year at end\t";
+                //qDebug() << "year at end\t";
                 qDateString.remove(0,4);
             }
             else
             {
-                qDebug() << "year in front\t";
+                //qDebug() << "year in front\t";
                 qDateString.chop(4);
 
             }
-            qDebug() << qDateString;
+            //qDebug() << qDateString;
             twoDigitYear = qDateString.toInt();
-            qDebug() << twoDigitYear;
+            //qDebug() << twoDigitYear;
 
 
             //sscanf(inputString.c_str(), "%2d", &twoDigitYear);
@@ -151,7 +151,7 @@ void CSVReader::fixDateFormatting()
                 resultingFourDigitYear = twoDigitYear + 1900;
             }
 
-            qDebug() << resultingFourDigitYear;
+            //qDebug() << resultingFourDigitYear;
 
             std::string finalS = std::to_string(resultingFourDigitYear);
 
@@ -161,13 +161,13 @@ void CSVReader::fixDateFormatting()
         }
 
     }
-    qDebug() << "count: " << count;
+    //qDebug() << "count: " << count;
 
 }
 
 CSVReader::CSVReader()
 {
-    qDebug() << "Paul wins";
+    //qDebug() << "Paul wins";
     //fixDateFormatting();
 }
 

@@ -230,10 +230,12 @@ void Test::test_setupLineChart() {
 
 void Test::testFixDateFormatting()
 {
-    CSVReader reader;
-    reader.loadCSV();
+    CSVReader reader("../Project Information/Sample Data/Grants_expanded.csv");
 
-    QVERIFY(true);
+    int numRecords = reader.getData().size();
+
+
+    QVERIFY(numRecords == 4241);
 }
 
 
