@@ -533,7 +533,7 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
  * @return              a formatted string with the analysis, can be used for TreeModel
  */
 std::string RecordsManager::analyze(int startYear, int endYear, const std::vector<std::string> &sortFields, const std::vector<std::string> &accs,
-        int currencyMask, std::string countCol, char filterStart, char filterEnd) {
+                                    int currencyMask, std::string countCol, char filterStart, char filterEnd) {
     std::string ret;
     int sum = 0;
     std::vector<BasicRecord*> records = findRecordsInRange(startYear, endYear);
@@ -606,7 +606,8 @@ std::string RecordsManager::analyze(int startYear, int endYear, const std::vecto
  * @return              a formatted string with the analysis, can be used for TreeModel
  */
 std::string RecordsManager::analyze(StringTree sortedTree, const std::vector<int> &sortFields, const std::vector<int> &accs, std::vector<double> &accsTotals,
-        int currencyMask, int countCol, int* currCount, int depth) {
+                                    int currencyMask, int countCol, int* currCount, int depth) {
+    //qDebug() << "\nEntering analyze3";
     std::pair<StringTree::iterator, StringTree::iterator> uniqueValue;
     std::string value;
     std::string fieldString = "";
@@ -614,7 +615,8 @@ std::string RecordsManager::analyze(StringTree sortedTree, const std::vector<int
     int fieldCount;
     std::vector<double> accsTotal;
 
-    for (StringTree::iterator sortField = sortedTree.begin(); sortField != sortedTree.end(); sortField = uniqueValue.second) {
+    for (StringTree::iterator sortField = sortedTree.begin(); sortField != sortedTree.end(); sortField = uniqueValue.second)
+    {
         // get a unique value for this field (header)
         value = sortField->first;
 
@@ -629,30 +631,54 @@ std::string RecordsManager::analyze(StringTree sortedTree, const std::vector<int
 
         StringTree newSorted;
         // create a newly sorted tree using the next field (header) to sort by as its key
-        for (StringTree::iterator itr = uniqueValue.first; itr != uniqueValue.second; itr++) {
+        for (StringTree::iterator itr = uniqueValue.first ; itr != uniqueValue.second ; itr++)
+        {
             // only create the tree if we're not at the deepest level
-            if ((int) sortFields.size() - 1 > depth) {
-                newSorted.emplace(itr->second->at(sortFields[depth + 1]), itr->second);
-            } else {
+            if ((int) sortFields.size() - 1 > depth)
+            {
+                //qDebug() << "\nAbout to emplace";
+                //qDebug() << "sortfields.size() : " << sortFields.size();
+                //qDebug() << "depth: " << depth;
+                //qDebug() << "\nsecond size: " << itr->second->size();
+                //qDebug() << "sortfields.at(depth_1) : " << sortFields.at(depth + 1);
+                //std::string str = itr->second->at(sortFields.at(depth + 1));
+                //qDebug() << "no crash yet.";
+                //QString qstr = QString::fromStdString(str);
+                //qDebug() << "secondAtDepth+1: " << qstr;
+                if(sortFields.at(depth + 1) < itr->second->size()) //not having this if block was crashing the program
+                {
+                    newSorted.emplace(itr->second->at(sortFields.at(depth + 1)), itr->second);
+                }
+                //qDebug() << "Successfully emplaced";
+            }
+            else
+            {
                 // we're at the deepest level: find values for our accumulators
-                for (int i = 0; i < (int) accs.size(); i++) {
-                    accsTotal[i] += parseStringToDouble(itr->second->at(accs[i]));
+                for (int i = 0; i < (int) accs.size(); i++)
+                {
+                    if (itr->second->size() > accs[i]) //if the vector is too big, do nothing
+                    {
+                        accsTotal[i] += parseStringToDouble(itr->second->at(accs[i]));
+                    }
                 }
             }
 
             // if we want to accumulate this field, then count the number of records
-            if (sortFields[depth] == countCol) {
+            if (sortFields[depth] == countCol)
+            {
                 fieldCount++;
             }
         }
 
         // analyze at the next level, should we need to go deeper
-        if ((int) sortFields.size() > depth) {
+        if ((int) sortFields.size() > depth)
+        {
             returnString = analyze(newSorted, sortFields, accs, accsTotal, currencyMask, countCol, &fieldCount, depth + 1);
         }
 
         // add spaces to return string depending on how deep we are in the tree
-        for (int i = 0; i < depth; i++) {
+        for (int i = 0; i < depth; i++)
+        {
             fieldString += ' ';
         }
 
