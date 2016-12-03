@@ -318,11 +318,12 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                     {
                         // date interpretation
                         int yrIndex = teachdb->getHeaderIndex("Start Date");
+                        int headerIndex = teachdb->getHeaderIndex("Member Name");
                         int year;
                         sscanf(teachData[i][yrIndex].c_str(), "%4d", &year);
                         teachData[i][yrIndex] = std::to_string(year);
-                        if(std::find(teachNames.begin(), teachNames.end(), teachData[i][4]) == teachNames.end())
-                            teachNames.push_back(teachData[i][4]);
+                        if(std::find(teachNames.begin(), teachNames.end(), teachData[i][headerIndex]) == teachNames.end())
+                            teachNames.push_back(teachData[i][headerIndex]);
                         teachdb->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
                     }
                 }
@@ -382,11 +383,12 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                     if (j == PUBS_MANFIELDS.size()) {
                         // date interpretation
                         int yrIndex = pubdb->getHeaderIndex("Status Date");
+                        int headerIndex = pubdb->getHeaderIndex("Member Name");
                         int year;
                         sscanf(pubData[i][yrIndex].c_str(), "%4d", &year);
                         pubData[i][yrIndex] = std::to_string(year);
-                        if(std::find(pubNames.begin(), pubNames.end(), pubData[i][4]) == pubNames.end())
-                            pubNames.push_back(pubData[i][4]);
+                        if(std::find(pubNames.begin(), pubNames.end(), pubData[i][headerIndex]) == pubNames.end())
+                            pubNames.push_back(pubData[i][headerIndex]);
                         pubdb->addRecord(reader.parseDateString(pubData[i][sortHeaderIndex]), &pubData[i]);
                     }
                 }
@@ -445,11 +447,12 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                     if (j == PRES_MANFIELDS.size()) {
                         // date interpretation
                         int yrIndex = presdb->getHeaderIndex("Date");
+                        int headerIndex = presdb->getHeaderIndex("Member Name");
                         int year;
                         sscanf(presData[i][yrIndex].c_str(), "%4d", &year);
                         presData[i][yrIndex] = std::to_string(year);
-                        if(std::find(presNames.begin(), presNames.end(), presData[i][4]) == presNames.end())
-                            presNames.push_back(presData[i][4]);
+                        if(std::find(presNames.begin(), presNames.end(), presData[i][headerIndex]) == presNames.end())
+                            presNames.push_back(presData[i][headerIndex]);
                         presdb->addRecord(reader.parseDateString(presData[i][sortHeaderIndex]), &presData[i]);
                     }
                 }
@@ -508,6 +511,7 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                     if (j == GRANTS_MANFIELDS.size()) {
                         // date interpretation
                         int yrIndex = funddb->getHeaderIndex("Start Date");
+                        int headerIndex = funddb->getHeaderIndex("Member Name");
                         int year;
                         sscanf(fundData[i][yrIndex].c_str(), "%4d", &year);
                         fundData[i][yrIndex] = std::to_string(year);
@@ -519,8 +523,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
                         } else {
                             fundData[i][prIndex] = "Not Peer Reviewed";
                         }
-                        if(std::find(fundNames.begin(), fundNames.end(), fundData[i][4]) == fundNames.end())
-                            fundNames.push_back(fundData[i][4]);
+                        if(std::find(fundNames.begin(), fundNames.end(), fundData[i][headerIndex]) == fundNames.end())
+                            fundNames.push_back(fundData[i][headerIndex]);
                         funddb->addRecord(reader.parseDateString(fundData[i][sortHeaderIndex]), &fundData[i]);
                     }
                 }
@@ -2518,6 +2522,7 @@ void MainWindow::on_teachCustomList_clicked()
         teachdb2 = new RecordsManager(&header);
         // check for right file type by searching for unique header
         sortHeaderIndex = teachdb2->getHeaderIndex("Start Date");
+        int headerIndex = teachdb->getHeaderIndex("Member Name");
         teachData = reader.getData();
         unsigned int j;
         for (int i = 0; i < (int) teachData.size(); i++)
@@ -2539,7 +2544,7 @@ void MainWindow::on_teachCustomList_clicked()
                 int year;
                 sscanf(teachData[i][yrIndex].c_str(), "%4d", &year);
                 teachData[i][yrIndex] = std::to_string(year);
-                if(std::find(teachNames.begin(), teachNames.end(), teachData[i][4])!=teachNames.end())
+                if(std::find(teachNames.begin(), teachNames.end(), teachData[i][headerIndex])!=teachNames.end())
                     teachdb2->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
             }
         }
@@ -2590,10 +2595,11 @@ void MainWindow::on_pubCustomList_clicked()
             {
                 // date interpretation
                 int yrIndex = pubdb2->getHeaderIndex("Status Date");
+                int headerIndex = pubdb2->getHeaderIndex("Member Name");
                 int year;
                 sscanf(pubData[i][yrIndex].c_str(), "%4d", &year);
                 pubData[i][yrIndex] = std::to_string(year);
-                if(std::find(pubNames.begin(), pubNames.end(), pubData[i][4])!=pubNames.end())
+                if(std::find(pubNames.begin(), pubNames.end(), pubData[i][headerIndex])!=pubNames.end())
                     pubdb2->addRecord(reader.parseDateString(pubData[i][sortHeaderIndex]), &pubData[i]);
             }
         }
@@ -2640,10 +2646,11 @@ void MainWindow::on_presCustomList_clicked(){
             if (j == PRES_MANFIELDS.size()) {
                 // date interpretation
                 int yrIndex = presdb2->getHeaderIndex("Date");
+                int headerIndex = presdb2->getHeaderIndex("Member Name");
                 int year;
                 sscanf(presData[i][yrIndex].c_str(), "%4d", &year);
                 presData[i][yrIndex] = std::to_string(year);
-                if(std::find(presNames.begin(), presNames.end(), presData[i][4])!=presNames.end())
+                if(std::find(presNames.begin(), presNames.end(), presData[i][headerIndex])!=presNames.end())
                     presdb2->addRecord(reader.parseDateString(presData[i][sortHeaderIndex]), &presData[i]);
             }
         }
@@ -2689,6 +2696,7 @@ void MainWindow::on_fundCustomList_clicked(){
             if (j == GRANTS_MANFIELDS.size()) {
                 // date interpretation
                 int yrIndex = funddb2->getHeaderIndex("Start Date");
+                int headerIndex = funddb2->getHeaderIndex("Member Name");
                 int year;
                 sscanf(fundData[i][yrIndex].c_str(), "%4d", &year);
                 fundData[i][yrIndex] = std::to_string(year);
@@ -2700,7 +2708,7 @@ void MainWindow::on_fundCustomList_clicked(){
                 } else {
                     fundData[i][prIndex] = "Not Peer Reviewed";
                 }
-                if(std::find(fundNames.begin(), fundNames.end(), fundData[i][4])!=fundNames.end())
+                if(std::find(fundNames.begin(), fundNames.end(), fundData[i][headerIndex])!=fundNames.end())
                     funddb2->addRecord(reader.parseDateString(fundData[i][sortHeaderIndex]), &fundData[i]);
             }
         }
