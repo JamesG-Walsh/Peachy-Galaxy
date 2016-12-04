@@ -37,6 +37,16 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     ui->tableWidget->setRowCount((int) errors.size());
     ui->tableWidget->setColumnCount((int) headers.size());
 
+    for (int col = 0, mandIndex = 0; col < (int) headers.size() ; col++)
+    {
+        if(mandatory[mandIndex].compare(headers.at(col)) == 0)
+        {
+            //qDebug() << "mandatory index: " << col;
+            mandatoryColumnIndexes.push_back(col);
+            mandIndex++;
+        }
+    }
+
     errCoords.resize(errors.size());
 
     for(int row = 0; row < errors.size(); row++)
@@ -60,18 +70,23 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     int row = 0;
     for (it = errors.begin(); it != errors.end(); it++)
     {
-        for (int col = 0; col < (int) headers.size() && col < (int) (*it)->size(); col++)
+        for (int col = 0; col < (int) headers.size()/* && col < (int) (*it)->size()*/; col++)
         {
             item = new QTableWidgetItem();
             Qt::ItemFlags flag = item->flags();
             item->setFlags(Qt::ItemIsSelectable);
-            item->setText((*it)->at(col).c_str());
+            if(col < (*it)->size())
+            {
+                item->setText((*it)->at(col).c_str());
+            }
+            else
+            {
+                item->setText("");
+            }
             for (int i = 0; i < (int) mandatory.size(); i++)
             {
-                if (mandatory[i].compare(headers.at(col)) == 0
-                        && (*it)->at(col).compare("") == 0)
+                if (mandatory[i].compare(headers.at(col)) == 0 && item->text().compare("") == 0)
                 {
-
                     item->setBackground(brush);
                     item->setFlags(flag);
                     //                    coord theCoord;
@@ -85,6 +100,17 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
         }
         row++;
     }
+    int errorsRem = this->countRemainingErrors();
+    ui->numErrorsRemaining->display(errorsRem);
+
+    if(errorsRem == 0)
+    {
+        ui->findNext->setEnabled(false);
+        ui->findPrev->setEnabled(false);
+    }
+
+    ui->numErrorsRemaining->setSegmentStyle(QLCDNumber::Flat);
+    ui->numErrorsRemaining->show();
 }
 
 //Clean up allocated memory for the table items
@@ -117,6 +143,39 @@ void ErrorEditDialog::saveData()
     accept();
 }
 
+int ErrorEditDialog::countRemainingErrors()
+{
+    int remainingErrors = 0;
+    QTableWidgetItem* currItem;
+    QString currStr;
+    for (int row = 0; row < ui->tableWidget->rowCount(); row++)
+    {
+        int col;
+        //qDebug() << "row: " << row;
+        for(int mandIndex = 0; mandIndex < mandatoryColumnIndexes.size(); mandIndex++)
+        {
+            col = mandatoryColumnIndexes.at(mandIndex);
+            //qDebug() << "col: " << col;
+            currItem = ui->tableWidget->item(row, col);
+            //qDebug() << "got item";
+            currStr = currItem->text();
+            //qDebug() << "got string";
+            if(errCoords.at(row).at(col) && (currStr.isNull() || currStr.isEmpty()))
+            {
+                //qDebug() << "found error at: ";
+                //qDebug() << "\trow: " << row;
+                //qDebug() << "\tcol: " << col;
+                remainingErrors++;
+                //qDebug() << "\tRemaining Errors: " << remainingErrors;
+            }
+            //qDebug() << "finished if block";
+        }
+        //qDebug() << "finished inner loop";
+    }
+    //qDebug() << "Final Remaining Errors: " << remainingErrors;
+    return remainingErrors;
+}
+
 void ErrorEditDialog::on_save_clicked()
 {
     bool search = true;
@@ -135,7 +194,8 @@ void ErrorEditDialog::on_save_clicked()
             }
         }
     }
-    if (search) {
+    if (search)
+    {
         saveData();
     }
 }
@@ -147,6 +207,15 @@ void ErrorEditDialog::on_cancel_clicked()
 
 void ErrorEditDialog::on_findNext_clicked()
 {
+    int errorsRem = this->countRemainingErrors();
+    ui->numErrorsRemaining->display(errorsRem);
+
+    if(errorsRem == 0)
+    {
+        ui->findNext->setEnabled(false);
+        ui->findPrev->setEnabled(false);
+    }
+
     int initRow = ui->tableWidget->currentRow();
     int initCol = ui->tableWidget->currentColumn();
 
@@ -162,7 +231,7 @@ void ErrorEditDialog::on_findNext_clicked()
     int destRow, destCol;
     bool checkedFirstRow = false;
 
-    qDebug() << "initRow: " << initRow;
+    //qDebug() << "initRow: " << initRow;
 
     if(!(initCol == (ui->tableWidget->columnCount() - 1))){
         initCol++;
@@ -172,91 +241,95 @@ void ErrorEditDialog::on_findNext_clicked()
         initCol = 0;
     }
 
-    qDebug() << "initCol: " << initCol;
+    //qDebug() << "initCol: " << initCol;
 
     bool foundError = false;
 
     for(int row = initRow ; row < ui->tableWidget->rowCount() && !foundError ; row++)
     {
-        qDebug() << "row: " << row;
-
-        if(checkedFirstRow){
+        //qDebug() << "row: " << row;
+        if(checkedFirstRow)
+        {
             initCol = 0;
         }
-
         for(int col = initCol ; col < ui->tableWidget->columnCount() && !foundError ; col++)
         {
-            qDebug() << "col" << col;
+            //qDebug() << "col" << col;
             if(errCoords.at(row).at(col))
             {
                 foundError = true;
                 destRow = row;
                 destCol = col;
-                qDebug() << "destRow: " << destRow;
-                qDebug() << "destCol: " << destCol;
+                //qDebug() << "destRow: " << destRow;
+                //qDebug() << "destCol: " << destCol;
+            }
+            checkedFirstRow = true;
+        }
+    }
+    ui->tableWidget->setCurrentCell(destRow,destCol);
+}
+
+void ErrorEditDialog::on_findPrev_clicked()
+{
+    int errorsRem = this->countRemainingErrors();
+    ui->numErrorsRemaining->display(errorsRem);
+
+    if(errorsRem == 0)
+    {
+        ui->findNext->setEnabled(false);
+        ui->findPrev->setEnabled(false);
+    }
+    int initRow = ui->tableWidget->currentRow();
+    int initCol = ui->tableWidget->currentColumn();
+
+    if(initRow < 0)
+    {
+        initRow = 0;
+    }
+    if(initCol < 0)
+    {
+        initCol = 0;
+    }
+
+    int destRow, destCol;
+    bool checkedFirstRow = false;
+
+    //qDebug() << "initRow: " << initRow;
+
+    if(!(initCol == 0)){
+        initCol--;
+    }
+    else{
+        initRow--;
+        initCol = (ui->tableWidget->columnCount() - 1);
+    }
+
+    //qDebug() << "initCol: " << initCol;
+
+    bool foundError = false;
+
+    for(int row = initRow ; row >= 0 && !foundError ; row--)
+    {
+        //qDebug() << "row: " << row;
+
+        if(checkedFirstRow){
+            initCol = (ui->tableWidget->columnCount() - 1);
+        }
+
+        for(int col = initCol ; col >= 0 && !foundError ; col--)
+        {
+            //qDebug() << "col" << col;
+            if(errCoords.at(row).at(col))
+            {
+                foundError = true;
+                destRow = row;
+                destCol = col;
+                //qDebug() << "destRow: " << destRow;
+                //qDebug() << "destCol: " << destCol;
             }
             checkedFirstRow = true;
         }
     }
 
     ui->tableWidget->setCurrentCell(destRow,destCol);
-}
-
-void ErrorEditDialog::on_findPrev_clicked()
-{
-    {
-        int initRow = ui->tableWidget->currentRow();
-        int initCol = ui->tableWidget->currentColumn();
-
-        if(initRow < 0)
-        {
-            initRow = 0;
-        }
-        if(initCol < 0)
-        {
-            initCol = 0;
-        }
-
-        int destRow, destCol;
-        bool checkedFirstRow = false;
-
-        qDebug() << "initRow: " << initRow;
-
-        if(!(initCol == 0)){
-            initCol--;
-        }
-        else{
-            initRow--;
-            initCol = (ui->tableWidget->columnCount() - 1);
-        }
-
-        qDebug() << "initCol: " << initCol;
-
-        bool foundError = false;
-
-        for(int row = initRow ; row >= 0 && !foundError ; row--)
-        {
-            qDebug() << "row: " << row;
-
-            if(checkedFirstRow){
-                initCol = (ui->tableWidget->columnCount() - 1);
-            }
-
-            for(int col = initCol ; col >= 0 && !foundError ; col--)
-            {
-                qDebug() << "col" << col;
-                if(errCoords.at(row).at(col))
-                {
-                    foundError = true;
-                    destRow = row;
-                    destCol = col;
-                    qDebug() << "destRow: " << destRow;
-                    qDebug() << "destCol: " << destCol;
-                }
-                checkedFirstRow = true;
-            }
-        }
-
-        ui->tableWidget->setCurrentCell(destRow,destCol);
-    }
 }

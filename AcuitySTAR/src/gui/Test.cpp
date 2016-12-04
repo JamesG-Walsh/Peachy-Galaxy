@@ -246,6 +246,16 @@ void Test::test_editsort_getSortFields(){
     QCOMPARE(editui.getSortFields(),testList);
 }
 
+void Test::testFixDateFormatting()
+{
+    CSVReader reader("../Project Information/Sample Data/Grants_expanded.csv");
+
+    int numRecords = reader.getData().size();
+
+
+    QVERIFY(numRecords == 4241);
+}
+
 
 
 

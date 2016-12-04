@@ -38,6 +38,7 @@ private:
     std::vector<std::string> mandatoryList;
     Ui::ErrorEditDialog *ui;
     QString type;
+    std::vector<int> mandatoryColumnIndexes;
 
 //    struct coord{
 //        int row, col;
@@ -47,6 +48,7 @@ private:
     std::vector<std::vector<bool>> errCoords;
 
     void saveData();
+    int countRemainingErrors();
 };
 
 #endif // ERROREDITDIALOG_H
