@@ -104,7 +104,15 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
         }
         row++;
     }
-    ui->numErrorsRemaining->display(this->countRemainingErrors());
+    int errorsRem = this->countRemainingErrors();
+    ui->numErrorsRemaining->display(errorsRem);
+
+    if(errorsRem == 0)
+    {
+        ui->findNext->setEnabled(false);
+        ui->findPrev->setEnabled(false);
+    }
+
     ui->numErrorsRemaining->setSegmentStyle(QLCDNumber::Flat);
     ui->numErrorsRemaining->show();
 }
@@ -203,7 +211,14 @@ void ErrorEditDialog::on_cancel_clicked()
 
 void ErrorEditDialog::on_findNext_clicked()
 {
-    ui->numErrorsRemaining->display(this->countRemainingErrors());
+    int errorsRem = this->countRemainingErrors();
+    ui->numErrorsRemaining->display(errorsRem);
+
+    if(errorsRem == 0)
+    {
+        ui->findNext->setEnabled(false);
+        ui->findPrev->setEnabled(false);
+    }
 
     int initRow = ui->tableWidget->currentRow();
     int initCol = ui->tableWidget->currentColumn();
@@ -260,7 +275,14 @@ void ErrorEditDialog::on_findNext_clicked()
 
 void ErrorEditDialog::on_findPrev_clicked()
 {
-    ui->numErrorsRemaining->display(this->countRemainingErrors());
+    int errorsRem = this->countRemainingErrors();
+    ui->numErrorsRemaining->display(errorsRem);
+
+    if(errorsRem == 0)
+    {
+        ui->findNext->setEnabled(false);
+        ui->findPrev->setEnabled(false);
+    }
     int initRow = ui->tableWidget->currentRow();
     int initCol = ui->tableWidget->currentColumn();
 
