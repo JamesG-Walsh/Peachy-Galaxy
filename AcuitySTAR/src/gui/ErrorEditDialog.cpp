@@ -41,7 +41,7 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     {
         if(mandatory[mandIndex].compare(headers.at(col)) == 0)
         {
-            qDebug() << "mandatory index: " << col;
+            //qDebug() << "mandatory index: " << col;
             mandatoryColumnIndexes.push_back(col);
             mandIndex++;
         }
@@ -72,10 +72,6 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     {
         for (int col = 0; col < (int) headers.size()/* && col < (int) (*it)->size()*/; col++)
         {
-            if(col>14){
-                qDebug() <<"row :" << row;
-                qDebug() <<"\tcol :" << col;
-            }
             item = new QTableWidgetItem();
             Qt::ItemFlags flag = item->flags();
             item->setFlags(Qt::ItemIsSelectable);
@@ -155,28 +151,28 @@ int ErrorEditDialog::countRemainingErrors()
     for (int row = 0; row < ui->tableWidget->rowCount(); row++)
     {
         int col;
-        qDebug() << "row: " << row;
+        //qDebug() << "row: " << row;
         for(int mandIndex = 0; mandIndex < mandatoryColumnIndexes.size(); mandIndex++)
         {
             col = mandatoryColumnIndexes.at(mandIndex);
-            qDebug() << "col: " << col;
+            //qDebug() << "col: " << col;
             currItem = ui->tableWidget->item(row, col);
             //qDebug() << "got item";
             currStr = currItem->text();
             //qDebug() << "got string";
             if(errCoords.at(row).at(col) && (currStr.isNull() || currStr.isEmpty()))
             {
-                qDebug() << "found error at: ";
-                qDebug() << "\trow: " << row;
-                qDebug() << "\tcol: " << col;
+                //qDebug() << "found error at: ";
+                //qDebug() << "\trow: " << row;
+                //qDebug() << "\tcol: " << col;
                 remainingErrors++;
-                qDebug() << "\tRemaining Errors: " << remainingErrors;
+                //qDebug() << "\tRemaining Errors: " << remainingErrors;
             }
             //qDebug() << "finished if block";
         }
         //qDebug() << "finished inner loop";
     }
-    qDebug() << "Final Remaining Errors: " << remainingErrors;
+    //qDebug() << "Final Remaining Errors: " << remainingErrors;
     return remainingErrors;
 }
 
