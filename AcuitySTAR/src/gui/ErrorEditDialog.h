@@ -28,12 +28,23 @@ private slots:
      void on_save_clicked();
      void on_cancel_clicked();
 
+     void on_findNext_clicked();
+
+     void on_findPrev_clicked();
+
 private:
     std::vector<std::vector<std::string>*> errorList;
     std::vector<std::string> headerList;
     std::vector<std::string> mandatoryList;
     Ui::ErrorEditDialog *ui;
     QString type;
+
+//    struct coord{
+//        int row, col;
+//    };
+
+//    QList<coord> errorCoords;
+    std::vector<std::vector<bool>> errCoords;
 
     void saveData();
 };
