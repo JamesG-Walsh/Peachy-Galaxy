@@ -72,6 +72,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // set up application icon
     QIcon icon(":/icon32.ico");
     MainWindow::setWindowIcon(icon);
+    MainWindow::setWindowTitle("Orion Galaxy");
+
 
     // set the date format
     QString dFormat("yyyy");
