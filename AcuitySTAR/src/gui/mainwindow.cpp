@@ -994,22 +994,22 @@ void MainWindow::setupHistogramChart(QCustomPlot *histogramChart, std::vector<st
     double maxCount = 0;
     QVector<QString> xlabels;
     //add label list to y axis labels
-          for (int i = 0; i < histogramSize; i++){
-              ticks << (i+1);
-              xlabels << QString::fromStdString(histogramChartList[i].first);
-              //qDebug() <<  QString::fromStdString(histogramChartList[i].first);
-              if (histogramChartList[i].second>1000000){
-                  scaledCount = histogramChartList[i].second/1000000;
-              } else if (histogramChartList[i].second>1000){
-                  scaledCount = histogramChartList[i].second/1000;
-              } else{
-                  scaledCount = histogramChartList[i].second;
-              }
-              count <<scaledCount;
+    for (int i = 0; i < histogramSize; i++){
+        ticks << (i+1);
+        xlabels << QString::fromStdString(histogramChartList[i].first);
+        //qDebug() <<  QString::fromStdString(histogramChartList[i].first);
+        if (histogramChartList[i].second>1000000){
+            scaledCount = histogramChartList[i].second/1000000;
+        } else if (histogramChartList[i].second>1000){
+            scaledCount = histogramChartList[i].second/1000;
+        } else{
+            scaledCount = histogramChartList[i].second;
+        }
+        count <<scaledCount;
 
-              if (maxCount < histogramChartList[i].second)
-                  maxCount = histogramChartList[i].second;
-          }
+        if (maxCount < histogramChartList[i].second)
+            maxCount = histogramChartList[i].second;
+    }
 
     QCPBars *bars1 = new QCPBars(histogramChart->xAxis, histogramChart->yAxis);
     histogramChart->addPlottable(bars1);
@@ -1045,7 +1045,7 @@ void MainWindow::setupHistogramChart(QCustomPlot *histogramChart, std::vector<st
     histogramChart->yAxis->setRange(0,maxCount+(maxCount*.05));
     histogramChart->yAxis->setAutoTickLabels(true);
     histogramChart->yAxis->setAutoTickStep(true);
-   // histogramChart->yAxis->grid()->setSubGridVisible(true);
+    // histogramChart->yAxis->grid()->setSubGridVisible(true);
 
 
 }
@@ -1088,13 +1088,13 @@ void MainWindow::on_teach_edit_sort_clicked(){
             editSortOrder << ui->teach_sort->currentText();
             editSortOrder << sortdialog->getSortFields();
 
-           int currentIndex =  ui->teach_sort->currentIndex();
-           allTeachOrders.replace(currentIndex,editSortOrder);
+            int currentIndex =  ui->teach_sort->currentIndex();
+            allTeachOrders.replace(currentIndex,editSortOrder);
 
             // save the sort fields to file
-           QSortListIO saveTeachSort(TEACHORDER_SAVE);
-           saveTeachSort.saveList(allTeachOrders);
-           refresh(TEACH);
+            QSortListIO saveTeachSort(TEACHORDER_SAVE);
+            saveTeachSort.saveList(allTeachOrders);
+            refresh(TEACH);
         }
         delete sortdialog;
 
@@ -1136,13 +1136,13 @@ void MainWindow::on_pub_edit_sort_clicked(){
             editSortOrder << ui->pub_sort->currentText();
             editSortOrder << sortdialog->getSortFields();
 
-           int currentIndex =  ui->pub_sort->currentIndex();
-           allPubOrders.replace(currentIndex,editSortOrder);
+            int currentIndex =  ui->pub_sort->currentIndex();
+            allPubOrders.replace(currentIndex,editSortOrder);
 
             // save the sort fields to file
-           QSortListIO savePubSort(PUBORDER_SAVE);
-           savePubSort.saveList(allPubOrders);
-           refresh(PUBLICATIONS);
+            QSortListIO savePubSort(PUBORDER_SAVE);
+            savePubSort.saveList(allPubOrders);
+            refresh(PUBLICATIONS);
         }
         delete sortdialog;
 
@@ -1187,13 +1187,13 @@ void MainWindow::on_pres_edit_sort_clicked(){
             editSortOrder << ui->pres_sort->currentText();
             editSortOrder << sortdialog->getSortFields();
 
-           int currentIndex =  ui->pres_sort->currentIndex();
-           allPresOrders.replace(currentIndex,editSortOrder);
+            int currentIndex =  ui->pres_sort->currentIndex();
+            allPresOrders.replace(currentIndex,editSortOrder);
 
             // save the sort fields to file
-           QSortListIO savePresSort(PRESORDER_SAVE);
-           savePresSort.saveList(allPresOrders);
-           refresh(PRESENTATIONS);
+            QSortListIO savePresSort(PRESORDER_SAVE);
+            savePresSort.saveList(allPresOrders);
+            refresh(PRESENTATIONS);
         }
         delete sortdialog;
 
@@ -1237,13 +1237,13 @@ void MainWindow::on_fund_edit_sort_clicked(){
             editSortOrder << ui->fund_sort->currentText();
             editSortOrder << sortdialog->getSortFields();
 
-           int currentIndex =  ui->fund_sort->currentIndex();
-           allFundOrders.replace(currentIndex,editSortOrder);
+            int currentIndex =  ui->fund_sort->currentIndex();
+            allFundOrders.replace(currentIndex,editSortOrder);
 
             // save the sort fields to file
-           QSortListIO savePresSort(FUNDORDER_SAVE);
-           savePresSort.saveList(allFundOrders);
-           refresh(FUNDING);
+            QSortListIO savePresSort(FUNDORDER_SAVE);
+            savePresSort.saveList(allFundOrders);
+            refresh(FUNDING);
         }
         delete sortdialog;
 
@@ -1711,8 +1711,14 @@ std::vector<std::pair <std::string, double>> MainWindow::teachTreeView_total(con
         if (parentsList.size() != teachSortOrder.size()) {
             teachClickedName = clickedName;
             std::vector<std::string> sortOrder(teachSortOrder.begin(), teachSortOrder.begin()+parentsList.size()+1);
-            std::vector<std::pair <std::string, int>> list =
-                    teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            std::vector<std::pair <std::string, int>> list;
+            if(teachFlag){
+                list = teachdb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+
+            }
+            else{
+                list = teachdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            }
             double tot = 0;
             for (int i = 0; i < (int) list.size(); i++) {
                 tot += static_cast<double>(list[i].second);
@@ -1852,8 +1858,37 @@ std::vector<std::pair <std::string, double>> MainWindow::pubTreeView_total(const
         QString name;
         QModelIndex current = index;
         current = current.sibling(i,0);
-
-        chartList.emplace_back(current.sibling(i,1).data(Qt::DisplayRole).toString().toStdString(), current.sibling(i,2).data(Qt::DisplayRole).toDouble());
+        std::string entryName = current.data(Qt::DisplayRole).toString().toStdString();
+        while (true) {
+            name = current.data(Qt::DisplayRole).toString();
+            if(name!="") {
+                auto it = parentsList.begin();
+                it = parentsList.insert(it, name.toStdString());
+            } else {
+                break;
+            }
+            current = current.parent();
+        }
+        if (parentsList.size() != pubSortOrder.size()) {
+            pubClickedName = clickedName;
+            std::vector<std::string> sortOrder(pubSortOrder.begin(), pubSortOrder.begin()+parentsList.size()+1);
+            std::vector<std::pair <std::string, int>> list;
+            if(pubFlag){
+                list = pubdb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS));
+            }
+            else{
+                list = pubdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS));
+            }
+            double tot = 0;
+            for (int i = 0; i < (int) list.size(); i++) {
+                tot += static_cast<double>(list[i].second);
+            }
+            chartList.emplace_back(entryName, tot);
+        } else {
+            ui->pub_graph_stackedWidget->hide();
+            ui->pubGraphTitle->clear();
+            pubClickedName.clear();
+        }
     }
     return chartList;
 }
@@ -1889,7 +1924,7 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
         std::vector<std::string> sortOrder(pubSortOrder.begin(), pubSortOrder.begin()+parentsList.size()+1);
         if(pubFlag == true){
             std::vector<std::pair <std::string, int>> list =
-                    pubdb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+                    pubdb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PUBLICATIONS), getFilterEndChar(PUBLICATIONS));
             std::vector<std::pair <std::string, double>> chartList;
 
             for (int i = 0; i < (int) list.size(); i++) {
@@ -1987,8 +2022,14 @@ std::vector<std::pair <std::string, double>> MainWindow::presTreeView_total(cons
         if (parentsList.size() != presSortOrder.size()) {
             presClickedName = clickedName;
             std::vector<std::string> sortOrder(presSortOrder.begin(), presSortOrder.begin()+parentsList.size()+1);
-            std::vector<std::pair <std::string, int>> list =
-                    presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            std::vector<std::pair <std::string, int>> list;
+            if(presFlag){
+                list = presdb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS));
+
+            }
+            else{
+                list = presdb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(PRESENTATIONS), getFilterEndChar(PRESENTATIONS));
+            }
             double tot = 0;
             for (int i = 0; i < (int) list.size(); i++) {
                 tot += static_cast<double>(list[i].second);
@@ -2134,8 +2175,13 @@ std::vector<std::pair <std::string, double>> MainWindow::fundTreeView_total(cons
         if (parentsList.size() != fundSortOrder.size()) {
             fundClickedName = clickedName;
             std::vector<std::string> sortOrder(fundSortOrder.begin(), fundSortOrder.begin()+parentsList.size()+1);
-            std::vector<std::pair <std::string, int>> list =
-                    funddb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(TEACH), getFilterEndChar(TEACH));
+            std::vector<std::pair <std::string, int>> list;
+            if(fundFlag){
+                list = funddb2->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
+            }
+            else{
+                list = funddb->getCountTuple(yearStart, yearEnd, sortOrder, parentsList, getFilterStartChar(FUNDING), getFilterEndChar(FUNDING));
+            }
             double tot = 0;
             for (int i = 0; i < (int) list.size(); i++) {
                 tot += static_cast<double>(list[i].second);
