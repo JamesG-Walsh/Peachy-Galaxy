@@ -213,19 +213,17 @@ void Test::test_on_fund_line_button_toggled(){
     QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
 }
 
-//Bugged, please fix
-/*void Test::test_setupLineChart() {
-    MainWindow w;
+//test setupLineChart function
+void Test::test_setupLineChart() {
     int size = 5;
     std::vector<std::pair <std::string, double>> chartList;
-    std::string testString = "test";
     for (int i = 0; i < size; i++) {
-        chartList.emplace_back(testString, static_cast<double>(0.0));
+        chartList.emplace_back("1234", static_cast<double>(1234));
+
     }
-    w.setupLineChart(w.ui->teachLineChart, chartList);
-    QCOMPARE(w.ui->teachLineChart->plottableCount(), size);
+    w.setupLineChart(w.ui->teachLineChart,chartList);
+    QCOMPARE(w.ui->teachLineChart->plottableCount(),1);
 }
-*/
 
 
 void Test::test_editsort_setFields(){
@@ -264,3 +262,11 @@ void Test::testCustomList(){
     QCOMPARE(sortdialog->getCustomSortFields(), testFields);
 }
 
+//test setupScatterPlot function
+void Test::test_setupScatterPlot() {
+    std::vector<std::pair <std::string, double>> chartList;
+    for (int i = 0; i < 5; i++) chartList.emplace_back("10",100000);
+    w.ui->fundHistogramChart->setEnabled(true);
+    w.setupScatterPlot(w.ui->fundHistogramChart,chartList);
+    QCOMPARE(w.ui->fundHistogramChart->plottableCount(),1);
+}
