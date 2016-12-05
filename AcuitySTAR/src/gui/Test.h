@@ -70,7 +70,7 @@ private slots:
 
     void test_editsort_setFields();
     void test_editsort_getSortFields();
-
+    void testCustomList();
     void testFixDateFormatting();
 
 
