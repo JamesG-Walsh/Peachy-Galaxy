@@ -141,6 +141,7 @@ private:
     static std::vector<std::string> clickedNames;
     static std::vector<std::tuple <std::string, std::string, double>> chartLists;
     static std::vector<string> teachNames, pubNames, presNames, fundNames;
+    static std::vector<string> teachNamesCustom, pubNamesCustom, presNamesCustom, fundNamesCustom;
     static bool teachFlag, pubFlag, presFlag, fundFlag;
 
 

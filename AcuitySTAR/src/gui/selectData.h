@@ -20,6 +20,8 @@ public:
     explicit selectData(QWidget *parent = 0);
     ~selectData();
     void setFields(vector<string> names);
+    void setCustomFields(vector<string> names);
+    vector<string> getCustomSortFields();
     vector<string> getSortFields();
 
 private slots:
@@ -37,9 +39,18 @@ private slots:
 
     void on_removeButton_clicked();
 
+
+    void on_listWidget_doubleClicked(const QModelIndex &index);
+
+
+    void on_customListWidget_doubleClicked(const QModelIndex &index);
+
+    void on_reset_clicked();
+
 private:
     Ui::selectData *ui;
     vector<string> sortFields;
+    vector<string> customSortFields;
     int numFields;
     string charInField;
     QList<string> fieldBoxes;
