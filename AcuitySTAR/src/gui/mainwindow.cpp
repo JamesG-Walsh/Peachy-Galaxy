@@ -47,6 +47,7 @@ std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Da
 std::vector<std::string> MainWindow::clickedNames;
 std::vector<std::tuple <std::string, std::string, double>> MainWindow::chartLists;
 std::vector<string> MainWindow::teachNames, MainWindow::pubNames, MainWindow::presNames, MainWindow::fundNames;
+std::vector<string> MainWindow::teachNamesCustom, MainWindow::pubNamesCustom, MainWindow::presNamesCustom, MainWindow::fundNamesCustom;
 bool MainWindow::teachFlag = false;
 bool MainWindow::pubFlag = false;
 bool MainWindow::presFlag = false;
@@ -1737,7 +1738,6 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
         total = true;
         chartListTotal = teachTreeView_total(index);
     }
-
     std::vector<std::string> parentsList;
     QModelIndex current = index;
     QString name;
@@ -1833,6 +1833,7 @@ void MainWindow::on_teachTreeView_clicked(const QModelIndex &index) {
                 ui->teach_graph_stackedWidget->show();
             }
         }
+
     } else {
         ui->teach_graph_stackedWidget->hide();
         ui->teachGraphTitle->clear();
@@ -2505,10 +2506,21 @@ void MainWindow::on_fund_filter_to_textChanged() {
 void MainWindow::on_teachCustomList_clicked()
 {
     selectData* sortdialog = new selectData();
+    sortdialog->setWindowTitle("New Custom List");
     sortdialog->setFields(teachNames);
+    sortdialog->setCustomFields(teachNamesCustom);
+    std::vector<string> tempCustomList;
     int ret = sortdialog->exec();
     if (ret){
+        teachNamesCustom = sortdialog->getCustomSortFields();
         teachNames = sortdialog->getSortFields();
+
+        if(teachNamesCustom.size() == 0){
+            tempCustomList = teachNames;
+        }
+        else{
+            tempCustomList = teachNamesCustom;
+        }
         teachFlag = true;
         // create a new reader to read in the file
         CSVReader reader;
@@ -2544,7 +2556,7 @@ void MainWindow::on_teachCustomList_clicked()
                 int year;
                 sscanf(teachData[i][yrIndex].c_str(), "%4d", &year);
                 teachData[i][yrIndex] = std::to_string(year);
-                if(std::find(teachNames.begin(), teachNames.end(), teachData[i][headerIndex])!=teachNames.end())
+                if(std::find(tempCustomList.begin(), tempCustomList.end(), teachData[i][headerIndex])!=tempCustomList.end())
                     teachdb2->addRecord(reader.parseDateString(teachData[i][sortHeaderIndex]), &teachData[i]);
             }
         }
@@ -2560,10 +2572,21 @@ void MainWindow::on_teachCustomList_clicked()
 void MainWindow::on_pubCustomList_clicked()
 {
     selectData* sortdialog = new selectData();
+    sortdialog->setWindowTitle("New Custom List");
     sortdialog->setFields(pubNames);
+    sortdialog->setCustomFields(pubNamesCustom);
+    std::vector<string> tempCustomList;
     int ret = sortdialog->exec();
     if (ret){
+        pubNamesCustom = sortdialog->getCustomSortFields();
         pubNames = sortdialog->getSortFields();
+
+        if(pubNamesCustom.size() == 0){
+            tempCustomList = pubNames;
+        }
+        else{
+            tempCustomList = pubNamesCustom;
+        }
         pubFlag = true;
         // create a new reader to read in the file
         CSVReader reader;
@@ -2599,7 +2622,7 @@ void MainWindow::on_pubCustomList_clicked()
                 int year;
                 sscanf(pubData[i][yrIndex].c_str(), "%4d", &year);
                 pubData[i][yrIndex] = std::to_string(year);
-                if(std::find(pubNames.begin(), pubNames.end(), pubData[i][headerIndex])!=pubNames.end())
+                if(std::find(tempCustomList.begin(), tempCustomList.end(), pubData[i][headerIndex])!=tempCustomList.end())
                     pubdb2->addRecord(reader.parseDateString(pubData[i][sortHeaderIndex]), &pubData[i]);
             }
         }
@@ -2613,10 +2636,21 @@ void MainWindow::on_pubCustomList_clicked()
 }
 void MainWindow::on_presCustomList_clicked(){
     selectData* sortdialog = new selectData();
+    sortdialog->setWindowTitle("New Custom List");
     sortdialog->setFields(presNames);
+    sortdialog->setCustomFields(presNamesCustom);
+    std::vector<string> tempCustomList;
     int ret = sortdialog->exec();
     if (ret){
+        presNamesCustom = sortdialog->getCustomSortFields();
         presNames = sortdialog->getSortFields();
+
+        if(presNamesCustom.size() == 0){
+            tempCustomList = presNames;
+        }
+        else{
+            tempCustomList = presNamesCustom;
+        }
         presFlag = true;
         // create a new reader to read in the file
         CSVReader reader;
@@ -2650,7 +2684,7 @@ void MainWindow::on_presCustomList_clicked(){
                 int year;
                 sscanf(presData[i][yrIndex].c_str(), "%4d", &year);
                 presData[i][yrIndex] = std::to_string(year);
-                if(std::find(presNames.begin(), presNames.end(), presData[i][headerIndex])!=presNames.end())
+                if(std::find(tempCustomList.begin(), tempCustomList.end(), presData[i][headerIndex])!=tempCustomList.end())
                     presdb2->addRecord(reader.parseDateString(presData[i][sortHeaderIndex]), &presData[i]);
             }
         }
@@ -2664,10 +2698,21 @@ void MainWindow::on_presCustomList_clicked(){
 
 void MainWindow::on_fundCustomList_clicked(){
     selectData* sortdialog = new selectData();
+    sortdialog->setWindowTitle("New Custom List");
     sortdialog->setFields(fundNames);
+    sortdialog->setCustomFields(fundNamesCustom);
+    std::vector<string> tempCustomList;
     int ret = sortdialog->exec();
     if (ret){
+        fundNamesCustom = sortdialog->getCustomSortFields();
         fundNames = sortdialog->getSortFields();
+
+        if(fundNamesCustom.size() == 0){
+            tempCustomList = fundNames;
+        }
+        else{
+            tempCustomList = fundNamesCustom;
+        }
         fundFlag = true;
         // create a new reader to read in the file
         CSVReader reader;
@@ -2708,7 +2753,7 @@ void MainWindow::on_fundCustomList_clicked(){
                 } else {
                     fundData[i][prIndex] = "Not Peer Reviewed";
                 }
-                if(std::find(fundNames.begin(), fundNames.end(), fundData[i][headerIndex])!=fundNames.end())
+                if(std::find(tempCustomList.begin(), tempCustomList.end(), fundData[i][headerIndex])!=tempCustomList.end())
                     funddb2->addRecord(reader.parseDateString(fundData[i][sortHeaderIndex]), &fundData[i]);
             }
         }
