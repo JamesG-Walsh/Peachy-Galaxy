@@ -14,6 +14,8 @@ class selectData;
 
 class selectData : public QDialog
 {
+    friend class Test;
+
     Q_OBJECT
 
 public:

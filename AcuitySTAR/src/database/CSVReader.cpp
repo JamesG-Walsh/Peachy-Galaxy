@@ -174,4 +174,18 @@ CSVReader::CSVReader()
 CSVReader::CSVReader(std::string file) {
     loadCSV(file);
     fixDateFormatting();
+
+    std::vector<std::string> currentRow;
+    std::string emptyString = "";
+
+    for(int row = 0; row < all_data.size() ; row++)
+    {
+        currentRow = all_data.at(row);
+        if (currentRow.size() < headers.size())
+        {
+            qDebug() << "row: " << row << "\tsize: " << currentRow.size();
+            all_data.at(row).push_back(emptyString);
+        }
+    }
+    qDebug() << "done?";
 }

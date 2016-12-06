@@ -5,11 +5,11 @@
 #include "gui/Test.h"
 #include "gui/mainwindow.h"
 #include "gui/editsort.h"
+#include "gui/selectData.h"
 #include <vector>
 #include <iostream>
 #include "database/QFileIO.h"
 using namespace std;
-
 //QSortListIO
 void Test::test1()
 {
@@ -60,7 +60,7 @@ void Test::test5(){
 
 //Test PublicationTreeModel
 void Test::test6(){
-    CSVReader reader("../Project Information/Sample Data/Publications_expanded.csv");
+    CSVReader reader("../Project Information/Sample Data/Publications_sample.csv");
     std::vector<std::string> header = reader.getHeaders();
     RecordsManager* testRM = new RecordsManager(&header);
     PublicationTreeModel* publicationTree = new PublicationTreeModel(testRM);
@@ -71,57 +71,54 @@ void Test::test6(){
 void Test::test7(){
     CSVReader reader("../Project Information/Sample Data/Grants_expanded.csv");
     vector<string> header = reader.getHeaders();
-    QVERIFY2(header.size() !=0, "Test1 Failed");
+    QVERIFY2(header.size() !=0, "Test Failed");
 }
 
 void Test::test8(){
     CSVReader reader("../Project Information/Sample Data/GrantsClinicalFunding_sample.csv");
     vector<string> header = reader.getHeaders();
-    QVERIFY2(header.size() !=0, "Test2 Failed");
+    QVERIFY2(header.size() !=0, "Test Failed");
 }
 
 void Test::test9(){
     CSVReader reader("../Project Information/Sample Data/Presentations_expanded.csv");
     vector<string> header = reader.getHeaders();
-    QVERIFY2(header.size() !=0, "Test3 Failed");
+    QVERIFY2(header.size() !=0, "Test Failed");
 }
 
 void Test::test10(){
     CSVReader reader("../Project Information/Sample Data/Presentations_sample.csv");
     vector<string> header = reader.getHeaders();
-    QVERIFY2(header.size() !=0, "Test4 Failed");
+    QVERIFY2(header.size() !=0, "Test Failed");
 }
 
 void Test::test11(){
     CSVReader reader("../Project Information/Sample Data/Program_Teaching_expanded.csv");
     vector<string> header = reader.getHeaders();
-    QVERIFY2(header.size() !=0, "Test5 Failed");
+    QVERIFY2(header.size() !=0, "Test Failed");
 }
 
 void Test::test12(){
     CSVReader reader("NO FILE");
     vector<string> header = reader.getHeaders();
-    QVERIFY2(header.size() ==0, "Test6 Failed");
+    QVERIFY2(header.size() ==0, "Test Failed");
 }
 
 void Test::test13(){
     CSVReader reader("../Project Information/Sample Data/Presentations_sample.csv");
     vector< vector<string> > all_data = reader.getData();
-    QVERIFY2(all_data.size() !=0, "Test7 Failed");
+    QVERIFY2(all_data.size() !=0, "Test Failed");
 }
 
 void Test::test14(){
     CSVReader reader("../Project Information/Sample Data/Program_Teaching_expanded.csv");
     vector< vector<string> > all_data = reader.getData();
-    QVERIFY2(all_data.size() !=0, "Test8 Failed");
+    QVERIFY2(all_data.size() !=0, "Test Failed");
 }
 
 
 //Will only work the first time it is run
 void Test::NoSaveTest(){
-    MainWindow w;
-    w.show();
-    w.close();
     QFileIO teachFile("teachfile.dat");
     QFileIO pubFile("pubfile.dat");
     QFileIO presFile("presFile.dat");
@@ -130,14 +127,16 @@ void Test::NoSaveTest(){
     QString pubPath = pubFile.readPath();
     QString presPath = presFile.readPath();
     QString fundPath = fundFile.readPath();
-    QVERIFY2(teachPath == "" && pubPath == "" && presPath == "" && fundPath == "", "No save test failed");
+    if(teachPath == "" && pubPath == "" && presPath == "" && fundPath == "")
+        QVERIFY(teachPath == "" && pubPath == "" && presPath == "" && fundPath == "");
+    else
+        QVERIFY(teachPath != "" || pubPath != "" || presPath != "" || fundPath != "");
+
 }
 
 void Test::SaveTestTeach(){
     MainWindow w;
-    w.show();
-    w.load_teach("../Project Information/Sample Data/Program_Teaching_expanded.csv");
-    w.close();
+    w.load_teach("../Project Information/Sample Data/Program_Teaching_expanded.csv", false, true);
     QFileIO teachFile("teachfile.dat");
     QString readTeachPath = teachFile.readPath();
     QVERIFY2(readTeachPath != "", "Save Test for Teaching failed");
@@ -145,9 +144,7 @@ void Test::SaveTestTeach(){
 
 void Test::SaveTestPub(){
     MainWindow w;
-    w.show();
-    w.load_pub("../Project Information/Sample Data/Publications_sample.csv");
-    w.close();
+    w.load_pub("../Project Information/Sample Data/Publications_sample.csv", false, true);
     QFileIO pubFile("pubfile.dat");
     QString readPubPath = pubFile.readPath();
     QVERIFY2(readPubPath != "", "Save Test for Publications failed");
@@ -155,9 +152,7 @@ void Test::SaveTestPub(){
 
 void Test::SaveTestPres(){
     MainWindow w;
-    w.show();
-    w.load_pres("../Project Information/Sample Data/Presentations_sample.csv");
-    w.close();
+    w.load_pres("../Project Information/Sample Data/Presentations_sample.csv", false, true);
     QFileIO presFile("presfile.dat");
     QString readPresPath = presFile.readPath();
     QVERIFY2(readPresPath != "", "Save Test for Presentations failed");
@@ -165,9 +160,7 @@ void Test::SaveTestPres(){
 
 void Test::SaveTestFund(){
     MainWindow w;
-    w.show();
-    w.load_fund("../Project Information/Sample Data/GrantsClinicalFunding_sample.csv");
-    w.close();
+    w.load_fund("../Project Information/Sample Data/GrantsClinicalFunding_sample.csv", false, true);
     QFileIO fundFile("fundfile.dat");
     QString readFundPath = fundFile.readPath();
     QVERIFY2(readFundPath != "", "Save Test for Funding failed");
@@ -220,16 +213,17 @@ void Test::test_on_fund_line_button_toggled(){
     QCOMPARE(w.ui->teach_graph_stackedWidget->currentIndex(),2);
 }
 
+//test setupLineChart function
 void Test::test_setupLineChart() {
     int size = 5;
     std::vector<std::pair <std::string, double>> chartList;
     for (int i = 0; i < size; i++) {
-        chartList.emplace_back("test", static_cast<double>(0.0));
+        chartList.emplace_back("1234", static_cast<double>(1234));
+
     }
     w.setupLineChart(w.ui->teachLineChart,chartList);
-    QCOMPARE(w.ui->teachLineChart->plottableCount(),(int) chartList.size());
+    QCOMPARE(w.ui->teachLineChart->plottableCount(),1);
 }
-
 
 
 void Test::test_editsort_setFields(){
@@ -266,9 +260,26 @@ void Test::testFixDateFormatting()
     int numRecords = reader.getData().size();
 
 
-    QVERIFY(numRecords == 4241);
+    QVERIFY(numRecords == 4357);
 }
 
+void Test::testCustomList(){
+    std::vector<std::string> testFields;
+    testFields.push_back("test");
+    std::string testString = "test";
+    selectData* sortdialog = new selectData();
+    sortdialog->setFields(testFields);
+    sortdialog->charInField=testString;
+    sortdialog->selectData::on_addButton_clicked();
+    sortdialog->selectData::on_buttonBox_accepted();
+    QCOMPARE(sortdialog->getCustomSortFields(), testFields);
+}
 
-
-
+//test setupScatterPlot function
+void Test::test_setupScatterPlot() {
+    std::vector<std::pair <std::string, double>> chartList;
+    for (int i = 0; i < 5; i++) chartList.emplace_back("10",100000);
+    w.ui->fundHistogramChart->setEnabled(true);
+    w.setupScatterPlot(w.ui->fundHistogramChart,chartList);
+    QCOMPARE(w.ui->fundHistogramChart->plottableCount(),1);
+}

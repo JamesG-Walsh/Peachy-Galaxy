@@ -53,8 +53,8 @@ void PieChartWidget::paintEvent(QPaintEvent *) {
         endAng=startAng + angle;
         painter.setBrush(qvColor[i]);
         painter.drawPie(size,startAng*16,angle*16);
-        xOffset = (size.width()/2)*cos((startAng+(angle/2))*PI/180);
-        yOffset = (size.width()/2)*sin((startAng+(angle/2))*PI/180);
+        xOffset = (size.width()/2.5)*cos((startAng+(angle/2))*PI/180);
+        yOffset = (size.width()/2.5)*sin((startAng+(angle/2))*PI/180);
         labelPoint.setX(centerPie.x()+xOffset);
         labelPoint.setY(centerPie.y()-yOffset);
         painter.setPen(penBlack);
