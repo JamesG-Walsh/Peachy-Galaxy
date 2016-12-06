@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1176</width>
+    <width>1334</width>
     <height>621</height>
    </rect>
   </property>
@@ -251,7 +251,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <property name="usesScrollButtons">
           <bool>false</bool>
@@ -2585,8 +2585,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1176</width>
-     <height>21</height>
+     <width>1334</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

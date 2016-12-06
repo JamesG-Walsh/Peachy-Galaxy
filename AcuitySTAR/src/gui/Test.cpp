@@ -246,6 +246,19 @@ void Test::test_editsort_getSortFields(){
     QCOMPARE(editui.getSortFields(),testList);
 }
 
+void Test::test_on_buttonBox_rejected(){
+    editui.on_buttonBox_rejected();
+    QCOMPARE(editui.isActiveWindow(),false);
+}
+
+void Test::test_on_edit_button_clicked(){
+    QTest::keyClicks( w.ui->teach_edit_sort, "Edit Sort Order");
+    QCOMPARE( w.ui->teach_edit_sort->text(), QString("Edit Sort Order"));
+
+}
+
+
+
 void Test::testFixDateFormatting()
 {
     CSVReader reader("../Project Information/Sample Data/Grants_expanded.csv");
