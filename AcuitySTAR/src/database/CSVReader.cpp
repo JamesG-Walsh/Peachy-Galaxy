@@ -183,9 +183,9 @@ CSVReader::CSVReader(std::string file) {
         currentRow = all_data.at(row);
         if (currentRow.size() < headers.size())
         {
-            qDebug() << "row: " << row << "\tsize: " << currentRow.size();
+            //qDebug() << "row: " << row << "\tsize: " << currentRow.size();
             all_data.at(row).push_back(emptyString);
         }
     }
-    qDebug() << "done?";
+    //qDebug() << "done?";
 }

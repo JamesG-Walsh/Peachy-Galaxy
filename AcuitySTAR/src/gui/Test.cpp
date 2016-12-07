@@ -260,7 +260,7 @@ void Test::testFixDateFormatting()
     int numRecords = reader.getData().size();
 
 
-    QVERIFY(numRecords == 4357);
+    QVERIFY(numRecords == 4241);
 }
 
 void Test::testCustomList(){

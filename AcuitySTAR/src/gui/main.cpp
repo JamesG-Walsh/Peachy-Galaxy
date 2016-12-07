@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    bool testing = false; //testing flag
+    bool testing = true; //testing flag
     if (testing)
     {
       Test *test_obj = new Test();
