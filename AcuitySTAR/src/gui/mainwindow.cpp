@@ -1096,7 +1096,10 @@ void MainWindow::on_teach_edit_sort_clicked(){
             // save the sort fields to file
             QSortListIO saveTeachSort(TEACHORDER_SAVE);
             saveTeachSort.saveList(allTeachOrders);
-            refresh(TEACH);
+            if(teachFlag)
+                refresh(TEACH_CUSTOM);
+            else
+                refresh(TEACH);
         }
         delete sortdialog;
 
@@ -1144,7 +1147,10 @@ void MainWindow::on_pub_edit_sort_clicked(){
             // save the sort fields to file
             QSortListIO savePubSort(PUBORDER_SAVE);
             savePubSort.saveList(allPubOrders);
-            refresh(PUBLICATIONS);
+            if(pubFlag)
+                refresh(PUBLICATIONS_CUSTOM);
+            else
+                refresh(PUBLICATIONS);
         }
         delete sortdialog;
 
@@ -1195,7 +1201,10 @@ void MainWindow::on_pres_edit_sort_clicked(){
             // save the sort fields to file
             QSortListIO savePresSort(PRESORDER_SAVE);
             savePresSort.saveList(allPresOrders);
-            refresh(PRESENTATIONS);
+            if(presFlag)
+                refresh(PRESENTATIONS_CUSTOM);
+            else
+                refresh(PRESENTATIONS);
         }
         delete sortdialog;
 
@@ -1245,7 +1254,10 @@ void MainWindow::on_fund_edit_sort_clicked(){
             // save the sort fields to file
             QSortListIO savePresSort(FUNDORDER_SAVE);
             savePresSort.saveList(allFundOrders);
-            refresh(FUNDING);
+            if(fundFlag)
+                refresh(FUNDING_CUSTOM);
+            else
+                refresh(FUNDING);
         }
         delete sortdialog;
 
