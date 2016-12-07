@@ -941,6 +941,7 @@ void MainWindow::setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <s
     lineChart->xAxis->setAutoTickStep(false);
     lineChart->xAxis->setSubTickCount(0);
     lineChart->xAxis->setTickStep(1);
+    lineChart->xAxis->setTickLabelRotation(45);
     lineChart->yAxis->setRange(0, maxCount);
 }
 
@@ -1971,7 +1972,7 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
                 setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
 
                 ui->pubLineChart->clearPlottables();
-                if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0  && !total)
+                if((sortOrder[sortOrder.size()-1]).compare("Status Date") == 0  && !total)
                 {
                     ui->pub_line_button->setEnabled(true);
                     setupLineChart(ui->pubLineChart,chartList);
@@ -2005,7 +2006,7 @@ void MainWindow::on_pubTreeView_clicked(const QModelIndex &index) {
                 setupPieChart(ui->pubPieChart, ui->pubPieList, chartList);
 
                 ui->pubLineChart->clearPlottables();
-                if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0  && !total)
+                if((sortOrder[sortOrder.size()-1]).compare("Status Date") == 0  && !total)
                 {
                     ui->pub_line_button->setEnabled(true);
                     setupLineChart(ui->pubLineChart,chartList);
@@ -2121,7 +2122,7 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
                 setupPieChart(ui->presPieChart, ui->presPieList, chartList);
 
                 ui->presLineChart->clearPlottables();
-                if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0  && !total)
+                if((sortOrder[sortOrder.size()-1]).compare("Date") == 0  && !total)
                 {
                     ui->pres_line_button->setEnabled(true);
                     setupLineChart(ui->presLineChart,chartList);
@@ -2156,7 +2157,7 @@ void MainWindow::on_presTreeView_clicked(const QModelIndex &index) {
                 setupPieChart(ui->presPieChart, ui->presPieList, chartList);
 
                 ui->presLineChart->clearPlottables();
-                if((sortOrder[sortOrder.size()-1]).compare("Start Date") == 0  && !total)
+                if((sortOrder[sortOrder.size()-1]).compare("Date") == 0  && !total)
                 {
                     ui->pres_line_button->setEnabled(true);
                     setupLineChart(ui->presLineChart,chartList);
