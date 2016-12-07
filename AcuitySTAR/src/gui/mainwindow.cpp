@@ -40,9 +40,9 @@ using namespace std;
 #define TEACHORDER_SAVE "teachsortorder.dat"
 
 
-std::vector<std::string> MainWindow::GRANTS_MANFIELDS = {"Member Name", "Funding Type", "Status", "Peer Reviewed?", "Role", "Title", "Start Date"};
-std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "Type", "Role", "Title"};
-std::vector<std::string> MainWindow::PUBS_MANFIELDS = {"Member Name", "Type", "Status Date", "Role", "Title"};
+std::vector<std::string> MainWindow::GRANTS_MANFIELDS = {"Member Name", "Funding Type", "Status", "Peer Reviewed?", "Role", "Title", "Start Date", "Division"};
+std::vector<std::string> MainWindow::PRES_MANFIELDS = {"Member Name", "Date", "Type", "Role", "Title", "Division"};
+std::vector<std::string> MainWindow::PUBS_MANFIELDS = {"Member Name", "Type", "Status Date", "Role", "Title", "Division"};
 std::vector<std::string> MainWindow::TEACH_MANFIELDS = {"Member Name", "Start Date", "Program", "Division"};
 std::vector<std::string> MainWindow::clickedNames;
 std::vector<std::tuple <std::string, std::string, double>> MainWindow::chartLists;
@@ -276,7 +276,7 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
 {
     CSVReader reader;
     std::vector<std::string> header;
-    std::string searchstring, searchstring1;
+    std::string searchstring, searchstring1, searchstring2, searchstring3, searchstring4;
     int sortHeaderIndex = 2;
 
     switch (index) {
@@ -367,7 +367,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
 
             // check for right file type by searching for unique header
             searchstring = "Publication Status";
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
+            searchstring2 = "Division";
+            if (std::find(header.begin(), header.end(), searchstring) != header.end()|| std::find(header.begin(), header.end(), searchstring2) != header.end()) {
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = pubdb->getHeaderIndex("Status Date");
                 pubData = reader.getData();
@@ -430,7 +431,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
 
             // check for right file type by searching for unique header
             searchstring = "Activity Type";
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
+            searchstring3 = "Division";
+            if (std::find(header.begin(), header.end(), searchstring) != header.end()|| std::find(header.begin(), header.end(), searchstring3) != header.end()) {
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = presdb->getHeaderIndex("Date");
                 presData = reader.getData();
@@ -494,8 +496,8 @@ int MainWindow::checkFile(int index, QString filePath, bool skip_prompt)
 
             // check for right file type by searching for unique header
             searchstring = "Funding Type";
-
-            if (std::find(header.begin(), header.end(), searchstring) != header.end()) {
+            searchstring4 = "Division";
+            if (std::find(header.begin(), header.end(), searchstring) != header.end()|| std::find(header.begin(), header.end(), searchstring4) != header.end()) {
                 // load in data into the manager, with the date as the key
                 sortHeaderIndex = funddb->getHeaderIndex("Start Date");
                 fundData = reader.getData();

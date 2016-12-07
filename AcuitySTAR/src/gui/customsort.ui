@@ -21,6 +21,16 @@
    <item row="9" column="0" colspan="2">
     <widget class="QComboBox" name="field_5"/>
    </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="sort_label">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;New Custom Sort Order&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
    <item row="8" column="0" colspan="2">
     <widget class="QComboBox" name="field_4"/>
    </item>
@@ -33,13 +43,10 @@
    <item row="2" column="0" colspan="2">
     <widget class="QLineEdit" name="sort_name"/>
    </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="sort_label">
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;New Custom Sort Order&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Enter name of new custom sort:</string>
      </property>
     </widget>
    </item>
@@ -50,17 +57,10 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Enter name of new custom sort:</string>
-     </property>
-    </widget>
-   </item>
    <item row="5" column="0" colspan="2">
     <widget class="QComboBox" name="field_1"/>
    </item>
-   <item row="12" column="1">
+   <item row="13" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
@@ -76,7 +76,7 @@
      </item>
     </widget>
    </item>
-   <item row="11" column="1">
+   <item row="12" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -91,6 +91,9 @@
    </item>
    <item row="10" column="0" colspan="2">
     <widget class="QComboBox" name="field_6"/>
+   </item>
+   <item row="11" column="0" colspan="2">
+    <widget class="QComboBox" name="field_7"/>
    </item>
   </layout>
  </widget>

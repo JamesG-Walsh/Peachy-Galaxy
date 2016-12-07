@@ -57,6 +57,7 @@ void EditSort::on_field_2_currentIndexChanged(int index) { setNext(2, index);}
 void EditSort::on_field_3_currentIndexChanged(int index) { setNext(3, index);}
 void EditSort::on_field_4_currentIndexChanged(int index) { setNext(4, index);}
 void EditSort::on_field_5_currentIndexChanged(int index) { setNext(5, index);}
+void EditSort::on_field_6_currentIndexChanged(int index) { setNext(6, index);}
 
 void EditSort::on_buttonBox_rejected() {
     done(0);
