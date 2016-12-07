@@ -37,26 +37,37 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     ui->tableWidget->setRowCount((int) errors.size());
     ui->tableWidget->setColumnCount((int) headers.size());
 
-    for (int col = 0, mandIndex = 0; col < (int) headers.size() ; col++)
+
+    //qDebug() << "headers.size() : " << headers.size();
+    //qDebug() << "mandatory.size() : " << mandatory.size();
+    for (int col = 0, mandIndex = 0; col < (int) headers.size() && mandIndex < mandatory.size() ; col++)
     {
+        //qDebug() << "col: " << col;
         if(mandatory[mandIndex].compare(headers.at(col)) == 0)
         {
             //qDebug() << "mandatory index: " << col;
             mandatoryColumnIndexes.push_back(col);
             mandIndex++;
+            //qDebug() << "mandIndex" << mandIndex;
         }
     }
 
+    //qDebug() << "resizing errors";
     errCoords.resize(errors.size());
+    //qDebug() << "resized errors";
 
     for(int row = 0; row < errors.size(); row++)
     {
+        //qDebug() << "row: " << row;
         errCoords.at(row).resize(headers.size());
         for (int col = 0; col < headers.size(); col++)
         {
+            //qDebug() << "\tcol: " << col;
             errCoords.at(row).at(col) = false;
         }
     }
+
+    //qDebug() << "set errCoords";
 
     QStringList listHeaders;
     for (int i = 0; i < (int) headers.size(); i++) {
@@ -70,8 +81,10 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     int row = 0;
     for (it = errors.begin(); it != errors.end(); it++)
     {
+        //qDebug() << "row: " << row;
         for (int col = 0; col < (int) headers.size()/* && col < (int) (*it)->size()*/; col++)
         {
+            //qDebug() << "\tcol: " << col;
             item = new QTableWidgetItem();
             Qt::ItemFlags flag = item->flags();
             item->setFlags(Qt::ItemIsSelectable);
