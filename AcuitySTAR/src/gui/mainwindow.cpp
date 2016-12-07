@@ -1642,7 +1642,16 @@ void MainWindow::on_FromDate_dateChanged(const QDate &date) {
     dateChanged = {true, true, true, true};
 
     // refresh the GUI
-    refresh(ui->categoryTab->currentIndex());
+    if(teachFlag)
+        refresh(TEACH_CUSTOM);
+    else if(pubFlag)
+        refresh(PUBLICATIONS_CUSTOM);
+    else if(presFlag)
+        refresh(PUBLICATIONS_CUSTOM);
+    else if(fundFlag)
+        refresh(FUNDING_CUSTOM);
+    else
+        refresh(ui->categoryTab->currentIndex());
 }
 
 void MainWindow::on_ToDate_dateChanged(const QDate &date) {
@@ -1655,7 +1664,16 @@ void MainWindow::on_ToDate_dateChanged(const QDate &date) {
     dateChanged = {true, true, true, true};
 
     // refresh the GUI
-    refresh(ui->categoryTab->currentIndex());
+    if(teachFlag)
+        refresh(TEACH_CUSTOM);
+    else if(pubFlag)
+        refresh(PUBLICATIONS_CUSTOM);
+    else if(presFlag)
+        refresh(PUBLICATIONS_CUSTOM);
+    else if(fundFlag)
+        refresh(FUNDING_CUSTOM);
+    else
+        refresh(ui->categoryTab->currentIndex());
 }
 
 void MainWindow::on_categoryTab_currentChanged() {
