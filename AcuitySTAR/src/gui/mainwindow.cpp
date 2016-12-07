@@ -957,8 +957,12 @@ void MainWindow::setupScatterPlot(QCustomPlot *scatterPlot, std::vector<std::pai
 
     for(int i = 0; i < (int) scatterPlotList.size(); i++)
     {
+        if(scatterPlotList[i].first.empty()) continue;
+
         double first = std::stod(scatterPlotList[i].first);
-        double second = log(scatterPlotList[i].second);
+        double second;
+        if (log(scatterPlotList[i].second) > 0) {second = log(scatterPlotList[i].second);}
+        else {second = 0;}
 
         x[i] = first;
         y[i] = second;
