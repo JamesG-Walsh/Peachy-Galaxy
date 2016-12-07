@@ -1107,6 +1107,7 @@ void MainWindow::on_teach_edit_sort_clicked(){
                 refresh(TEACH_CUSTOM);
             else
                 refresh(TEACH);
+
         }
         delete sortdialog;
 

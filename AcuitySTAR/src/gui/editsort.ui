@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>284</width>
-    <height>377</height>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>330</y>
+     <y>380</y>
      <width>221</width>
      <height>41</height>
     </rect>
@@ -113,6 +113,16 @@
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Edit Custom Sort Order&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="field_7">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>320</y>
+     <width>271</width>
+     <height>41</height>
+    </rect>
    </property>
   </widget>
  </widget>
