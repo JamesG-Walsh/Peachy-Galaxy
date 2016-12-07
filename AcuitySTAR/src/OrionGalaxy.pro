@@ -10,11 +10,11 @@ CONFIG          += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-TARGET = TeamPeach
+TARGET = OrionGalaxy
 TEMPLATE = app
 
 DISTFILES += \
-    TeamPeach.pro.user
+    OrionGalaxy.pro.user
 
 HEADERS += \
     gui/CustomSort.h \
