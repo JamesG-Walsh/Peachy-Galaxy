@@ -259,7 +259,6 @@ void Test::testFixDateFormatting()
 
     int numRecords = reader.getData().size();
 
-
     QVERIFY(numRecords == 4241);
 }
 
