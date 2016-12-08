@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
     bool testing = false; //testing flag
     if (testing)
     {
-      Test *test_obj = new Test();
-       QTest::qExec(test_obj);
+        Test *test_obj = new Test();
+        QTest::qExec(test_obj);
     }
 
     MainWindow w;

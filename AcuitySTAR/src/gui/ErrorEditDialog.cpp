@@ -37,6 +37,38 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     ui->tableWidget->setRowCount((int) errors.size());
     ui->tableWidget->setColumnCount((int) headers.size());
 
+
+    //qDebug() << "headers.size() : " << headers.size();
+    //qDebug() << "mandatory.size() : " << mandatory.size();
+    for (int col = 0, mandIndex = 0; col < (int) headers.size() && mandIndex < mandatory.size() ; col++)
+    {
+        //qDebug() << "col: " << col;
+        if(mandatory[mandIndex].compare(headers.at(col)) == 0)
+        {
+            //qDebug() << "mandatory index: " << col;
+            mandatoryColumnIndexes.push_back(col);
+            mandIndex++;
+            //qDebug() << "mandIndex" << mandIndex;
+        }
+    }
+
+    //qDebug() << "resizing errors";
+    errCoords.resize(errors.size());
+    //qDebug() << "resized errors";
+
+    for(int row = 0; row < errors.size(); row++)
+    {
+        //qDebug() << "row: " << row;
+        errCoords.at(row).resize(headers.size());
+        for (int col = 0; col < headers.size(); col++)
+        {
+            //qDebug() << "\tcol: " << col;
+            errCoords.at(row).at(col) = false;
+        }
+    }
+
+    //qDebug() << "set errCoords";
+
     QStringList listHeaders;
     for (int i = 0; i < (int) headers.size(); i++) {
         listHeaders << headers[i].c_str();
@@ -47,23 +79,51 @@ ErrorEditDialog::ErrorEditDialog(QWidget *parent,
     QBrush brush(QColor(255, 0, 0, 100));
     std::vector<std::vector<std::string>*>::iterator it;
     int row = 0;
-    for (it = errors.begin(); it != errors.end(); it++) {
-        for (int col = 0; col < (int) headers.size() && col < (int) (*it)->size(); col++) {
+    for (it = errors.begin(); it != errors.end(); it++)
+    {
+        //qDebug() << "row: " << row;
+        for (int col = 0; col < (int) headers.size()/* && col < (int) (*it)->size()*/; col++)
+        {
+            //qDebug() << "\tcol: " << col;
             item = new QTableWidgetItem();
             Qt::ItemFlags flag = item->flags();
             item->setFlags(Qt::ItemIsSelectable);
-            item->setText((*it)->at(col).c_str());
-            for (int i = 0; i < (int) mandatory.size(); i++) {
-                if (mandatory[i].compare(headers.at(col)) == 0
-                        && (*it)->at(col).compare("") == 0) {
+            if(col < (*it)->size())
+            {
+                item->setText((*it)->at(col).c_str());
+            }
+            else
+            {
+                item->setText("");
+            }
+            for (int i = 0; i < (int) mandatory.size(); i++)
+            {
+                if (mandatory[i].compare(headers.at(col)) == 0 && item->text().compare("") == 0)
+                {
                     item->setBackground(brush);
                     item->setFlags(flag);
+                    //                    coord theCoord;
+                    //                    theCoord.row = row;
+                    //                    theCoord.col = col;
+                    //                    errorCoords.append(theCoord);
+                    errCoords.at(row).at(col) = true;
                 }
             }
             ui->tableWidget->setItem(row, col, item);
         }
         row++;
     }
+    int errorsRem = this->countRemainingErrors();
+    ui->numErrorsRemaining->display(errorsRem);
+
+    if(errorsRem == 0)
+    {
+        ui->findNext->setEnabled(false);
+        ui->findPrev->setEnabled(false);
+    }
+
+    ui->numErrorsRemaining->setSegmentStyle(QLCDNumber::Flat);
+    ui->numErrorsRemaining->show();
 }
 
 //Clean up allocated memory for the table items
@@ -78,36 +138,77 @@ ErrorEditDialog::~ErrorEditDialog()
 }
 
 //Save the new data entered by the user via the error reference var
-void ErrorEditDialog::saveData() {
-    for (int row = 0; row < ui->tableWidget->rowCount(); row++) {
-        for (int col = 0; col < ui->tableWidget->columnCount() && col < (int) errorList[row]->size(); col++) {
+void ErrorEditDialog::saveData()
+{
+    for (int row = 0; row < ui->tableWidget->rowCount(); row++)
+    {
+        for (int col = 0; col < ui->tableWidget->columnCount() && col < (int) errorList[row]->size(); col++)
+        {
             std::vector<std::string>::iterator it = errorList[row]->begin()+col;
-            if (errorList[row]->at(col).compare("") == 0) {
+            if (errorList[row]->at(col).compare("") == 0)
+            {
                 it = errorList[row]->erase(it);
             }
             errorList[row]->insert(it, ui->tableWidget->item(row, col)->text().toStdString());
         }
     }
 
-accept();
+    accept();
+}
+
+int ErrorEditDialog::countRemainingErrors()
+{
+    int remainingErrors = 0;
+    QTableWidgetItem* currItem;
+    QString currStr;
+    for (int row = 0; row < ui->tableWidget->rowCount(); row++)
+    {
+        int col;
+        //qDebug() << "row: " << row;
+        for(int mandIndex = 0; mandIndex < mandatoryColumnIndexes.size(); mandIndex++)
+        {
+            col = mandatoryColumnIndexes.at(mandIndex);
+            //qDebug() << "col: " << col;
+            currItem = ui->tableWidget->item(row, col);
+            //qDebug() << "got item";
+            currStr = currItem->text();
+            //qDebug() << "got string";
+            if(errCoords.at(row).at(col) && (currStr.isNull() || currStr.isEmpty()))
+            {
+                //qDebug() << "found error at: ";
+                //qDebug() << "\trow: " << row;
+                //qDebug() << "\tcol: " << col;
+                remainingErrors++;
+                //qDebug() << "\tRemaining Errors: " << remainingErrors;
+            }
+            //qDebug() << "finished if block";
+        }
+        //qDebug() << "finished inner loop";
+    }
+    //qDebug() << "Final Remaining Errors: " << remainingErrors;
+    return remainingErrors;
 }
 
 void ErrorEditDialog::on_save_clicked()
 {
     bool search = true;
     //check if mandatory fields have been filled
-    for (int row = 0; row < ui->tableWidget->rowCount() && search; row++) {
-        for (int j = 0; j < (int) mandatoryList.size() && search; j++) {
+    for (int row = 0; row < ui->tableWidget->rowCount() && search; row++)
+    {
+        for (int j = 0; j < (int) mandatoryList.size() && search; j++)
+        {
             std::vector<std::string>::iterator it = std::find(headerList.begin(), headerList.end(), mandatoryList[j]);
             int col = it - headerList.begin();
             QTableWidgetItem* item = ui->tableWidget->item(row, col);
-            if (item->text().compare("") == 0) {
+            if (item->text().compare("") == 0)
+            {
                 QMessageBox::critical(this, "Error", "Mandatory fields are still empty.");
                 search = false;
             }
         }
     }
-    if (search) {
+    if (search)
+    {
         saveData();
     }
 }
@@ -115,4 +216,133 @@ void ErrorEditDialog::on_save_clicked()
 void ErrorEditDialog::on_cancel_clicked()
 {
     reject();
+}
+
+void ErrorEditDialog::on_findNext_clicked()
+{
+    int errorsRem = this->countRemainingErrors();
+    ui->numErrorsRemaining->display(errorsRem);
+
+    if(errorsRem == 0)
+    {
+        ui->findNext->setEnabled(false);
+        ui->findPrev->setEnabled(false);
+    }
+
+    int initRow = ui->tableWidget->currentRow();
+    int initCol = ui->tableWidget->currentColumn();
+
+    if(initRow < 0)
+    {
+        initRow = 0;
+    }
+    if(initCol < 0)
+    {
+        initCol = 0;
+    }
+
+    int destRow, destCol;
+    bool checkedFirstRow = false;
+
+    //qDebug() << "initRow: " << initRow;
+
+    if(!(initCol == (ui->tableWidget->columnCount() - 1))){
+        initCol++;
+    }
+    else{
+        initRow++;
+        initCol = 0;
+    }
+
+    //qDebug() << "initCol: " << initCol;
+
+    bool foundError = false;
+
+    for(int row = initRow ; row < ui->tableWidget->rowCount() && !foundError ; row++)
+    {
+        //qDebug() << "row: " << row;
+        if(checkedFirstRow)
+        {
+            initCol = 0;
+        }
+        for(int col = initCol ; col < ui->tableWidget->columnCount() && !foundError ; col++)
+        {
+            //qDebug() << "col" << col;
+            if(errCoords.at(row).at(col))
+            {
+                foundError = true;
+                destRow = row;
+                destCol = col;
+                //qDebug() << "destRow: " << destRow;
+                //qDebug() << "destCol: " << destCol;
+            }
+            checkedFirstRow = true;
+        }
+    }
+    ui->tableWidget->setCurrentCell(destRow,destCol);
+}
+
+void ErrorEditDialog::on_findPrev_clicked()
+{
+    int errorsRem = this->countRemainingErrors();
+    ui->numErrorsRemaining->display(errorsRem);
+
+    if(errorsRem == 0)
+    {
+        ui->findNext->setEnabled(false);
+        ui->findPrev->setEnabled(false);
+    }
+    int initRow = ui->tableWidget->currentRow();
+    int initCol = ui->tableWidget->currentColumn();
+
+    if(initRow < 0)
+    {
+        initRow = 0;
+    }
+    if(initCol < 0)
+    {
+        initCol = 0;
+    }
+
+    int destRow, destCol;
+    bool checkedFirstRow = false;
+
+    //qDebug() << "initRow: " << initRow;
+
+    if(!(initCol == 0)){
+        initCol--;
+    }
+    else{
+        initRow--;
+        initCol = (ui->tableWidget->columnCount() - 1);
+    }
+
+    //qDebug() << "initCol: " << initCol;
+
+    bool foundError = false;
+
+    for(int row = initRow ; row >= 0 && !foundError ; row--)
+    {
+        //qDebug() << "row: " << row;
+
+        if(checkedFirstRow){
+            initCol = (ui->tableWidget->columnCount() - 1);
+        }
+
+        for(int col = initCol ; col >= 0 && !foundError ; col--)
+        {
+            //qDebug() << "col" << col;
+            if(errCoords.at(row).at(col))
+            {
+                foundError = true;
+                destRow = row;
+                destCol = col;
+                //qDebug() << "destRow: " << destRow;
+                //qDebug() << "destCol: " << destCol;
+            }
+            checkedFirstRow = true;
+        }
+    }
+
+    ui->tableWidget->setCurrentCell(destRow,destCol);
 }

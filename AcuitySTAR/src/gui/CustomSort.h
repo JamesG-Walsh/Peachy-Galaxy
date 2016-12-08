@@ -29,6 +29,7 @@ private slots:
     void on_field_3_currentIndexChanged(int index);
     void on_field_4_currentIndexChanged(int index);
     void on_field_5_currentIndexChanged(int index);
+    void on_field_6_currentIndexChanged(int index);
 
     void on_buttonBox_rejected();
     void on_buttonBox_accepted();

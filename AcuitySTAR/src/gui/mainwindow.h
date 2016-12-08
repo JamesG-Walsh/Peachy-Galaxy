@@ -89,7 +89,13 @@ private slots:
     void on_fund_line_button_toggled();
     void on_fund_pie_button_toggled();
     void on_fund_bar_button_toggled();
+    void on_fund_histogram_button_toggled();
 
+    std::vector<std::pair <std::string, double>> fundTreeView_total_scatter(const QModelIndex &index);
+    std::vector<std::pair <std::string, double>> teachTreeView_total(const QModelIndex &index);
+    std::vector<std::pair <std::string, double>> pubTreeView_total(const QModelIndex &index);
+    std::vector<std::pair <std::string, double>> presTreeView_total(const QModelIndex &index);
+    std::vector<std::pair <std::string, double>> fundTreeView_total(const QModelIndex &index);
     void on_teachTreeView_clicked(const QModelIndex &index);
     void on_pubTreeView_clicked(const QModelIndex &index);
     void on_presTreeView_clicked(const QModelIndex &index);
@@ -135,6 +141,7 @@ private:
     static std::vector<std::string> clickedNames;
     static std::vector<std::tuple <std::string, std::string, double>> chartLists;
     static std::vector<string> teachNames, pubNames, presNames, fundNames;
+    static std::vector<string> teachNamesCustom, pubNamesCustom, presNamesCustom, fundNamesCustom;
     static bool teachFlag, pubFlag, presFlag, fundFlag;
 
 
@@ -177,6 +184,8 @@ private:
     void setupBarChart(QCustomPlot *barChart, std::vector<std::pair<std::string, double> > barChartList);
     void setupLineChart(QCustomPlot *lineChart, std::vector<std::pair <std::string, double>> lineChartList);
 
+    void setupHistogramChart(QCustomPlot *histogramChart, std::vector<std::pair <std::string, double>> histogramChartList);
+    void setupScatterPlot(QCustomPlot *scatterPlot, std::vector<std::pair <std::string, double>> scatterPlotList);
 
     bool handle_field_errors(std::vector<std::vector<std::string>*>& errors,
                              std::vector<std::string>& headers,

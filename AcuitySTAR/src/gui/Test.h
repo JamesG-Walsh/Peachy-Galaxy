@@ -65,11 +65,17 @@ private slots:
     void test_on_pub_line_button_toggled();
     void test_on_fund_line_button_toggled();
     void test_setupLineChart();
+    void test_setupScatterPlot();
 
     //test edit sort order
 
     void test_editsort_setFields();
     void test_editsort_getSortFields();
+    void test_on_buttonBox_rejected();
+    void test_on_edit_button_clicked();
+
+    void testCustomList();
+    void testFixDateFormatting();
 
 
 
